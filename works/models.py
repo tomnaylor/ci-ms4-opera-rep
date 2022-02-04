@@ -53,4 +53,5 @@ class Production(models.Model):
 
 
     def __str__(self):
-        return self.name
+        #title = Work.objects.get(id=self.work)
+        return self.work.name + " (" + str(self.year) + ")"
