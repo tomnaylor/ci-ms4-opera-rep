@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 
 class Work(models.Model):
@@ -23,6 +25,13 @@ class Work(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def image_url(self):
+        if self.thumb_image and hasattr(self.thumb_image, 'url'):
+            return self.thumb_image.url
+        else:
+            return settings.MEDIA_URL + "no-image.png"
 
 
 class Production(models.Model):
