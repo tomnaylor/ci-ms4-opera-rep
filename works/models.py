@@ -2,11 +2,10 @@ from django.db import models
 from django.conf import settings
 
 
-
 class Work(models.Model):
     """ Model for the work """
 
-    url = models.CharField(max_length=254, blank=False)
+    url = models.SlugField(max_length=254, blank=False)
     name = models.CharField(max_length=254, blank=False)
     synopsis = models.TextField()
     tagline = models.CharField(max_length=254, blank=False)
@@ -22,16 +21,16 @@ class Work(models.Model):
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     @property
     def image_url(self):
+        """ Returns URL to thumbnail or a default no imaage placeholder """
         if self.thumb_image and hasattr(self.thumb_image, 'url'):
             return self.thumb_image.url
-        else:
-            return settings.MEDIA_URL + "no-image.png"
+
+        return settings.MEDIA_URL + "no-image.png"
 
 
 class Production(models.Model):
@@ -47,20 +46,36 @@ class Production(models.Model):
     relighter = models.CharField(max_length=100, null=True, blank=True)
     choreographer = models.CharField(max_length=100, null=True, blank=True)
     producer = models.CharField(max_length=100, null=True, blank=True)
-
     dead = models.BooleanField(default=False, null=True, blank=True)
-
     hero_image = models.ImageField(null=True, blank=True)
     hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
     thumb_image = models.ImageField(null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
-
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
-
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
+    def __str__(self):
+        return self.work.name + " (" + str(self.year) + ")"
+
+
+class ProductionMedia(models.Model):
+    """ Model for a media entry for a production """
+
+    MEDIA_TYPES = (
+        ('P', 'photo'),
+        ('V', 'video'),
+        ('F', 'pdf'),
+    )
+    type = models.CharField(max_length=1, choices=MEDIA_TYPES)
+    production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
+    url = models.CharField(max_length=254, blank=False)
+    name = models.CharField(max_length=254, blank=False)
+    thumb_image = models.ImageField(null=True, blank=True)
+    thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
+    record_added = models.DateTimeField(auto_now_add=True)
+    record_edited = models.DateTimeField(auto_now=True)
+    rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
-        #title = Work.objects.get(id=self.work)
-        return self.work.name + " (" + str(self.year) + ")"
+        return self.name + " (" + self.production.work.name + " - " + str(self.production.year) + ")"

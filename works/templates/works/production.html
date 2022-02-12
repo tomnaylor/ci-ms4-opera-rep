@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <h1>{{ production.work.name }} {{ production.year }}</h1>
+    
+    <p>{{ production.work.synopsis }}</p>
+    <p>{{ production.work.tagline }}</p>
+    <p>{{ production.work.hash_tag }}</p>
+
+    <div class="row">
+        <div class="col-3">production_premiere</div>
+        <div class="col-9">{{ production.production_premiere }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">director</div>
+        <div class="col-9">{{ production.director }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">set_designer</div>
+        <div class="col-9">{{ production.set_designer }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">costume_designer</div>
+        <div class="col-9">{{ production.costume_designer }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">lighting_designer</div>
+        <div class="col-9">{{ production.lighting_designer }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">relighter</div>
+        <div class="col-9">{{ production.relighter }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">choreographer</div>
+        <div class="col-9">{{ production.choreographer }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">producer</div>
+        <div class="col-9">{{ production.producer }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3">dead</div>
+        <div class="col-9">{{ production.dead }}</div>
+    </div>
+
+
+    <div class="row">
+        {% for media_item in media %}
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                <div class="card h-100 border-0">
+
+                    <a href="{% url 'production_media' media_item.id %}">
+                        <img class="card-img-top img-fluid" src="{{ media_item.thumb_image.url }}" alt="{{ media_item.name }}">
+                    </a>
+
+                    <h3>{{ media_item.name}}</h3>
+
+                    <p>{{ media_item.type }}</p>
+
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:1 %}
+                <div class="col-12 d-sm-none mb-5">
+                    <hr>
+                </div>
+            {% endif %}                        
+            {% if forloop.counter|divisibleby:2 %}
+                <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-5">
+                    <hr>
+                </div>
+            {% endif %}
+            {% if forloop.counter|divisibleby:3 %}
+                <div class="col-12 d-none d-lg-block d-xl-none mb-5">
+                    <hr>
+                </div>
+            {% endif %}
+            {% if forloop.counter|divisibleby:4 %}
+                <div class="col-12 d-none d-xl-block mb-5">
+                    <hr>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+

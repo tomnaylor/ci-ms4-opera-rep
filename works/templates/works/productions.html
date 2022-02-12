@@ -29,7 +29,7 @@
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                 <div class="card h-100 border-0">
 
-                    <a href="">
+                    <a href="{% url 'production' production.work.url production.id %}">
                         <img class="card-img-top img-fluid" src="{{ production.work.image_url }}" alt="{{ production.work.name }}">
                     </a>
 
