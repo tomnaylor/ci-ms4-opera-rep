@@ -1,89 +1,177 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block masthead_image %}{{ production.hero_image_url }}{% endblock %}
+
+{% block h1 %}
+    {{ production.work.name }} {{ production.year }}
+{% endblock %}
 
 {% block content %}
 
-    <h1>{{ production.work.name }} {{ production.year }}</h1>
+<section class="page-section" id="services">
+    <div class="container">
     
-    <p>{{ production.work.synopsis }}</p>
-    <p>{{ production.work.tagline }}</p>
-    <p>{{ production.work.hash_tag }}</p>
-
-    <div class="row">
-        <div class="col-3">production_premiere</div>
-        <div class="col-9">{{ production.production_premiere }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">director</div>
-        <div class="col-9">{{ production.director }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">set_designer</div>
-        <div class="col-9">{{ production.set_designer }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">costume_designer</div>
-        <div class="col-9">{{ production.costume_designer }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">lighting_designer</div>
-        <div class="col-9">{{ production.lighting_designer }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">relighter</div>
-        <div class="col-9">{{ production.relighter }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">choreographer</div>
-        <div class="col-9">{{ production.choreographer }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">producer</div>
-        <div class="col-9">{{ production.producer }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">dead</div>
-        <div class="col-9">{{ production.dead }}</div>
-    </div>
+        <h2  class="display-6 text-center">{{ production.work.tagline }}</h2>
 
 
-    <div class="row">
-        {% for media_item in media %}
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                <div class="card h-100 border-0">
+        <p>{{ production.work.synopsis }}</p>
+        
+        <p>{{ production.work.hash_tag }}</p>
 
-                    <a href="{% url 'production_media' media_item.id %}">
-                        <img class="card-img-top img-fluid" src="{{ media_item.thumb_image.url }}" alt="{{ media_item.name }}">
-                    </a>
+        <dl class="row">
+            <dt class="col-sm-3">Premier</dt>
+            <dd class="col-sm-9">{{ production.production_premiere }}</dd>
+    
+            <dt class="col-sm-3">director</dt>
+            <dd class="col-sm-9">
+                <ul class="timeline"><li><div class="timeline-image" style="background-image: url('{{ production.director.thumb_image_url }}');"></div></li></ul>
+                {{ production.director.name }}
+            </dd>
+    
+            <dt class="col-sm-3">Set designer</dt>
+            <dd class="col-sm-9">{{ production.set_designer }}</dd>
+    
+            <dt class="col-sm-3">costume_designer</dt>
+            <dd class="col-sm-9">{{ production.costume_designer }}</dd>
+    
+            <dt class="col-sm-3">lighting_designer</dt>
+            <dd class="col-sm-9">{{ production.lighting_designer }}</dd>
+    
+            <dt class="col-sm-3">relighter</dt>
+            <dd class="col-sm-9">{{ production.relighter }}</dd>
+    
+            <dt class="col-sm-3">choreographer</dt>
+            <dd class="col-sm-9">{{ production.choreographer }}</dd>
+    
+            <dt class="col-sm-3">producer</dt>
+            <dd class="col-sm-9">{{ production.producer }}</dd>
+    
+            <dt class="col-sm-3">dead</dt>
+            <dd class="col-sm-9">{{ production.dead }}</dd>
+        </dl>
 
-                    <h3>{{ media_item.name}}</h3>
+    </div>
+</section>
 
-                    <p>{{ media_item.type }}</p>
-
+<!-- Team-->
+<section class="page-section bg-light" id="team">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="{{ production.director.thumb_image_url }}" alt="..." />
+                    <h4>Parveen Anand</h4>
+                    <p class="text-muted">Lead Designer</p>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-            {% if forloop.counter|divisibleby:1 %}
-                <div class="col-12 d-sm-none mb-5">
-                    <hr>
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="assets/img/team/2.jpg" alt="..." />
+                    <h4>Diana Petersen</h4>
+                    <p class="text-muted">Lead Marketer</p>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
                 </div>
-            {% endif %}                        
-            {% if forloop.counter|divisibleby:2 %}
-                <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-5">
-                    <hr>
+            </div>
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="assets/img/team/3.jpg" alt="..." />
+                    <h4>Larry Parker</h4>
+                    <p class="text-muted">Lead Developer</p>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
                 </div>
-            {% endif %}
-            {% if forloop.counter|divisibleby:3 %}
-                <div class="col-12 d-none d-lg-block d-xl-none mb-5">
-                    <hr>
-                </div>
-            {% endif %}
-            {% if forloop.counter|divisibleby:4 %}
-                <div class="col-12 d-none d-xl-block mb-5">
-                    <hr>
-                </div>
-            {% endif %}
-        {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p></div>
+        </div>
     </div>
+</section>
+
+    <!-- Media Grid-->
+    <section class="page-section bg-light" id="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Media</h2>
+            </div>
+            <div class="row">
+                {% for media_item in media %}
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="{% url 'production_media' media_item.id %}">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="{{ media_item.thumb_image.url }}" alt="{{ media_item.name}}" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">{{ media_item.name}}</div>
+                            <div class="portfolio-caption-subheading text-muted">{{ media_item.name}}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Other productions-->
+    <section class="page-section" id="about">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Productions</h2>
+            </div>
+            <ul class="timeline">
+
+                {% for other_production in other_productions %}
+
+                    {% if forloop.counter|divisibleby:2 %}
+                        <li>
+                    {% else %}
+                        <li class="timeline-inverted">
+                    {% endif %}
+
+                    
+                    <div class="timeline-image" style="background-image: url('{{ other_production.thumb_image_url }}');">
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <a href="{% url 'production' other_production.work.url other_production.id %}"><h4>{{ other_production.year}}</h4></a>
+                            <h4 class="subheading">{{ other_production.year}}</h4>
+                        </div>
+                        <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                    </div>
+                </li>
+                {% endfor %}
+
+                <li>
+                    <div class="timeline-image">
+                        <h4>
+                            Premiere:
+                            <br />
+                            {{ production.work.world_premiere|date:"d M" }}
+                            <br />
+                            {{ production.work.world_premiere|date:"Y" }}
+                        </h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+
 {% endblock %}
 

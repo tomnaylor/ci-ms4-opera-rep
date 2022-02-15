@@ -32,10 +32,12 @@ def production(request, slug, production_id):
 
     prod = get_object_or_404(Production, pk=production_id)
     prod_media = ProductionMedia.objects.filter(production=production_id)
+    other_productions = Production.objects.filter(work=prod.work)
 
     context = {
         'production': prod,
         'media': prod_media,
+        'other_productions': other_productions,
     }
 
     return render(request, 'works/production.html', context)
