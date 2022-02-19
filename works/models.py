@@ -7,14 +7,21 @@ class People(models.Model):
     url = models.SlugField(max_length=254, blank=False)
     facebook = models.SlugField(max_length=254, null=True, blank=True)
     twitter = models.SlugField(max_length=254, null=True, blank=True)
-
     name = models.CharField(max_length=254, blank=False)
     synopsis = models.TextField()
-
-    hero_image = models.ImageField(null=True, blank=True)
     hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-    thumb_image = models.ImageField(null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
+    record_added = models.DateTimeField(auto_now_add=True)
+    record_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Role(models.Model):
+    """ Model for all roles in a productions """
+    name = models.CharField(max_length=254, blank=False)
+    person = models.ForeignKey('People', on_delete=models.RESTRICT)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
 
@@ -27,16 +34,10 @@ class Work(models.Model):
 
     url = models.SlugField(max_length=254, blank=False)
     name = models.CharField(max_length=254, blank=False)
-    synopsis = models.TextField()
-    tagline = models.CharField(max_length=254, blank=False)
-    hash_tag = models.CharField(max_length=30, blank=False)
-    language = models.CharField(max_length=100, blank=False)
     composer = models.CharField(max_length=100, blank=False)
     librettist = models.CharField(max_length=100, blank=False)
     world_premiere = models.DateField(auto_now=False, auto_now_add=False)
-    hero_image = models.ImageField(null=True, blank=True)
     hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-    thumb_image = models.ImageField(null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
@@ -56,26 +57,31 @@ class Work(models.Model):
 class Production(models.Model):
     """ Model for a production """
 
-    work = models.ForeignKey(
-        'Work', null=True, blank=True, on_delete=models.SET_NULL)
+    work = models.ForeignKey('Work', null=True, blank=True, on_delete=models.SET_NULL)
     year = models.PositiveSmallIntegerField()
+    synopsis = models.TextField()
+    tagline = models.CharField(max_length=254, blank=False)
+    hash_tag = models.CharField(max_length=30, blank=False)
+    language = models.CharField(max_length=100, blank=False)
     production_premiere = models.DateField(auto_now=False, auto_now_add=False)
-    director = models.ForeignKey('People', null=True, blank=True, on_delete=models.SET_NULL)
-    set_designer = models.CharField(max_length=100, null=True, blank=True)
-    costume_designer = models.CharField(max_length=100, null=True, blank=True)
-    lighting_designer = models.CharField(max_length=100, null=True, blank=True)
-    relighter = models.CharField(max_length=100, null=True, blank=True)
-    choreographer = models.CharField(max_length=100, null=True, blank=True)
-    producer = models.CharField(max_length=100, null=True, blank=True)
+    creatives = models.ManyToManyField(Role, related_name='creatives')
+    cast = models.ManyToManyField(Role, related_name='cast')
+    staff = models.ManyToManyField(Role, related_name='staff')
+    #director = models.ForeignKey('People', null=True, blank=True, on_delete=models.SET_NULL)
+    #set_designer = models.CharField(max_length=100, null=True, blank=True)
+    #costume_designer = models.CharField(max_length=100, null=True, blank=True)
+    #lighting_designer = models.CharField(max_length=100, null=True, blank=True)
+    #relighter = models.CharField(max_length=100, null=True, blank=True)
+    #choreographer = models.CharField(max_length=100, null=True, blank=True)
+    #producer = models.CharField(max_length=100, null=True, blank=True)
     dead = models.BooleanField(default=False, null=True, blank=True)
-    hero_image = models.ImageField(null=True, blank=True)
+    #hero_image = models.ImageField(null=True, blank=True)
     hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-    thumb_image = models.ImageField(null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
-    rating = models.DecimalField(
-        max_digits=6, decimal_places=2, null=True, blank=True)
+    rating_total = models.PositiveIntegerField(null=True, blank=True)
+    rating_count = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.work.name + " (" + str(self.year) + ")"
@@ -92,16 +98,14 @@ class ProductionMedia(models.Model):
         ('F', 'pdf'),
     )
     type = models.CharField(max_length=1, choices=MEDIA_TYPES)
-    production = models.ForeignKey(
-        'Production', null=True, blank=True, on_delete=models.SET_NULL)
+    production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
     url = models.CharField(max_length=254, blank=False)
     name = models.CharField(max_length=254, blank=False)
-    thumb_image = models.ImageField(null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
-    rating = models.DecimalField(
-        max_digits=6, decimal_places=2, null=True, blank=True)
+    rating_total = models.PositiveIntegerField(null=True, blank=True)
+    rating_count = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name + " (" + self.production.work.name + \
