@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block masthead_image %}{{ production.hero_image_url }}{% endblock %}
+{% block hero_image %}{{ production.hero_image_url }}{% endblock %}
 
 {% block h1 %}
     {{ production.work.name }} {{ production.year }}
@@ -53,8 +53,8 @@
     </div>
 </section>
 
-<!-- Team-->
-<section class="page-section bg-light" id="team">
+<!-- CREATIVES -->
+<section class="page-section bg-light" id="creatives">
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Creative team</h2>
@@ -68,19 +68,68 @@
                     <div class="team-member-container rounded-circle">
                         <div class="team-member-img rounded-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
                     </div>
-                    <h4>{{ role.person.name }}</h4>
+                    <h4><a href="{% url 'person' role.person.url %}">{{ role.person.name }}</a></h4>
                     <p class="text-muted">{{ role.name }}</p>
                     {% if role.person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
                     {% if role.person.twitter %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
                 </div>
             </div>
             {% endfor %}
-
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p></div>
-        </div>
     </div>
 </section>
+
+
+<!-- CAST -->
+<section class="page-section" id="cast">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Cast</h2>
+            <h3 class="section-subheading text-muted">Meet the cast on {{ production.work.name }}</h3>
+        </div>
+        <div class="row">
+
+            {% for role in cast %}
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <div class="team-member-container rounded-circle">
+                        <div class="team-member-img rounded-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
+                    </div>
+                    <h4><a href="{% url 'person' role.person.url %}">{{ role.person.name }}</a></h4>
+                    <p class="text-muted">{{ role.name }}</p>
+                    {% if role.person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                    {% if role.person.twitter %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+</section>
+
+
+<!-- STAFF -->
+<section class="page-section bg-light" id="staff">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Staff</h2>
+            <h3 class="section-subheading text-muted">Meet the team behind the scenes of {{ production.work.name }}</h3>
+        </div>
+        <div class="row">
+
+            {% for role in staff %}
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <div class="team-member-container rounded-circle">
+                        <div class="team-member-img rounded-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
+                    </div>
+                    <h4><a href="{% url 'person' role.person.url %}">{{ role.person.name }}</a></h4>
+                    <p class="text-muted">{{ role.name }}</p>
+                    {% if role.person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                    {% if role.person.twitter %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+</section>
+
 
     <!-- Media Grid-->
     <section class="page-section bg-light" id="portfolio">
@@ -131,7 +180,8 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <a href="{% url 'production' other_production.work.url other_production.id %}"><h4>{{ other_production.year}}</h4></a>
+                            <a href="{% url 'production' other_production.work.url 
+                            %}"><h4>{{ other_production.year}}</h4></a>
                             <h4 class="subheading">{{ other_production.year}}</h4>
                         </div>
                         <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>

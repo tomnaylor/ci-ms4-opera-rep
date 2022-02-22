@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block hero_image %}{{ person.hero_image_url }}{% endblock %}
+
+{% block h1 %}
+    {{ person.name }}
+{% endblock %}
+
+
+{% block hero_cta %}
+    {% if person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
+    {% if person.twitter %}<a class="btn btn-dark btn-social mx-2" href="https://www.twitter.com/{{ person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+        <h2 class="display-6 text-center my-5">{{ person.tagline }}</h2>
+
+
+
+<section class="page-section bg-light">
+    <div class="container">
+
+        <div class="row">
+            {% for production in productions %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div>
+
+                        <a href="{% url 'production' production.url %}">
+                            <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
+                        </a>
+
+                        <div class="p-2">
+                            <h6>{{ production.year }} {{ production.work.name }}</h6>
+
+
+                            <div class="collapse" id="collapseExample" style="">{{ production.synopsis }}</div>
+
+
+                            <p>
+
+                                <button class="btn text-reset m-0 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">More..</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+

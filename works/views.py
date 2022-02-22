@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Work, Production, ProductionMedia, Role, People
+from django.db.models import Q
 
 
 
@@ -27,20 +28,24 @@ def all_productions(request):
     return render(request, 'works/productions.html', context)
 
 
-def production(request, slug, production_id):
+def production(request, slug):
     """ View to show a single production detail """
 
-    prod = get_object_or_404(Production, pk=production_id)
-    prod_media = ProductionMedia.objects.filter(production=production_id)
+    prod = get_object_or_404(Production, url=slug)
+    prod_media = ProductionMedia.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
 
     creatives = prod.creatives.all()
+    cast = prod.cast.all()
+    staff = prod.staff.all()
 
     context = {
         'production': prod,
         'media': prod_media,
         'other_productions': other_productions,
         'creatives': creatives,
+        'cast': cast,
+        'staff': staff,
     }
 
     return render(request, 'works/production.html', context)
@@ -62,13 +67,18 @@ def person(request, slug):
     """ View to show a single persons detail """
 
     person = get_object_or_404(People, url=slug)
-    productions = Production.objects.filter(work=prod.work)
+    roles = Role.objects.filter(person=person.id)
+    productions = Production.objects.filter(
+                  Q(creatives__in=roles) |
+                  Q(cast__in=roles) |
+                  Q(staff__in=roles)).distinct()
+
+    productions = Production.objects.all()
 
     context = {
-        'production': prod,
-        'media': prod_media,
-        'other_productions': other_productions,
+        'roles': roles,
+        'person': person,
+        'productions': productions,
     }
 
-    return render(request, 'works/production.html', context)
-
+    return render(request, 'works/person.html', context)
