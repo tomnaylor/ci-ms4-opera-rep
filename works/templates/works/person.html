@@ -20,33 +20,25 @@
 
 
 
-<section class="page-section bg-light">
+<section class="page-section bg-light pt-5">
     <div class="container">
 
-        <div class="row">
+        <div class="row row-cols-2">
             {% for production in productions %}
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div>
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                    <div class="border border-dark">
 
                         <a href="{% url 'production' production.url %}">
                             <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
                         </a>
 
-                        <div class="p-2">
+                        <div class="px-2 pt-2">
                             <h6>{{ production.year }} {{ production.work.name }}</h6>
 
-
-                            <div class="collapse" id="collapseExample" style="">{{ production.synopsis }}</div>
-
-
-                            <p>
-
-                                <button class="btn text-reset m-0 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">More..</button>
-                            </p>
+                            <p class="fw-lighter lh-1">{{ production.tagline }}</p>
                         </div>
                     </div>
                 </div>
-
             {% endfor %}
         </div>
 

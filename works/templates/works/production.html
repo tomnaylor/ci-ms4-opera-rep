@@ -54,27 +54,26 @@
 </section>
 
 <!-- CREATIVES -->
-<section class="page-section bg-light" id="creatives">
+<section class="page-section bg-light py-5" id="creatives">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Creative team</h2>
-            <h3 class="section-subheading text-muted">Meet the creative team behind {{ production.work.name }}</h3>
+            <h2 class="text-uppercase">Creative team</h2>
+            <p class="text-muted">Meet the creative team behind {{ production.work.name }}</p>
         </div>
-        <div class="row">
 
+        <div class="row">
             {% for role in creatives %}
-            <div class="col-lg-4">
-                <div class="team-member">
-                    <div class="team-member-container rounded-circle">
-                        <div class="team-member-img rounded-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
-                    </div>
-                    <h4><a href="{% url 'person' role.person.url %}">{{ role.person.name }}</a></h4>
-                    <p class="text-muted">{{ role.name }}</p>
-                    {% if role.person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
-                    {% if role.person.twitter %}<a class="btn btn-dark btn-social mx-2" href="{{ role.person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+            <div class="col-2 text-center">
+
+                <div class="img-circle-outer">
+                    <div class="img-cover img-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
                 </div>
+
+                <h5><a href="{% url 'person' role.person.url %}">{{ role.person.name }}</a></h5>
+                <p class="text-muted">{{ role.name }}</p>
             </div>
             {% endfor %}
+        </div>
     </div>
 </section>
 
@@ -115,7 +114,7 @@
         <div class="row">
 
             {% for role in staff %}
-            <div class="col-lg-4">
+            <div class="col-2">
                 <div class="team-member">
                     <div class="team-member-container rounded-circle">
                         <div class="team-member-img rounded-circle" style="background-image: url('{{ role.person.thumb_image_url }}');"></div>
