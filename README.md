@@ -7,4 +7,6 @@
 * https://stackoverflow.com/questions/2218327/django-manytomany-filter - filter many to many : productions = Production.objects.filter(creatives__id=person.id)
     * https://docs.djangoproject.com/en/4.0/topics/db/queries/#complex-lookups-with-q-objects Q to add an "or" to filter
     * https://fedingo.com/django-get-unique-values-from-queryset/ to get distinct() returns
+* https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties Search using foreign key property
+
     

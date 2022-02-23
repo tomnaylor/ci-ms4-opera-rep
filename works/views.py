@@ -86,26 +86,23 @@ def person(request, slug):
 def search(request):
     """ Search all works, productions, people and media """
 
-    #productions = Production.objects.all()
+    productions = Production.objects.all()
+    people = People.objects.all()
+    
     query = None
     categories = None
     sort = None
     direction = None
 
     if request.GET:
-        if 'sort' in request.GET:
-            sortkey = request.GET['sort']
-            sort = sortkey
-            if sortkey == 'name':
-                sortkey = 'lower_name'
-                products = products.annotate(lower_name=Lower('name'))
-            if sortkey == 'category':
-                sortkey = 'category__name'
-            if 'direction' in request.GET:
-                direction = request.GET['direction']
-                if direction == 'desc':
-                    sortkey = f'-{sortkey}'
-            products = products.order_by(sortkey)
+    #    if 'sort' in request.GET:
+    #        productions = productions.annotate(lower_name=Lower('name'))
+    #        products = products.annotate(lower_name=Lower('name'))
+    #    if 'direction' in request.GET:
+    #        direction = request.GET['direction']
+    #        if direction == 'desc':
+    #            sortkey = f'-{sortkey}'
+    #        products = products.order_by('name')
 
         if 'query' in request.GET:
             query = request.GET['query']
@@ -114,11 +111,11 @@ def search(request):
                                ("You didn't enter any search criteria!"))
                 return redirect(reverse('home'))
 
-            queries = Q(tagline__icontains=query) | Q(synopsis__icontains=query) | Q(year__icontains=query)
-            productions = Production.objects.filter(queries)
+            queries = Q(tagline__icontains=query) | Q(synopsis__icontains=query) | Q(year__icontains=query) | Q(work__name__icontains=query)
+            productions = productions.filter(queries)
 
             queries = Q(name__icontains=query) | Q(synopsis__icontains=query) | Q(tagline__icontains=query)
-            people = People.objects.filter(queries)
+            people = people.filter(queries)
 
 
 
@@ -130,6 +127,5 @@ def search(request):
         'query': query,
         'sort': current_sorting,
     }
-    print(productions)
-    print("kjkjkjkj")
+    
     return render(request, 'works/search.html', context)
