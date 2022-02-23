@@ -5,11 +5,11 @@ from django.conf import settings
 class People(models.Model):
     """ Model for all people in productions - ie. Directors, cast, creatives etc.. """
     url = models.SlugField(max_length=254, blank=False)
-    tagline = models.CharField(max_length=254, blank=False)
+    tagline = models.CharField(max_length=254, null=True, blank=True)
     facebook = models.SlugField(max_length=254, null=True, blank=True)
     twitter = models.SlugField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254, blank=False)
-    synopsis = models.TextField()
+    synopsis = models.TextField(null=True, blank=True)
     hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
     thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
     record_added = models.DateTimeField(auto_now_add=True)
@@ -17,6 +17,14 @@ class People(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def thumb_image(self):
+        """ Returns URL to thumbnail or a default no imaage placeholder """
+        if self.thumb_image_url:
+            return self.thumb_image_url
+
+        return settings.MEDIA_URL + "no-image.png"
 
 
 class Role(models.Model):

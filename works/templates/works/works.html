@@ -1,62 +1,35 @@
 {% extends "base.html" %}
-{% load static %}
 
 
-{% block content %}
-<!--
-url = models.CharField(max_length=254, blank=False)
-name = models.CharField(max_length=254, blank=False)
-synopsis = models.TextField()
-tagline = models.CharField(max_length=254, blank=False)
-hash_tag = models.CharField(max_length=30, blank=False)
-language = models.CharField(max_length=100, blank=False)
-composer = models.CharField(max_length=100, blank=False)
-librettist = models.CharField(max_length=100, blank=False)
-world_premiere = models.DateField(auto_now=False, auto_now_add=False)
-hero_image = models.ImageField(null=True, blank=True)
-hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-thumb_image = models.ImageField(null=True, blank=True)
-thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
-record_added = models.DateTimeField(auto_now_add=True)
-record_edited = models.DateTimeField(auto_now=True)
--->
-kljkljlkjkljkl
-    <div class="row">
-        {% for work in works %}
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                <div class="card h-100 border-0">
-
-                    <a href="">
-                        <img class="card-img-top img-fluid" src="{% if work.thumb_image %} {{ work.thumb_image.url }} {% else %} xxx.jpg {% endif %}" alt="{{ work.name }}">
-                    </a>
-
-                    <h3>{{ work.name }}</h3>
-
-                    <p>{{ work.tagline }}</p>
-
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:1 %}
-                <div class="col-12 d-sm-none mb-5">
-                    <hr>
-                </div>
-            {% endif %}                        
-            {% if forloop.counter|divisibleby:2 %}
-                <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-5">
-                    <hr>
-                </div>
-            {% endif %}
-            {% if forloop.counter|divisibleby:3 %}
-                <div class="col-12 d-none d-lg-block d-xl-none mb-5">
-                    <hr>
-                </div>
-            {% endif %}
-            {% if forloop.counter|divisibleby:4 %}
-                <div class="col-12 d-none d-xl-block mb-5">
-                    <hr>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div>
+{% block h1 %}
+Works
 {% endblock %}
 
+{% block content %}
+
+<section class="page-section bg-light pt-5">
+    <div class="container">
+
+        <div class="row row-cols-2">
+            {% for work in works %}
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                    <div class="border border-dark">
+
+                        <a href="">
+                            <div class="img-cover img-thumb" style="background-image: url('{{ work.image_url }}');"></div>
+                        </a>
+
+                        <div class="px-2 pt-2">
+                            <h6>{{ work.name }}</h6>
+
+                            <p class="fw-lighter lh-1">{{ work.tagline }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

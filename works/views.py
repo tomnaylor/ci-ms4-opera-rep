@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Work, Production, ProductionMedia, Role, People
 from django.db.models import Q
+from django.contrib import messages
 
 
 
@@ -73,8 +74,6 @@ def person(request, slug):
                   Q(cast__in=roles) |
                   Q(staff__in=roles)).distinct()
 
-    productions = Production.objects.all()
-
     context = {
         'roles': roles,
         'person': person,
@@ -82,3 +81,55 @@ def person(request, slug):
     }
 
     return render(request, 'works/person.html', context)
+
+
+def search(request):
+    """ Search all works, productions, people and media """
+
+    #productions = Production.objects.all()
+    query = None
+    categories = None
+    sort = None
+    direction = None
+
+    if request.GET:
+        if 'sort' in request.GET:
+            sortkey = request.GET['sort']
+            sort = sortkey
+            if sortkey == 'name':
+                sortkey = 'lower_name'
+                products = products.annotate(lower_name=Lower('name'))
+            if sortkey == 'category':
+                sortkey = 'category__name'
+            if 'direction' in request.GET:
+                direction = request.GET['direction']
+                if direction == 'desc':
+                    sortkey = f'-{sortkey}'
+            products = products.order_by(sortkey)
+
+        if 'query' in request.GET:
+            query = request.GET['query']
+            if not query:
+                messages.error(request,
+                               ("You didn't enter any search criteria!"))
+                return redirect(reverse('home'))
+
+            queries = Q(tagline__icontains=query) | Q(synopsis__icontains=query) | Q(year__icontains=query)
+            productions = Production.objects.filter(queries)
+
+            queries = Q(name__icontains=query) | Q(synopsis__icontains=query) | Q(tagline__icontains=query)
+            people = People.objects.filter(queries)
+
+
+
+    current_sorting = f'{sort}_{direction}'
+
+    context = {
+        'productions': productions,
+        'people': people,
+        'query': query,
+        'sort': current_sorting,
+    }
+    print(productions)
+    print("kjkjkjkj")
+    return render(request, 'works/search.html', context)

@@ -1,30 +1,15 @@
 {% extends "base.html" %}
-{% load static %}
-
-
-{% block hero_image %}{% if person.hero_image_url is not None %}{{ person.hero_image_url }}{% else %}https://i.pinimg.com/originals/76/c3/d7/76c3d716e44b7a23714a166a0a0f8a61.jpg{% endif %}{% endblock %}
-
-
 
 {% block h1 %}
-    {{ person.name }}
+Search
 {% endblock %}
-
-
-{% block hero_cta %}
-    {% if person.facebook %}<a class="btn btn-dark btn-social mx-2" href="{{ person.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
-    {% if person.twitter %}<a class="btn btn-dark btn-social mx-2" href="https://www.twitter.com/{{ person.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
-{% endblock %}
-
 
 {% block content %}
 
-        <h2 class="display-6 text-center my-5">{{ person.tagline }}</h2>
-
-
-
-<section class="page-section bg-light pt-5">
+{% if productions %}
+<section class="page-section py-5" id="creatives">
     <div class="container">
+        <h2 class="text-uppercase mb-5">Productions</h2>
 
         <div class="row row-cols-2">
             {% for production in productions %}
@@ -47,5 +32,28 @@
 
     </div>
 </section>
+{% endif %}
+
+
+
+<section class="page-section py-5" id="creatives">
+    <div class="container">
+        <h2 class="text-uppercase mb-5">People</h2>
+
+        <div class="row mt-5">
+            {% for person in people %}
+            <div class="col-2 text-center mb-4">
+
+                <a href="{% url 'person' person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ person.thumb_image }}');"></div></a>
+
+                <a href="{% url 'person' person.url %}" class="h5 link-dark text-decoration-none">{{ person.name }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
 {% endblock %}
 
