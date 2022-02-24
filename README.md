@@ -10,3 +10,6 @@
 * https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties Search using foreign key property
 
     
+
+
+Product form: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+Q1_2020/courseware/4201818c00aa4ba3a0dae243725f6e32/c557000edc0549b5b372ab66702580b3/?child=first - products / forms + views

@@ -11,15 +11,13 @@ Productions
 
         <div class="row row-cols-2">
             {% for production in productions %}
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
                     <div class="border border-dark">
 
-                        <a href="{% url 'production' production.url %}">
-                            <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
-                        </a>
+                        <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
 
                         <div class="px-2 pt-2">
-                            <h6>{{ production.year }} {{ production.work.name }}</h6>
+                            <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
 
                             <p class="fw-lighter lh-1">{{ production.tagline }}</p>
                         </div>
