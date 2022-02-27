@@ -8,7 +8,9 @@
     * https://docs.djangoproject.com/en/4.0/topics/db/queries/#complex-lookups-with-q-objects Q to add an "or" to filter
     * https://fedingo.com/django-get-unique-values-from-queryset/ to get distinct() returns
 * https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties Search using foreign key property
-
+* https://able.bio/rhett/how-to-set-and-get-environment-variables-in-python--274rgt5 - env vars help
+    * https://www.gitpod.io/docs/environment-variables
+    * https://blog.doppler.com/environment-variables-in-python
     
 
 

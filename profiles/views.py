@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile
+from .models import UserProfile, UserLike
 from .forms import UserProfileForm
 
 #from checkout.models import Order
@@ -11,6 +11,7 @@ from .forms import UserProfileForm
 def profile(request):
     """ Display the user's profile. """
     user_profile = get_object_or_404(UserProfile, user=request.user)
+    user_likes = UserLike.objects.filter(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=user_profile)
@@ -26,7 +27,10 @@ def profile(request):
 
     context = {
         'profile': user_profile,
+        'likes': user_likes,
         'form': form,
     }
 
     return render(request, 'profiles/profile.html', context)
+
+

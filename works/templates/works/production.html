@@ -11,6 +11,14 @@
 {% block content %}
 
 
+{% if user_like %}
+
+USER LIKES THIS <a href="?like=go">UNLIKE</a>
+{% else %}
+Like THIS? <a href="?like=go">LIKE</a>
+
+{% endif %}
+
 <section class="page-section" id="services">
     <div class="container">
     

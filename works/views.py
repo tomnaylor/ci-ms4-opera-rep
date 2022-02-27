@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Work, Production, ProductionMedia, Role, People
+from profiles.models import UserLike
 from django.db.models import Q
 from django.contrib import messages
 
@@ -33,8 +34,25 @@ def production(request, slug):
     """ View to show a single production detail """
 
     prod = get_object_or_404(Production, url=slug)
+    user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
+        
     prod_media = ProductionMedia.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
+
+    if 'like' in request.GET:
+        if user_like:
+            # DELETE LIKE
+            user_like.delete()
+            messages.success(request, 'Production has been unliked!')
+            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+            print("DELETED LIKE")
+        else:
+            # ADD LIKE
+            new_like = UserLike(user=request.user, production=prod)
+            new_like.save()
+            messages.success(request, 'Production liked')
+            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+            print("ADDED LIKE")
 
     creatives = prod.creatives.all()
     cast = prod.cast.all()
@@ -42,6 +60,7 @@ def production(request, slug):
 
     context = {
         'production': prod,
+        'user_like': user_like,
         'media': prod_media,
         'other_productions': other_productions,
         'creatives': creatives,
