@@ -47,3 +47,18 @@ class UserLike(models.Model):
 
     def __str__(self):
         return self.user.username + ' - ' + self.user.email
+
+
+class UserComment(models.Model):
+    """
+    comments for productions
+    """
+    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+    production = models.ForeignKey('works.Production', on_delete=models.RESTRICT)
+    comment = models.CharField(max_length=600, null=False, blank=False)
+
+    record_added = models.DateTimeField(auto_now_add=True)
+    record_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.username + ' - ' + self.production.work.name + ' - ' + self.comment
