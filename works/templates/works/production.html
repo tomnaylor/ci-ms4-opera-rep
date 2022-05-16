@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block hero_image %}{% if production.hero_image_url is not None %}{{ production.hero_image_url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block hero_image %}{% if production.hero_image.url is not None %}{{ production.hero_image.url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
 
 
 {% block h1 %}
@@ -10,13 +10,12 @@
 
 {% block content %}
 
-
-{% if user_like %}
-
-USER LIKES THIS <a href="?like=go">UNLIKE</a>
-{% else %}
-Like THIS? <a href="?like=go">LIKE</a>
-
+{% if request.user.is_authenticated %}
+    {% if user_like %}
+        USER LIKES THIS <a href="?like=go">UNLIKE</a>
+    {% else %}
+        Like THIS? <a href="?like=go">LIKE</a>
+    {% endif %}
 {% endif %}
 
 <section class="page-section" id="services">
@@ -37,6 +36,44 @@ Like THIS? <a href="?like=go">LIKE</a>
             <dd class="col-sm-9">{{ production.dead }}</dd>
         </dl>
 
+    </div>
+</section>
+
+
+<!-- COMMENTS -->
+<section class="page-section bg-light py-5" id="comments">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="text-uppercase">Comments</h2>
+            <p class="text-muted">Meet the creative team behind {{ production.work.name }}</p>
+        </div>
+
+        <div class="row mt-5">
+            {% for comment in comments %}
+            <div class="col-sm-12 col-md-6 col-lg-3 text-center p-4">
+                {{ comment.user.username }} wrote <span class="h5 link-dark">"{{ comment.comment }}"</span>
+                {% if comment.user == request.user or request.user.is_superuser %}
+                <a href="{% url 'comment_remove' comment.id %}" class="red">delete</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% if request.user.is_authenticated %}
+            <form class="col-sm-12 col-md-6 col-lg-3 text-center p-4" action="{% url 'comment_add' production.id %}" method="POST" id="add-comment-form">
+                {% csrf_token %}
+                
+                <textarea 
+                 name="comment" 
+                 maxlength="600" 
+                 placeholder="Comment *" 
+                 required 
+                 id="id_comment" 
+                 class="border-black rounded-0 profile-form-input textinput textInput form-control mb-2 w-100"></textarea>
+
+                <button class="btn btn-primary text-uppercase w-100">add comment</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
 </section>
 
@@ -116,22 +153,20 @@ Like THIS? <a href="?like=go">LIKE</a>
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Media</h2>
             </div>
-            <div class="row  mt-5">
+            <div class="row mt-5">
                 {% for media_item in media %}
-                <div class="col-lg-4 col-sm-6 mb-4">
-                    <div class="portfolio-item">
-                        <a class="portfolio-link" data-bs-toggle="modal" href="{% url 'production_media' media_item.id %}">
-                            <div class="portfolio-hover">
-                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
+                        <div class="border border-dark">
+
+                            <div class="img-cover img-thumb" style="background-image: url('{{ media_item.thumb_image_url }}'); height:280px;"></div>
+
+                            <div class="px-2 pt-2">
+                                <h6>
+                                    <a href="{% url 'production_media' media_item.id %}" class="stretched-link text-decoration-none link-dark">{{ media_item.name }}</a>
+                                </h6>
                             </div>
-                            <img class="img-fluid" src="{{ media_item.thumb_image.url }}" alt="{{ media_item.name}}" />
-                        </a>
-                        <div class="portfolio-caption">
-                            <div class="portfolio-caption-heading">{{ media_item.name}}</div>
-                            <div class="portfolio-caption-subheading text-muted">{{ media_item.name}}</div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -149,7 +184,7 @@ Like THIS? <a href="?like=go">LIKE</a>
                         <div class="border border-dark">
     
                             <a href="{% url 'production' production.url %}">
-                                <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
+                                <div class="img-cover img-thumb" style="background-image: url('{{ production.thumb_image_url }}');"></div>
                             </a>
     
                             <div class="px-2 pt-2">
