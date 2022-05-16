@@ -29,12 +29,12 @@ class People(models.Model):
         return self.name
 
     @property
-    def thumb_image(self):
+    def thumb_image_url(self):
         """ Returns URL to thumbnail or a default no imaage placeholder """
-        if self.thumb_image_url:
-            return self.thumb_image_url
+        if self.thumb_image:
+            return self.thumb_image.url
 
-        return settings.MEDIA_URL + "no-image.png"
+        return settings.STATIC_URL + "template/no-image.png"
 
 
 class Role(models.Model):
