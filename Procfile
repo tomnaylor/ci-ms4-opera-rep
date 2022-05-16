@@ -1,0 +1,1 @@
+web: gunicorn opera_rep.wsgi:application --preload
