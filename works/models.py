@@ -2,6 +2,16 @@ from django.db import models
 from django.conf import settings
 
 
+def people_hero_image_path(instance, filename):
+    """ Return path for people hero images to be saved """
+    return f'people/{instance.url}/heros/{filename}'
+
+
+def people_thumb_image_path(instance, filename):
+    """ Return path for people hero images to be saved """
+    return f'people/{instance.url}/thumbs/{filename}'
+
+
 class People(models.Model):
     """ Model for all people in productions - ie. Directors, cast, creatives etc.. """
     url = models.SlugField(max_length=254, blank=False)
@@ -10,8 +20,8 @@ class People(models.Model):
     twitter = models.SlugField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254, blank=False)
     synopsis = models.TextField(null=True, blank=True)
-    hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-    thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
+    hero_image = models.ImageField(null=True, blank=True, upload_to=people_hero_image_path)
+    thumb_image = models.ImageField(null=True, blank=True, upload_to=people_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
 

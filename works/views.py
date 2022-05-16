@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Work, Production, ProductionMedia, Role, People
-from profiles.models import UserLike
+from profiles.models import UserLike, UserComment
 from django.db.models import Q
 from django.contrib import messages
+from profiles.forms import ProductionCommentForm
 
 
 
@@ -34,38 +35,55 @@ def production(request, slug):
     """ View to show a single production detail """
 
     prod = get_object_or_404(Production, url=slug)
-    user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
-        
+
+    user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first() if request.user.is_authenticated else False
+
+    user_comments = UserComment.objects.filter(production=prod.id)
     prod_media = ProductionMedia.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
 
-    if 'like' in request.GET:
-        if user_like:
-            # DELETE LIKE
-            user_like.delete()
-            messages.success(request, 'Production has been unliked!')
-            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
-            print("DELETED LIKE")
-        else:
-            # ADD LIKE
-            new_like = UserLike(user=request.user, production=prod)
-            new_like.save()
-            messages.success(request, 'Production liked')
-            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
-            print("ADDED LIKE")
+    if request.user.is_authenticated:
+        
+        user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
+
+        if 'like' in request.GET:
+            if user_like:
+                # DELETE LIKE
+                user_like.delete()
+                messages.success(request, 'Production has been unliked!')
+                return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+                print("DELETED LIKE")
+            else:
+                # ADD LIKE
+                new_like = UserLike(user=request.user, production=prod)
+                new_like.save()
+                messages.success(request, 'Production liked')
+                return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+                print("ADDED LIKE")
+        
+        comment_form = ProductionCommentForm(instance=request.user)
+    else:
+        user_like = False
+        comment_form = False
+
 
     creatives = prod.creatives.all()
     cast = prod.cast.all()
     staff = prod.staff.all()
 
+
+        
     context = {
         'production': prod,
         'user_like': user_like,
+        'comments': user_comments,
         'media': prod_media,
         'other_productions': other_productions,
         'creatives': creatives,
         'cast': cast,
         'staff': staff,
+        'comment_form': comment_form,
+        
     }
 
     return render(request, 'works/production.html', context)
