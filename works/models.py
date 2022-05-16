@@ -63,6 +63,16 @@ class Work(models.Model):
         return settings.MEDIA_URL + "no-image.png"
 
 
+def production_hero_image_path(instance, filename):
+    """ Return path for production hero images to be saved """
+    return f'production/{instance.url}/heros/{filename}'
+
+
+def production_thumb_image_path(instance, filename):
+    """ Return path for production hero images to be saved """
+    return f'production/{instance.url}/thumbs/{filename}'
+
+
 class Production(models.Model):
     """ Model for a production """
 
@@ -77,17 +87,9 @@ class Production(models.Model):
     creatives = models.ManyToManyField(Role, related_name='creatives', blank=True)
     cast = models.ManyToManyField(Role, related_name='cast', blank=True)
     staff = models.ManyToManyField(Role, related_name='staff', blank=True)
-    #director = models.ForeignKey('People', null=True, blank=True, on_delete=models.SET_NULL)
-    #set_designer = models.CharField(max_length=100, null=True, blank=True)
-    #costume_designer = models.CharField(max_length=100, null=True, blank=True)
-    #lighting_designer = models.CharField(max_length=100, null=True, blank=True)
-    #relighter = models.CharField(max_length=100, null=True, blank=True)
-    #choreographer = models.CharField(max_length=100, null=True, blank=True)
-    #producer = models.CharField(max_length=100, null=True, blank=True)
     dead = models.BooleanField(default=False, null=True, blank=True)
-    #hero_image = models.ImageField(null=True, blank=True)
-    hero_image_url = models.URLField(max_length=1024, null=True, blank=True)
-    thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
+    hero_image = models.ImageField(null=True, blank=True, upload_to=production_hero_image_path)
+    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)
@@ -96,6 +98,13 @@ class Production(models.Model):
     def __str__(self):
         return self.work.name + " (" + str(self.year) + ")"
 
+    @property
+    def thumb_image_url(self):
+        """ Returns URL to thumbnail or a default no imaage placeholder """
+        if self.thumb_image:
+            return self.thumb_image.url
+
+        return settings.STATIC_URL + "template/no-image.png"
 
 
 
@@ -111,7 +120,7 @@ class ProductionMedia(models.Model):
     production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
     url = models.CharField(max_length=254, blank=False)
     name = models.CharField(max_length=254, blank=False)
-    thumb_image_url = models.URLField(max_length=1024, null=True, blank=True)
+    thumb_image = models.ImageField(null=True, blank=True)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)
@@ -121,3 +130,10 @@ class ProductionMedia(models.Model):
         return self.name + " (" + self.production.work.name + \
             " - " + str(self.production.year) + ")"
 
+    @property
+    def thumb_image_url(self):
+        """ Returns URL to thumbnail or a default no imaage placeholder """
+        if self.thumb_image:
+            return self.thumb_image.url
+
+        return settings.STATIC_URL + "template/no-image.png"
