@@ -131,7 +131,6 @@ if 'DATABASE_URL' in os.environ:
     }
 
 else:
-    
     print()
     print('----------------------------------')
     print('DATABASE_URL NOT FOUND - KILLING APP')
