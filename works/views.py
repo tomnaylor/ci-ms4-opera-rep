@@ -43,7 +43,8 @@ def production(request, slug):
     other_productions = Production.objects.filter(work=prod.work)
 
     if request.user.is_authenticated:
-        
+
+        comment_form = ProductionCommentForm(instance=request.user)
         user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
 
         if 'like' in request.GET:
@@ -51,17 +52,14 @@ def production(request, slug):
                 # DELETE LIKE
                 user_like.delete()
                 messages.success(request, 'Production has been unliked!')
-                return redirect(reverse('production', kwargs={ 'slug':prod.url }))
-                print("DELETED LIKE")
             else:
                 # ADD LIKE
                 new_like = UserLike(user=request.user, production=prod)
                 new_like.save()
                 messages.success(request, 'Production liked')
-                return redirect(reverse('production', kwargs={ 'slug':prod.url }))
-                print("ADDED LIKE")
-        
-        comment_form = ProductionCommentForm(instance=request.user)
+
+            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+
     else:
         user_like = False
         comment_form = False

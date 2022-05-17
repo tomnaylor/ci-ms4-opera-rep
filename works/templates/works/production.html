@@ -10,42 +10,62 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}
-    {% if user_like %}
-        USER LIKES THIS <a href="?like=go">UNLIKE</a>
-    {% else %}
-        Like THIS? <a href="?like=go">LIKE</a>
-    {% endif %}
-{% endif %}
 
-<section class="page-section" id="services">
+<section class="page-section">
     <div class="container">
-    
-        <h2  class="display-6 text-center">{{ production.tagline }}</h2>
 
-        <p>{{ production.synopsis }}</p>
+        {% if production.dead %}
+            <div class="mb-4 p-2 rounded text-center text-uppercase text-light bg-danger">This production has been archived</div>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+            <div class="mb-3 text-end">
+                {% if user_like %}
+                    <a href="?like=go" class="btn btn-success"><i class="fas fa-thumbs-up"></i> Liked</a>
+                {% else %}
+                    <a href="?like=go" class="btn btn-secondary btn-sm"><i class="fas fa-thumbs-up"></i> Click to like</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <h2  class="display-6 text-center mb-4">{{ production.tagline }}</h2>
+
+
+        <div class="mb-3">
+            {% if production.synopsis|length > 200 %}
+                {{ production.synopsis|slice:":200" }}
+                <span class="collapse" id="collapseSynopsis">
+                    {{ production.synopsis|slice:"200:" }}
+                </span>
+                <a class="link-primary text-decoration-none" data-bs-toggle="collapse" href="#collapseSynopsis" role="button" aria-expanded="false" aria-controls="collapseSynopsis">...more</a>
+            {% else %}
+                {{ production.synopsis }}
+            {% endif %}
+        </div>
+
         
-        <p>{{ production.hash_tag }}</p>
+        {% if production.hash_tag %}
+            <div class="mb-3">
+                <a href="https://twitter.com/search?q={{ production.hash_tag }}" class="text-decoration-none" target="_blank"><i class="fab fa-twitter"></i> #{{ production.hash_tag }}</a>
+            </div>
+        {% endif %}
 
         <dl class="row">
             <dt class="col-sm-3">Premier</dt>
             <dd class="col-sm-9">{{ production.production_premiere }}</dd>
-    
-    
-            <dt class="col-sm-3">dead</dt>
-            <dd class="col-sm-9">{{ production.dead }}</dd>
         </dl>
 
     </div>
 </section>
 
 
+
 <!-- COMMENTS -->
 <section class="page-section bg-light py-5" id="comments">
     <div class="container">
         <div class="text-center">
-            <h2 class="text-uppercase">Comments</h2>
-            <p class="text-muted">Meet the creative team behind {{ production.work.name }}</p>
+            <h2 class="text-uppercase">Your review</h2>
+            <p class="text-muted">Your take on {{ production.work.name }} in 600 characters or less!</p>
         </div>
 
         <div class="row mt-5">
@@ -78,29 +98,6 @@
 </section>
 
 
-<!-- CREATIVES -->
-<section class="page-section bg-light py-5" id="creatives">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="text-uppercase">Creative team</h2>
-            <p class="text-muted">Meet the creative team behind {{ production.work.name }}</p>
-        </div>
-
-        <div class="row mt-5">
-            {% for role in creatives %}
-            <div class="col-2 text-center mb-4">
-
-                <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
-
-                <a href="{% url 'person' role.person.url %}" class="h5 link-dark text-decoration-none">{{ role.person.name }}</a>
-                <p class="text-muted">{{ role.name }}</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-
 <!-- CAST -->
 <section class="page-section py-5" id="cast">
     <div class="container">
@@ -111,7 +108,7 @@
         
         <div class="row mt-5">
             {% for role in cast %}
-            <div class="col-2 text-center mb-4">
+            <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
 
                 <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
 
@@ -124,8 +121,38 @@
 </section>
 
 
+<!-- CREATIVES -->
+<section class="page-section bg-light py-5" id="creatives">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="text-uppercase">Creative team</h2>
+            <p class="text-muted">Meet the creative team behind {{ production.work.name }}</p>
+        </div>
+
+        <div class="row mt-5">
+            {% for role in creatives %}
+            {% for role in creatives %}
+            {% for role in creatives %}
+            {% for role in creatives %}
+            <div class="col-6 col-md-4 col-lg-3 text-center mb-4">
+
+                <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
+
+                <a href="{% url 'person' role.person.url %}" class="link-dark text-decoration-none">{{ role.person.name }}</a>
+                <p class="text-muted">{{ role.name }}</p>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
 <!-- STAFF -->
-<section class="page-section bg-light py-5" id="staff">
+<section class="page-section py-5" id="staff">
     <div class="container">
         <div class="text-center">
             <h2 class="text-uppercase">Staff</h2>
@@ -148,7 +175,7 @@
 
 
     <!-- Media Grid-->
-    <section class="page-section py-5" id="media">
+    <section class="page-section bg-light py-5" id="media">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Media</h2>
@@ -173,7 +200,7 @@
     </section>
 
 
-    <section class="page-section bg-light py-5">
+    <section class="page-section py-5">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Other productions</h2>
@@ -199,51 +226,6 @@
     
         </div>
     </section>
-    <!-- Other productions>
-    <section class="page-section bg-light py-5" id="about">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="text-uppercase">Productions</h2>
-                <p class="text-muted">Look for other productions of {{ production.work.name }}</p>
-
-            </div>
-            <ul class="timeline">
-
-                {% for other_production in other_productions %}
-
-                    {% if forloop.counter|divisibleby:2 %}
-                        <li>
-                    {% else %}
-                        <li class="timeline-inverted">
-                    {% endif %}
-
-                    
-                    <div class="timeline-image" style="background-image: url('{{ other_production.thumb_image_url }}');"></div>
-                    <div class="timeline-panel mt-5">
-                        <div class="timeline-heading">
-                            <a href="{% url 'production' other_production.work.url %}" class="h4 text-decoration-none link-dark">{{ other_production.year}}</a>
-                        </div>
-                        <div class="timeline-body"><p class="text-muted">{{ production.tagline }}</p></div>
-                    </div>
-                </li>
-                {% endfor %}
-
-                <li>
-                    <div class="timeline-image">
-                        <h4>
-                            Premiere:
-                            <br />
-                            {{ production.work.world_premiere|date:"d M" }}
-                            <br />
-                            {{ production.work.world_premiere|date:"Y" }}
-                        </h4>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section-->
-
-
 
 {% endblock %}
 
