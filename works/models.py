@@ -117,6 +117,52 @@ class Production(models.Model):
         return settings.STATIC_URL + "template/no-image.png"
 
 
+# PRODUCTION PHOTO CARASOLE
+
+def production_photo_full_image_path(instance, filename):
+    """ Return path for production full photo images to be saved """
+    return f'production/{instance.production.url}/photos/full/{filename}'
+
+
+def production_photo_thumb_image_path(instance, filename):
+    """ Return path for production thumb photo images to be saved """
+    return f'production/{instance.production.url}/photos/thumbs/{filename}'
+
+
+class ProductionPhoto(models.Model):
+    """ Model for a media entry for a production """
+
+    production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
+    name = models.CharField(max_length=254, blank=False)
+    full_image = models.ImageField(null=True, blank=True, upload_to=production_photo_full_image_path)
+    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_photo_thumb_image_path)
+    record_added = models.DateTimeField(auto_now_add=True)
+    record_edited = models.DateTimeField(auto_now=True)
+    rating_total = models.PositiveIntegerField(null=True, blank=True)
+    rating_count = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name + " (" + self.production.work.name + \
+            " - " + str(self.production.year) + ")"
+
+    @property
+    def thumb_image_url(self):
+        """ Returns URL to thumbnail or a default no imaage placeholder """
+        if self.thumb_image:
+            return self.thumb_image.url
+
+        return settings.STATIC_URL + "template/no-image.png"
+
+
+def production_media_hero_image_path(instance, filename):
+    """ Return path for production hero images to be saved """
+    return f'production/{instance.url}/media/heros/{filename}'
+
+
+def production_media_thumb_image_path(instance, filename):
+    """ Return path for production hero images to be saved """
+    return f'production/{instance.url}/media/thumbs/{filename}'
+
 
 class ProductionMedia(models.Model):
     """ Model for a media entry for a production """
@@ -130,7 +176,8 @@ class ProductionMedia(models.Model):
     production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
     url = models.CharField(max_length=254, blank=False)
     name = models.CharField(max_length=254, blank=False)
-    thumb_image = models.ImageField(null=True, blank=True)
+    hero_image = models.ImageField(null=True, blank=True, upload_to=production_media_hero_image_path)
+    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_media_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)

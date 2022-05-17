@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .models import Work, Production, ProductionMedia, Role, People
+from .models import Work, Production, ProductionMedia, Role, People, ProductionPhoto
 from profiles.models import UserLike, UserComment
 from django.db.models import Q
 from django.contrib import messages
@@ -40,6 +40,7 @@ def production(request, slug):
 
     user_comments = UserComment.objects.filter(production=prod.id)
     prod_media = ProductionMedia.objects.filter(production=prod.id)
+    prod_photos = ProductionPhoto.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
 
     if request.user.is_authenticated:
@@ -76,6 +77,7 @@ def production(request, slug):
         'user_like': user_like,
         'comments': user_comments,
         'media': prod_media,
+        'photos': prod_photos,
         'other_productions': other_productions,
         'creatives': creatives,
         'cast': cast,

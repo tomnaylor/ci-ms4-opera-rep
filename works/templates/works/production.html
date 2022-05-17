@@ -108,12 +108,12 @@
         
         <div class="row mt-5">
             {% for role in cast %}
-            <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center mb-4">
 
                 <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
 
-                <a href="{% url 'person' role.person.url %}" class="h5 link-dark text-decoration-none">{{ role.person.name }}</a>
-                <p class="text-muted">{{ role.name }}</p>
+                <a href="{% url 'person' role.person.url %}" class="link-dark text-decoration-none">{{ role.person.name }}</a>
+                <p class="text-muted">{{ role.name|truncatechars:30 }}</p>
             </div>
             {% endfor %}
         </div>
@@ -131,19 +131,13 @@
 
         <div class="row mt-5">
             {% for role in creatives %}
-            {% for role in creatives %}
-            {% for role in creatives %}
-            {% for role in creatives %}
-            <div class="col-6 col-md-4 col-lg-3 text-center mb-4">
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center mb-4">
 
                 <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
 
                 <a href="{% url 'person' role.person.url %}" class="link-dark text-decoration-none">{{ role.person.name }}</a>
-                <p class="text-muted">{{ role.name }}</p>
+                <p class="text-muted">{{ role.name|truncatechars:30 }}</p>
             </div>
-            {% endfor %}
-            {% endfor %}
-            {% endfor %}
             {% endfor %}
         </div>
     </div>
@@ -161,17 +155,59 @@
 
         <div class="row mt-5">
             {% for role in staff %}
-            <div class="col-2 text-center mb-4">
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center mb-4">
 
-                <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image }}');"></div></a>
+                <a href="{% url 'person' role.person.url %}"><div class="img-cover img-circle mb-2" style="background-image: url('{{ role.person.thumb_image_url }}');"></div></a>
 
-                <a href="{% url 'person' role.person.url %}" class="h5 link-dark text-decoration-none">{{ role.person.name }}</a>
-                <p class="text-muted">{{ role.name }}</p>
+                <a href="{% url 'person' role.person.url %}" class="link-dark text-decoration-none">{{ role.person.name }}</a>
+                <p class="text-muted">{{ role.name|truncatechars:30 }}</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
+
+
+    <!-- Photos Grid-->
+    <section class="page-section bg-light py-5" id="media-photo">
+        <div class="container">
+            <div id="carouselMediaPhoto" class="carousel slide" data-bs-ride="carousel">
+
+                <div class="carousel-indicators">
+                    {% for photo in photos %}
+                        <button 
+                        type="button" 
+                        data-bs-target="#carouselMediaPhoto" 
+                        data-bs-slide-to="{{ forloop.counter0 }}" 
+                        {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
+                        aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                </div>
+
+                <div class="carousel-inner">
+                    {% for photo in photos %}
+                        <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                            <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
+                            <div class="carousel-caption d-none d-md-block">
+                            <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
 
 
     <!-- Media Grid-->
