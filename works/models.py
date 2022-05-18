@@ -154,7 +154,8 @@ class ProductionVideo(models.Model):
 
     production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=254, blank=False)
-    source = models.TextField(max_length=2000, blank=False)
+    source = models.TextField(max_length=2000, blank=True, null=True)
+    youtube_source = models.CharField(max_length=100, blank=True, null=True, help_text="https://www.youtube.com/embed/")
     thumb_image = models.ImageField(null=True, blank=True, upload_to=production_video_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)

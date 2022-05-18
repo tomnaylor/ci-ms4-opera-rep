@@ -7,7 +7,7 @@ from works.models import Production
 def index(request):
     """ A view to return index page """
     
-    productions = Production.objects.all()
+    productions = Production.objects.all().order_by('-production_premiere', 'work__name')
 
     context = {
         'productions': productions,
