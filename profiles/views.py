@@ -5,8 +5,6 @@ from works.models import Production
 from .models import UserProfile, UserLike, UserComment
 from .forms import UserProfileForm, ProductionCommentForm
 
-#from checkout.models import Order
-
 
 @login_required
 def profile(request):

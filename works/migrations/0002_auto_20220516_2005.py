@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='people',
             name='hero_image',
-            field=models.ImageField(blank=True, null=True, upload_to=works.models.people_hero_image_path),
+            field=models.ImageField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name='production',

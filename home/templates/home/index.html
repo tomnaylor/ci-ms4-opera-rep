@@ -3,5 +3,28 @@
 
 
 {% block content %}
- <a href="/works/productions">Go</a>
+
+<section class="page-section bg-light pt-5">
+    <div class="container">
+
+        <div class="row row-cols-2">
+            {% for production in productions %}
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
+                    <div class="border border-dark">
+
+                        <div class="img-cover img-thumb" style="background-image: url('{{ production.thumb_image_url }}');"></div>
+
+                        <div class="px-2 pt-2">
+                            <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
+
+                            <p class="fw-lighter lh-1"> asdasds {{ production.tagline }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
 {% endblock %}

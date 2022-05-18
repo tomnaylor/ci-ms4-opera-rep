@@ -4,11 +4,6 @@ from django.conf import settings
 
 # ------------------------------ PEOPLE
 
-def people_hero_image_path(instance, filename):
-    """ Return path for people hero images to be saved """
-    return f'people/{instance.url}/heros/{filename}'
-
-
 def people_thumb_image_path(instance, filename):
     """ Return path for people hero images to be saved """
     return f'people/{instance.url}/thumbs/{filename}'
@@ -16,19 +11,17 @@ def people_thumb_image_path(instance, filename):
 
 class People(models.Model):
     """ Model for all people in productions - ie. Directors, cast, creatives etc.. """
-    url = models.SlugField(max_length=254, blank=False)
-    tagline = models.CharField(max_length=254, null=True, blank=True)
-    facebook = models.SlugField(max_length=254, null=True, blank=True)
-    twitter = models.SlugField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254, blank=False)
-    synopsis = models.TextField(null=True, blank=True)
-    hero_image = models.ImageField(null=True, blank=True, upload_to=people_hero_image_path)
+    url = models.SlugField(max_length=254, blank=False, unique=True)
     thumb_image = models.ImageField(null=True, blank=True, upload_to=people_thumb_image_path)
+    synopsis = models.TextField(null=True, blank=True)
+    facebook = models.SlugField(max_length=254, null=True, blank=True, help_text="Only the username portion of the URL", verbose_name="Facebook username")
+    twitter = models.SlugField(max_length=254, null=True, blank=True, help_text="Only the username portion of the URL (no @ or #)", verbose_name="Twitter username")
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     @property
     def thumb_image_url(self):
@@ -56,7 +49,7 @@ class Role(models.Model):
 
 class Work(models.Model):
     """ Model for the work """
-    url = models.SlugField(max_length=254, blank=False)
+    url = models.SlugField(max_length=254, blank=False, unique=True)
     name = models.CharField(max_length=254, blank=False)
     composer = models.ForeignKey('People', on_delete=models.RESTRICT)
     world_premiere = models.DateField(auto_now=False, auto_now_add=False)
@@ -81,7 +74,7 @@ def production_thumb_image_path(instance, filename):
 
 class Production(models.Model):
     """ Model for a production """
-    url = models.SlugField(max_length=254, blank=False)
+    url = models.SlugField(max_length=254, blank=False, unique=True)
     work = models.ForeignKey('Work', null=True, blank=True, on_delete=models.SET_NULL)
     year = models.PositiveSmallIntegerField()
     synopsis = models.TextField()
