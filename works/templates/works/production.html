@@ -11,7 +11,7 @@
 {% block content %}
 
 
-<section class="page-section">
+<section class="page-section mt-4">
     <div class="container">
 
         {% if production.dead %}
@@ -19,7 +19,7 @@
         {% endif %}
 
         {% if request.user.is_authenticated %}
-            <div class="mb-3 text-end">
+            <div class="mb-4 text-end">
                 {% if user_like %}
                     <a href="?like=go" class="btn btn-success"><i class="fas fa-thumbs-up"></i> Liked</a>
                 {% else %}
@@ -31,7 +31,7 @@
         <h2  class="display-6 text-center mb-4">{{ production.tagline }}</h2>
 
 
-        <div class="mb-3">
+        <div class="mb-4">
             {% if production.synopsis|length > 200 %}
                 {{ production.synopsis|slice:":200" }}
                 <span class="collapse" id="collapseSynopsis">
@@ -45,7 +45,7 @@
 
         
         {% if production.hash_tag %}
-            <div class="mb-3">
+            <div class="mb-4">
                 <a href="https://twitter.com/search?q={{ production.hash_tag }}" class="text-decoration-none" target="_blank"><i class="fab fa-twitter"></i> #{{ production.hash_tag }}</a>
             </div>
         {% endif %}
@@ -53,6 +53,12 @@
         <dl class="row">
             <dt class="col-sm-3">Premier</dt>
             <dd class="col-sm-9">{{ production.production_premiere }}</dd>
+
+            <dt class="col-sm-3">Language</dt>
+            <dd class="col-sm-9">{{ production.language }}</dd>
+
+            <dt class="col-sm-3">Composer</dt>
+            <dd class="col-sm-9"><a href="{% url 'person' production.work.composer.url %}" class="text-decoration-none">{{ production.work.composer }}</a></dd>
         </dl>
 
     </div>
@@ -64,16 +70,16 @@
 <section class="page-section bg-light py-5" id="comments">
     <div class="container">
         <div class="text-center">
-            <h2 class="text-uppercase">Your review</h2>
-            <p class="text-muted">Your take on {{ production.work.name }} in 600 characters or less!</p>
+            <h2 class="text-uppercase">User Reviews</h2>
+            <p class="text-muted">Your takes on {{ production.work.name }}... in 600 characters or less!</p>
         </div>
 
         <div class="row mt-5">
             {% for comment in comments %}
             <div class="col-sm-12 col-md-6 col-lg-3 text-center p-4">
-                {{ comment.user.username }} wrote <span class="h5 link-dark">"{{ comment.comment }}"</span>
+                <span class="h5 link-dark">"{{ comment.comment }}"</span> written by {{ comment.user.username }}
                 {% if comment.user == request.user or request.user.is_superuser %}
-                <a href="{% url 'comment_remove' comment.id %}" class="red">delete</a>
+                <a href="{% url 'comment_remove' comment.id %}" class="link-danger text-decoration-none" onClick="return confirm('Are you sure?');">delete</a>
                 {% endif %}
             </div>
             {% endfor %}
@@ -99,6 +105,7 @@
 
 
 <!-- CAST -->
+{% if cast %}
 <section class="page-section py-5" id="cast">
     <div class="container">
         <div class="text-center">
@@ -119,9 +126,11 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 
 <!-- CREATIVES -->
+{% if creatives %}
 <section class="page-section bg-light py-5" id="creatives">
     <div class="container">
         <div class="text-center">
@@ -142,10 +151,11 @@
         </div>
     </div>
 </section>
-
+{% endif %}
 
 
 <!-- STAFF -->
+{% if staff %}
 <section class="page-section py-5" id="staff">
     <div class="container">
         <div class="text-center">
@@ -166,86 +176,105 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 
-    <!-- Photos Grid-->
-    <section class="page-section bg-light py-5" id="media-photo">
-        <div class="container">
+<!-- PHOTOS -->
+{% if photos %}
+<section class="page-section bg-light py-5" id="media-photo">
+    <div class="container">
 
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Production photos</h2>
-                <p class="text-muted">Some shots from the production of {{ production.work.name }}</p>
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Production photos</h2>
+            <p class="text-muted">Some shots from the production of {{ production.work.name }}</p>
+        </div>
+
+        <div id="carouselMediaPhoto" class="carousel slide" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                {% for photo in photos %}
+                    <button 
+                    type="button" 
+                    data-bs-target="#carouselMediaPhoto" 
+                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                    {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
+                    aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
             </div>
 
-            <div id="carouselMediaPhoto" class="carousel slide" data-bs-ride="carousel">
-
-                <div class="carousel-indicators">
-                    {% for photo in photos %}
-                        <button 
-                        type="button" 
-                        data-bs-target="#carouselMediaPhoto" 
-                        data-bs-slide-to="{{ forloop.counter0 }}" 
-                        {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
-                        aria-label="Slide {{ forloop.counter }}"></button>
-                    {% endfor %}
-                </div>
-
-                <div class="carousel-inner">
-                    {% for photo in photos %}
-                        <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                            <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
-                            <div class="carousel-caption d-none d-md-block">
-                            <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }}</span>
-                            </div>
+            <div class="carousel-inner">
+                {% for photo in photos %}
+                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                        <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
+                        <div class="carousel-caption d-none d-md-block">
+                        <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }}</span>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
+            </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-                </button>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- VIDEOS -->
+{% if videos %}
+
+    {% for video in videos %}
+        <div class="modal fade" id="videoModal{{ forloop.counter }}" tabindex="-1" aria-labelledby="videoModal{{ forloop.counter }}Label" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" style="height:80vh;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModal{{ forloop.counter }}Label">{{ video.name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ video.source|safe }}
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    {% endfor %}
 
-
-
-
-    <!-- Media Grid-->
-    <section class="page-section bg-light py-5" id="media">
+    <section class="page-section py-5" id="media-video">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Media</h2>
+                <h2 class="section-heading text-uppercase">Videos</h2>
             </div>
             <div class="row mt-5">
-                {% for media_item in media %}
-                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
-                        <div class="border border-dark">
-
-                            <div class="img-cover img-thumb" style="background-image: url('{{ media_item.thumb_image_url }}'); height:280px;"></div>
-
-                            <div class="px-2 pt-2">
-                                <h6>
-                                    <a href="{% url 'production_media' media_item.id %}" class="stretched-link text-decoration-none link-dark">{{ media_item.name }}</a>
-                                </h6>
-                            </div>
-                        </div>
+                {% for video in videos %}
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center mb-4">
+                        <button 
+                        type="button" 
+                        class="btn img-cover img-thumb" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#videoModal{{ forloop.counter }}" 
+                        style="background-image: url('{{ video.thumb_image_url }}'); height:280px;">
+                        </button>
                     </div>
                 {% endfor %}
             </div>
         </div>
     </section>
+{% endif %}
 
 
-    <section class="page-section py-5">
+<!-- OTHER PRODUCTIONS -->
+<section class="page-section bg-light py-5">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Other productions</h2>
+                <h2 class="section-heading text-uppercase">More</h2>
+                <p class="text-muted">All productions of {{ production.work.name }} from the WNO</p>
             </div>
             <div class="row row-cols-2 mt-5">
                 {% for production in other_productions %}
@@ -267,7 +296,6 @@
             </div>
     
         </div>
-    </section>
+</section>
 
 {% endblock %}
-

@@ -61,4 +61,4 @@ class UserComment(models.Model):
     record_edited = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username + ' - ' + self.production.work.name + ' - ' + self.comment
+        return self.user.username + ' regarding ' + self.production.work.name + ' wrote: ' + self.comment

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .models import Work, Production, ProductionMedia, Role, People, ProductionPhoto
+from .models import Work, Production, ProductionVideo, Role, People, ProductionPhoto
 from profiles.models import UserLike, UserComment
 from django.db.models import Q
 from django.contrib import messages
@@ -39,7 +39,7 @@ def production(request, slug):
     user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first() if request.user.is_authenticated else False
 
     user_comments = UserComment.objects.filter(production=prod.id)
-    prod_media = ProductionMedia.objects.filter(production=prod.id)
+    prod_videos = ProductionVideo.objects.filter(production=prod.id)
     prod_photos = ProductionPhoto.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
 
@@ -76,7 +76,7 @@ def production(request, slug):
         'production': prod,
         'user_like': user_like,
         'comments': user_comments,
-        'media': prod_media,
+        'videos': prod_videos,
         'photos': prod_photos,
         'other_productions': other_productions,
         'creatives': creatives,
@@ -87,18 +87,6 @@ def production(request, slug):
     }
 
     return render(request, 'works/production.html', context)
-
-
-def production_media(request, media_id):
-    """ View to show a media item for a production """
-
-    media_item = get_object_or_404(ProductionMedia, pk=media_id)
-
-    context = {
-        'media_item': media_item,
-    }
-
-    return render(request, 'works/media.html', context)
 
 
 def person(request, slug):
