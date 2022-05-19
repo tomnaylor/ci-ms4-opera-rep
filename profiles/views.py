@@ -29,9 +29,6 @@ def profile(request):
         'profile': user_profile,
         'likes': user_likes,
         'form': form,
-        'stripe_public_key': 'pk_test_51KSTcAIIeVztxuCKTab70ueu2539Q8vqDnIEkxrVPVVU2FcfxPjUGSsFlthKpycWl6EdCzmIVENzcTBmJmzP2S5j00Hv7lW0xc',
-        'client_secret': 'xxx'
-
     }
 
     return render(request, 'profiles/profile.html', context)
