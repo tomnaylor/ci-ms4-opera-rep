@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'home',
     'works',
     'profiles',
+    'donations',
     'crispy_forms',
     'crispy_bootstrap5',
     'storages',
