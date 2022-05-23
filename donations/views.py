@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpR
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.contrib.auth.models import User
 from profiles.models import UserProfile
 from profiles.forms import UserProfileForm
 from django.conf import settings
@@ -51,6 +50,7 @@ def donation(request):
             'city': request.POST['city'],
             'street_address1': request.POST['street_address1'],
             'street_address2': request.POST['street_address2'],
+            'donation_total': request.POST['donation_total'],
         }
 
         donation_form = DonationForm(form_data)
@@ -59,6 +59,11 @@ def donation(request):
             donation = donation_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             donation.stripe_pid = pid
+
+            # Save the user to the form
+            if request.user.is_authenticated:
+                donation.user = request.user
+
             donation.save()
 
             # Save the info to the user's profile if all is well
@@ -70,14 +75,16 @@ def donation(request):
                                      'Please double check your information.'))
     else:
 
-        stripe.api_key = stripe_secret_key
-        intent = stripe.PaymentIntent.create(
-            amount=1000,
-            currency=settings.STRIPE_CURRENCY,
-        )
+
 
         # Attempt to prefill the form with any info
         # the user maintains in their profile
+
+        if 'donation_total' in request.GET:
+            donation_total = request.GET['donation_total']
+        else:
+            donation_total = 10
+
         if request.user.is_authenticated:
             try:
                 profile = get_object_or_404(UserProfile, user=request.user)
@@ -90,6 +97,7 @@ def donation(request):
                     'city': profile.default_city,
                     'street_address1': profile.default_street_address1,
                     'street_address2': profile.default_street_address2,
+                    'donation_total': donation_total,
                 })
                 print('USER PROFILE FOUND' + profile.default_phone_number)
 
@@ -103,7 +111,14 @@ def donation(request):
                                    'Did you forget to set it in '
                                    'your environment?'))
 
-    print("key:" + settings.STRIPE_PUBLIC_KEY)
+    stripe.api_key = stripe_secret_key
+    intent = stripe.PaymentIntent.create(
+        amount=1000,
+        currency=settings.STRIPE_CURRENCY,
+    )    
+    print("Public key:" + settings.STRIPE_PUBLIC_KEY)
+    print("Client key:" + intent.client_secret)
+
     context = {
         'donation_form': donation_form,
         'stripe_public_key': stripe_public_key,
@@ -121,11 +136,9 @@ def donation_success(request, donation_number):
     donation = get_object_or_404(Donation, donation_number=donation_number)
 
     if request.user.is_authenticated:
-        profile = UserProfile.objects.get(user=request.user)
-        # Attach the user's profile to the order
-        donation.user_profile = profile
-        donation.save()
 
+        profile = UserProfile.objects.get(user=request.user)
+        
         # Save the user's info
         if save_info:
             profile_data = {
