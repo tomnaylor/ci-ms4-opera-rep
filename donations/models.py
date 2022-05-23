@@ -10,7 +10,7 @@ class Donation(models.Model):
     """ Donation model """
 
     donation_number = models.CharField(max_length=32, null=False, editable=True, default=uuid.uuid4().hex.upper())
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     phone_number = models.CharField(max_length=20, null=False, blank=False)

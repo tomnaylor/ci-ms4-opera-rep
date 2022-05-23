@@ -1,13 +1,38 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.contrib.auth.models import User
 from profiles.models import UserProfile
-from .models import Donation
-from .forms import DonationForm
+from profiles.forms import UserProfileForm
 from django.conf import settings
 
 import stripe
 import json
+
+from .models import Donation
+from .forms import DonationForm
+
+
+
+
+@require_POST
+def cache_checkout_data(request):
+    """ Try stripe payment """
+    try:
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, ('Sorry, your payment cannot be '
+                                 'processed right now. Please try '
+                                 'again later.'))
+        return HttpResponse(content=e, status=400)
+
 
 def donation(request):
     """ Display the user's profile. """
@@ -34,7 +59,6 @@ def donation(request):
             donation = donation_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             donation.stripe_pid = pid
-            donation.original_bag = json.dumps(bag)
             donation.save()
 
             # Save the info to the user's profile if all is well
@@ -87,3 +111,41 @@ def donation(request):
     }
 
     return render(request, 'donations/donation.html', context)
+
+
+def donation_success(request, donation_number):
+    """
+    Handle successful checkouts
+    """
+    save_info = request.session.get('save_info')
+    donation = get_object_or_404(Donation, donation_number=donation_number)
+
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        # Attach the user's profile to the order
+        donation.user_profile = profile
+        donation.save()
+
+        # Save the user's info
+        if save_info:
+            profile_data = {
+                'default_phone_number': donation.phone_number,
+                'default_country': donation.country,
+                'default_postcode': donation.postcode,
+                'default_city': donation.city,
+                'default_street_address1': donation.street_address1,
+                'default_street_address2': donation.street_address2,
+            }
+            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
+
+    messages.success(request, f'Donation successfully processed! \
+        Your donation number is {donation_number}. A confirmation \
+        email will be sent to {donation.email}.')
+
+    context = {
+        'donation': donation,
+    }
+
+    return render(request, 'donations/success.html', context)
