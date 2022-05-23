@@ -121,14 +121,13 @@ WSGI_APPLICATION = 'opera_rep.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 if 'DATABASE_URL' in os.environ:
-    # if 'DEVELOPMENT' not in os.environ:
-    # if 1 == 1:
     print()
     print('----------------------------------')
     print('DATABASE_URL FOUND - USING EXTERNAL DB')
-    print('' + os.environ['DATABASE_URL'][0:50] + '...###')
+    print('' + os.environ['DATABASE_URL'][0:10] + '...###')
     DATABASES = {
-        'default': dj_database_url.parse(os.environ['DATABASE_URL'])
+        'default': dj_database_url.parse('postgres://ambqkznukjigvn:4fc1d9fb43c57b497ca9fdc89ed077fde9d1edc2b8a554b4a75697e6e8336f02@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d4jaljvdg7be3a')
+        #'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
 else:
@@ -236,21 +235,11 @@ if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# if 'DEVELOPMENT' in os.environ:
-if 1 == 1:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'wno-no-reply@example.com'
+if 'DEVELOPMENT' in os.environ:
     print()
     print('----------------------------------')
     print("DEVELOPMENT MODE")
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_USE_TLS = True
-    EMAIL_PORT = 587
-    EMAIL_HOST = 'smtp.gmail.com'
-    # EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-    # EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASS')
-    # DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
     print()
     print('----------------------------------')
     print("PROUCTION MODE")
@@ -258,3 +247,16 @@ else:
 
 print()
 print()
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+EMAIL_PORT = 25
+EMAIL_HOST = 'smtp.sendgrid.net'
+DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+print(EMAIL_HOST_USER)
+print(EMAIL_HOST_PASSWORD)
