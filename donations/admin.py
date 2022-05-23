@@ -9,7 +9,7 @@ class DonationAdmin(admin.ModelAdmin):
                        'donation_total',
                        'stripe_pid')
 
-    list_display = ('donation_number', 'record_added',
+    list_display = ('donation_number', 'production', 'record_added',
                     'donation_total', 'city',
                     'full_name',
                     'stripe_pid')

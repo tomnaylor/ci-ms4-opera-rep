@@ -1,13 +1,16 @@
+""" Views for all donations """
+
+import json
+import stripe
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+
 from profiles.models import UserProfile
+from works.models import Production
 from profiles.forms import UserProfileForm
 from django.conf import settings
-
-import stripe
-import json
 
 from .models import Donation
 from .forms import DonationForm
@@ -51,6 +54,7 @@ def donation(request):
             'street_address1': request.POST['street_address1'],
             'street_address2': request.POST['street_address2'],
             'donation_total': request.POST['donation_total'],
+            'production': request.POST['production'],
         }
 
         donation_form = DonationForm(form_data)
@@ -75,8 +79,6 @@ def donation(request):
                                      'Please double check your information.'))
     else:
 
-
-
         # Attempt to prefill the form with any info
         # the user maintains in their profile
 
@@ -84,6 +86,11 @@ def donation(request):
             donation_total = request.GET['donation_total']
         else:
             donation_total = 10
+
+        if 'production' in request.GET:
+            production = get_object_or_404(Production, id=request.GET['production'])
+        else:
+            production = False
 
         if request.user.is_authenticated:
             try:
@@ -98,13 +105,19 @@ def donation(request):
                     'street_address1': profile.default_street_address1,
                     'street_address2': profile.default_street_address2,
                     'donation_total': donation_total,
+                    'production': production,
                 })
-                print('USER PROFILE FOUND' + profile.default_phone_number)
 
             except UserProfile.DoesNotExist:
-                donation_form = DonationForm()
+                donation_form = DonationForm(initial={
+                    'donation_total': donation_total,
+                    'production': production,
+                })
         else:
-            donation_form = DonationForm()
+            donation_form = DonationForm(initial={
+                'donation_total': donation_total,
+                'production': production,
+            })
 
     if not stripe_public_key:
         messages.warning(request, ('Stripe public key is missing. '
@@ -112,14 +125,22 @@ def donation(request):
                                    'your environment?'))
 
     stripe.api_key = stripe_secret_key
-    intent = stripe.PaymentIntent.create(
-        amount=1000,
-        currency=settings.STRIPE_CURRENCY,
-    )    
-    print("Public key:" + settings.STRIPE_PUBLIC_KEY)
-    print("Client key:" + intent.client_secret)
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=30,
+            currency=settings.STRIPE_CURRENCY,
+        )
+    except Exception as e:
+        messages.error(request, ('Sorry, your payment cannot be '
+                                 'processed right now. Please try '
+                                 'again later.'))
+        return HttpResponse(content=e, status=500)
+        #return HttpResponse(content=e, status=500)
+
+
 
     context = {
+        'production': production,
         'donation_form': donation_form,
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,

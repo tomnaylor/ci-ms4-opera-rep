@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django_countries.fields import CountryField
 from profiles.models import UserProfile
+from works.models import Production
 
 
 class Donation(models.Model):
@@ -11,6 +12,7 @@ class Donation(models.Model):
 
     donation_number = models.CharField(max_length=32, null=False, editable=True, default=uuid.uuid4().hex.upper())
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    production = models.ForeignKey(Production, null=True, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     phone_number = models.CharField(max_length=20, null=False, blank=False)

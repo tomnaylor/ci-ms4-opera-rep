@@ -1,0 +1,7 @@
+Hello {{ donation.full_name }}!
+
+Thank you for your donation!
+
+Your donation (#{{ order.order_number }}) was processed on {{ donation.date }} for {{ donation.order_total }}
+
+Thank you again for your donation.

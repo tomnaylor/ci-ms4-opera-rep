@@ -193,7 +193,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STRIPE_CURRENCY = 'GBP'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
-STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')    # CANT FIND THIS IN ENV???
+print()
+print('----------------------------------')
+print('STRIPE:')
+print('STRIPE_PUBLIC_KEY: ' + STRIPE_PUBLIC_KEY[0:5] + '########')
+print('STRIPE_SECRET_KEY: ' + STRIPE_SECRET_KEY[0:5] + '########')
+print('STRIPE_WH_SECRET: ' + STRIPE_WH_SECRET[0:5] + '########')
 
 
 # AWS
@@ -236,10 +242,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 if 'DEVELOPMENT' in os.environ:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     print()
     print('----------------------------------')
     print("DEVELOPMENT MODE")
 else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     print()
     print('----------------------------------')
     print("PROUCTION MODE")
@@ -248,8 +256,6 @@ else:
 print()
 print()
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_TIMEOUT = 4
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587

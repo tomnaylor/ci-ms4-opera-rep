@@ -30,6 +30,8 @@
 
         <h2  class="display-6 text-center mb-4">{{ production.tagline }}</h2>
 
+        <a href="{% url 'donation' %}?donation_total=9.99&production={{ production.id }}" class="text-decoration-none">DONATE 9.99</a>
+        
 
         <div class="mb-4">
             {% if production.synopsis|length > 200 %}
