@@ -12,7 +12,7 @@
     <div class="container">
 
         {% if production %}
-            <div class="mb-4 p-2 rounded text-center text-uppercase text-light bg-danger">{{ production }} - asdsad</div>
+            <div class="m-2 mb-4 p-2 rounded text-center text-uppercase text-light bg-danger">{{ production }} - asdsad</div>
         {% endif %}
 
         <div class="row">
@@ -27,14 +27,7 @@
                             {{ donation_form.email | as_crispy_field }}
                             {{ donation_form.donation_total | as_crispy_field }}
                             {{ donation_form.production | as_crispy_field }}
-                        </fieldset>
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
-                            {{ donation_form.phone_number | as_crispy_field }}
-                            {{ donation_form.street_address1 | as_crispy_field }}
-                            {{ donation_form.street_address2 | as_crispy_field }}
                             {{ donation_form.city | as_crispy_field }}
-                            {{ donation_form.postcode | as_crispy_field }}
                             {{ donation_form.country | as_crispy_field }}
                             <div class="form-check form-check-inline float-right mr-0">
                                 {% if user.is_authenticated %}
@@ -166,11 +159,11 @@ form.addEventListener('submit', function(ev) {
                 card: card,
                 billing_details: {
                     name: $.trim(form.full_name.value),
-                    phone: $.trim(form.phone_number.value),
+                    // phone: $.trim(form.phone_number.value),
                     email: $.trim(form.email.value),
                     address:{
-                        line1: $.trim(form.street_address1.value),
-                        line2: $.trim(form.street_address2.value),
+                        // line1: $.trim(form.street_address1.value),
+                        // line2: $.trim(form.street_address2.value),
                         city: $.trim(form.city.value),
                         country: $.trim(form.country.value),
                     }
@@ -178,13 +171,13 @@ form.addEventListener('submit', function(ev) {
             },
             shipping: {
                 name: $.trim(form.full_name.value),
-                phone: $.trim(form.phone_number.value),
+                // phone: $.trim(form.phone_number.value),
                 address: {
-                    line1: $.trim(form.street_address1.value),
-                    line2: $.trim(form.street_address2.value),
+                    // line1: $.trim(form.street_address1.value),
+                    // line2: $.trim(form.street_address2.value),
                     city: $.trim(form.city.value),
                     country: $.trim(form.country.value),
-                    postal_code: $.trim(form.postcode.value),
+                    // postal_code: $.trim(form.postcode.value),
                 }
             },
         }).then(function(result) {

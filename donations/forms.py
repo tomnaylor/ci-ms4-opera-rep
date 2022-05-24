@@ -3,11 +3,10 @@ from .models import Donation
 
 
 class DonationForm(forms.ModelForm):
+    """ Donation form """
     class Meta:
         model = Donation
-        fields = ('full_name', 'email', 'phone_number',
-                  'street_address1', 'street_address2',
-                  'city', 'postcode', 'country','donation_total','production')
+        fields = ('full_name', 'email', 'city', 'country', 'donation_total', 'production')
 
     def __init__(self, *args, **kwargs):
         """

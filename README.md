@@ -17,6 +17,7 @@
     * https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
     * https://hevodata.com/learn/sqlite-to-postgresql/
     * had to create new user, then make into super user thru CLI, then make profile for user "tom"
+* making user comment unique to production and user. See comment model and here: https://stackoverflow.com/questions/2201598/how-to-define-two-fields-unique-as-couple
     
 * CORS AWS Setup - https://docs.aws.amazon.com/AmazonS3/latest/userguide/ManageCorsUsing.html
 * https://github.com/bradleyg/django-s3direct - used to upload django admin images to s3 - REMOVE, CRED VARS WERE NO IN DEV ENVIRON

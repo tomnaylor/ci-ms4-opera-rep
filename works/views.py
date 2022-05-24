@@ -45,8 +45,11 @@ def production(request, slug):
 
     if request.user.is_authenticated:
 
-        comment_form = ProductionCommentForm(instance=request.user)
         user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
+
+        previous_comment = UserComment.objects.filter(production=prod.id,user=request.user)
+
+        comment_form = ProductionCommentForm(instance=request.user)
 
         if 'like' in request.GET:
             if user_like:
@@ -64,6 +67,7 @@ def production(request, slug):
     else:
         user_like = False
         comment_form = False
+        previous_comment = False
 
 
     creatives = prod.creatives.all()
@@ -83,6 +87,7 @@ def production(request, slug):
         'cast': cast,
         'staff': staff,
         'comment_form': comment_form,
+        'previous_comment': previous_comment,
         
     }
 

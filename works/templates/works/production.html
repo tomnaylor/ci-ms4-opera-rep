@@ -17,21 +17,25 @@
         {% if production.dead %}
             <div class="mb-4 p-2 rounded text-center text-uppercase text-light bg-danger">This production has been archived</div>
         {% endif %}
+        
+        <div class="mb-4 text-end">
 
-        {% if request.user.is_authenticated %}
-            <div class="mb-4 text-end">
+            <a href="{% url 'donation' %}?donation_total=5.00&production={{ production.id }}" class="mb-1 btn btn-primary opacity-50"><i class="fas fa-credit-card"></i> Donate £5</a>
+            <a href="{% url 'donation' %}?donation_total=10.00&production={{ production.id }}" class="mb-1 ms-1 btn btn-primary opacity-75"><i class="fas fa-credit-card"></i> £10</a>
+            <a href="{% url 'donation' %}?donation_total=20.00&production={{ production.id }}" class="mb-1 ms-1 btn btn-primary"><i class="fas fa-credit-card"></i> £20</a>
+
+            {% if request.user.is_authenticated %}
                 {% if user_like %}
-                    <a href="?like=go" class="btn btn-success"><i class="fas fa-thumbs-up"></i> Liked</a>
+                    <a href="?like=go" class="mb-1 ms-4 btn btn-success"><i class="fas fa-thumbs-up"></i> Liked</a>
                 {% else %}
-                    <a href="?like=go" class="btn btn-secondary btn-sm"><i class="fas fa-thumbs-up"></i> Click to like</a>
+                    <a href="?like=go" class="mb-1 ms-4 btn btn-secondary"><i class="fas fa-thumbs-up"></i> Click to like</a>
                 {% endif %}
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
+
 
         <h2  class="display-6 text-center mb-4">{{ production.tagline }}</h2>
 
-        <a href="{% url 'donation' %}?donation_total=9.99&production={{ production.id }}" class="text-decoration-none">DONATE 9.99</a>
-        
 
         <div class="mb-4">
             {% if production.synopsis|length > 200 %}
@@ -67,40 +71,100 @@
 </section>
 
 
+<!-- PHOTOS -->
+{% if photos %}
+<section class="page-section py-5" id="media-photo">
+    <div class="container">
+
+        <div id="carouselMediaPhoto" class="carousel slide" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                {% for photo in photos %}
+                    <button 
+                    type="button" 
+                    data-bs-target="#carouselMediaPhoto" 
+                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                    {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
+                    aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-inner">
+                {% for photo in photos %}
+                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                        <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
+                        <div class="carousel-caption d-none d-md-block">
+                        <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 
 <!-- COMMENTS -->
-<section class="page-section bg-light py-5" id="comments">
-    <div class="container">
+<section class="page-section bg-light pt-3 pb-5" id="comments">
+    <div class="container position-relative">
+
+        {% if request.user.is_authenticated and not previous_comment %}
+            <!-- Modal -->
+            <div class="modal fade" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form class="" action="{% url 'comment_add' production.id %}" method="POST" id="add-comment-form">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="reviewFormModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                    {% csrf_token %}
+                                    {{ comment_form.comment | as_crispy_field }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end mt-0 mb-3 ">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewFormModal"><i class="fas fa-pen"></i> Write review</button>
+            </div>
+        {% endif %}
+
         <div class="text-center">
-            <h2 class="text-uppercase">User Reviews</h2>
+            <h2 class="text-uppercase">Your Reviews</h2>
             <p class="text-muted">Your takes on {{ production.work.name }}... in 600 characters or less!</p>
         </div>
-
-        <div class="row mt-5">
+        <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+  
+        <div class="row mt-5" data-masonry='{"percentPosition": true }'>
             {% for comment in comments %}
-            <div class="col-sm-12 col-md-6 col-lg-3 text-center p-4">
-                <span class="h5 link-dark">"{{ comment.comment }}"</span> written by {{ comment.user.username }}
-                {% if comment.user == request.user or request.user.is_superuser %}
-                <a href="{% url 'comment_remove' comment.id %}" class="link-danger text-decoration-none" onClick="return confirm('Are you sure?');">delete</a>
-                {% endif %}
+            <div class="col-sm-12 col-md-6 col-lg-6 p-3">
+                <i class="fas fa-quote-left"></i> {{ comment.comment }}
+                <p>
+                    W ritten by {{ comment.user.username }}
+                    {% if comment.user == request.user or request.user.is_superuser %}
+                    | <a href="{% url 'comment_remove' comment.id %}" class="link-danger text-decoration-none" onClick="return confirm('Are you sure?');">delete</a>
+                    | <a href="{% url 'comment_edit' comment.id %}" class="link-primary text-decoration-none">edit</a>
+                    {% endif %}
+                </p>
             </div>
+
             {% endfor %}
-
-            {% if request.user.is_authenticated %}
-            <form class="col-sm-12 col-md-6 col-lg-3 text-center p-4" action="{% url 'comment_add' production.id %}" method="POST" id="add-comment-form">
-                {% csrf_token %}
-                
-                <textarea 
-                 name="comment" 
-                 maxlength="600" 
-                 placeholder="Comment *" 
-                 required 
-                 id="id_comment" 
-                 class="border-black rounded-0 profile-form-input textinput textInput form-control mb-2 w-100"></textarea>
-
-                <button class="btn btn-primary text-uppercase w-100">add comment</button>
-            </form>
-            {% endif %}
         </div>
     </div>
 </section>
@@ -181,111 +245,63 @@
 {% endif %}
 
 
-<!-- PHOTOS -->
-{% if photos %}
-<section class="page-section bg-light py-5" id="media-photo">
+<!-- VIDEOS -->
+{% if videos %}
+<section class="page-section py-5" id="media-video">
     <div class="container">
-
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Production photos</h2>
-            <p class="text-muted">Some shots from the production of {{ production.work.name }}</p>
+            <h2 class="section-heading text-uppercase">Videos</h2>
         </div>
-
-        <div id="carouselMediaPhoto" class="carousel slide" data-bs-ride="carousel">
-
-            <div class="carousel-indicators">
-                {% for photo in photos %}
-                    <button 
-                    type="button" 
-                    data-bs-target="#carouselMediaPhoto" 
-                    data-bs-slide-to="{{ forloop.counter0 }}" 
-                    {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
-                    aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-
-            <div class="carousel-inner">
-                {% for photo in photos %}
-                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                        <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
-                        <div class="carousel-caption d-none d-md-block">
-                        <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }}</span>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-            </button>
+        <div class="row mt-5">
+            {% for video in videos %}
+                {% if video.youtube_source %}
+                <iframe 
+                    class="col-12 col-md-6 mb-4"
+                    width="100%" 
+                    height="300px" 
+                    src="{{ video.youtube_source }}" 
+                    title="{{ video.name }}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% else %}
+                <div class="col-6">
+                    {{ video.source|safe }}
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </section>
 {% endif %}
 
 
-<!-- VIDEOS -->
-{% if videos %}
-    <section class="page-section py-5" id="media-video">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Videos</h2>
-            </div>
-            <div class="row mt-5">
-                {% for video in videos %}
-                    {% if video.youtube_source %}
-                    <iframe 
-                     class="col-6 mb-4"
-                     width="100%" 
-                     height="300px" 
-                     src="{{ video.youtube_source }}" 
-                     title="{{ video.name }}" 
-                     frameborder="0" 
-                     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    {% else %}
-                    <div class="col-6">
-                        {{ video.source|safe }}
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-{% endif %}
-
-
 <!-- OTHER PRODUCTIONS -->
 <section class="page-section bg-light py-5">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">More</h2>
-                <p class="text-muted">All productions of {{ production.work.name }} from the WNO</p>
-            </div>
-            <div class="row row-cols-2 mt-5">
-                {% for production in other_productions %}
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
-
-                    <div class="img-cover img-thumb rounded" style="background-image: url('{{ production.thumb_image_url }}');">
-                        {% if production.dead %}
-                            <div class="p-1 rounded text-center text-uppercase text-light bg-danger bg-opacity-75">This production has been archived</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="px-2 pt-2">
-                        <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
-
-                        <p class="fw-lighter lh-1">{{ production.tagline|truncatechars:60 }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-    
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">More</h2>
+            <p class="text-muted">All productions of {{ production.work.name }} from the WNO</p>
         </div>
+        <div class="row row-cols-2 mt-5">
+            {% for production in other_productions %}
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
+
+                <div class="img-cover img-thumb rounded" style="background-image: url('{{ production.thumb_image_url }}');">
+                    {% if production.dead %}
+                        <div class="p-1 rounded text-center text-uppercase text-light bg-danger bg-opacity-75">This production has been archived</div>
+                    {% endif %}
+                </div>
+
+                <div class="px-2 pt-2">
+                    <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
+
+                    <p class="fw-lighter lh-1">{{ production.tagline|truncatechars:60 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </section>
 
 {% endblock %}

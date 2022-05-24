@@ -47,12 +47,8 @@ def donation(request):
         form_data = {
             'full_name': request.POST['full_name'],
             'email': request.POST['email'],
-            'phone_number': request.POST['phone_number'],
             'country': request.POST['country'],
-            'postcode': request.POST['postcode'],
             'city': request.POST['city'],
-            'street_address1': request.POST['street_address1'],
-            'street_address2': request.POST['street_address2'],
             'donation_total': request.POST['donation_total'],
             'production': request.POST['production'],
         }
@@ -98,12 +94,8 @@ def donation(request):
                 donation_form = DonationForm(initial={
                     'full_name': profile.user.get_full_name(),
                     'email': profile.user.email,
-                    'phone_number': profile.default_phone_number,
-                    'country': profile.default_country,
-                    'postcode': profile.default_postcode,
-                    'city': profile.default_city,
-                    'street_address1': profile.default_street_address1,
-                    'street_address2': profile.default_street_address2,
+                    'country': profile.country,
+                    'city': profile.city,
                     'donation_total': donation_total,
                     'production': production,
                 })
@@ -163,12 +155,8 @@ def donation_success(request, donation_number):
         # Save the user's info
         if save_info:
             profile_data = {
-                'default_phone_number': donation.phone_number,
-                'default_country': donation.country,
-                'default_postcode': donation.postcode,
-                'default_city': donation.city,
-                'default_street_address1': donation.street_address1,
-                'default_street_address2': donation.street_address2,
+                'country': donation.country,
+                'city': donation.city,
             }
             user_profile_form = UserProfileForm(profile_data, instance=profile)
             if user_profile_form.is_valid():
