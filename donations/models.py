@@ -10,7 +10,7 @@ from works.models import Production
 class Donation(models.Model):
     """ Donation model """
 
-    donation_number = models.CharField(max_length=32, null=False, editable=True, default=uuid.uuid4().hex.upper())
+    donation_number = models.UUIDField(default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     production = models.ForeignKey(Production, null=True, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=50, null=False, blank=False)
@@ -47,5 +47,5 @@ class Donation(models.Model):
     #     super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.donation_number
+        return str(self.donation_number)
 
