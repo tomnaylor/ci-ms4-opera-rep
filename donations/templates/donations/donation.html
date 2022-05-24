@@ -3,7 +3,7 @@
 
 
 {% block h1 %}
-    Profile
+    Thank you for your donation
 {% endblock %}
 
 {% block content %}
@@ -11,78 +11,64 @@
 <section class="page-section">
     <div class="container">
 
-        {% if production %}
-            <div class="m-2 mb-4 p-2 rounded text-center text-uppercase text-light bg-danger">{{ production }} - asdsad</div>
-        {% endif %}
+        
+        <div class="my-4 p-2 rounded text-center text-light bg-dark">
+            Thank you for your donation of £{{ donation_total }}
+            {% if production %} in recognition of our production of {{ production }}{% endif %}. Please fill in the payment form below.
+        </div>
+        
 
-        <div class="row">
-            <div class="col-6">
+        <form action="" method="POST" id="donations-form">
+            <div class="row">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6">
 
-                <div class="row">
-                    <form action="" method="POST" id="donations-form">
-                        {% csrf_token %}
-                        <fieldset class="rounded px-3 mb-5">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                            {{ donation_form.full_name | as_crispy_field }}
-                            {{ donation_form.email | as_crispy_field }}
-                            {{ donation_form.donation_total | as_crispy_field }}
-                            {{ donation_form.production | as_crispy_field }}
-                            {{ donation_form.city | as_crispy_field }}
-                            {{ donation_form.country | as_crispy_field }}
-                            <div class="form-check form-check-inline float-right mr-0">
-                                {% if user.is_authenticated %}
-                                    <label class="form-check-label" for="id-save-info">Save this delivery information to my profile</label>
-                                    <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
-                                {% else %}
-                                    <label class="form-check-label" for="id-save-info">
-                                        <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
-                                        <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </fieldset>
-                        <fieldset class="px-3">
-                            <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-                            <!-- A Stripe card element will go here -->
-                            <div class="mb-3" id="card-element"></div>
-                            <!-- Used to display form errors -->
-                            <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-                            <!-- Pass the client secret to the view so we can get the payment intent id -->
-                            <input type="hidden" value="{{ client_secret }}" name="client_secret">
-                        </fieldset>
+                    {% csrf_token %}
+                    <h5 class="text-uppercase mb-3">Details</h5>
 
-                        <div class="submit-button text-right mt-5 mb-2">                    
+                    {{ donation_form.full_name | as_crispy_field }}
+                    {{ donation_form.email | as_crispy_field }}
+                    {{ donation_form.production | as_crispy_field }}
+                    {{ donation_form.city | as_crispy_field }}
+                    {{ donation_form.country | as_crispy_field }}
 
-                            <button id="submit-button" class="btn btn-black rounded-0">
-                                <span class="font-weight-bold">Complete Order</span>
-                                <span class="icon">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </button>
-                            <p class="small text-danger my-0">
-                                <span class="icon">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </span>
-                                <span>Your card will be charged <strong>${{ donation_total|floatformat:2 }}</strong></span>
-                            </p>
-                        </div>
-                    </form>
-                    <div id="card-element"></div>
-                    <div id="card-error"></div>
+                    <div class="mt-2">
+                        {% if user.is_authenticated %}
+                            <label class="form-check-label" for="id-save-info">Save this delivery information to my profile</label>
+                            <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
+                        {% else %}
+                            <label class="form-check-label" for="id-save-info">
+                                <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
+                                <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                            </label>
+                        {% endif %}
+                    </div>
                 </div>
 
 
+                <div class="col-12 col-sm-12 col-md-10 col-lg-8 my-5">
+
+                    <h5 class="text-uppercase mb-3">Payment</h5>
+
+                    <div class="mb-3 " style="border:1px solid #DADFE3; padding:10px; " id="card-element"></div>
+
+                    <div class="mb-3 text-danger" id="card-error" role="alert"></div>
+
+                    <input type="hidden" value="{{ client_secret }}" name="client_secret">
+                </div>
 
 
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6">
 
-
-
-
-
-
+                    <button id="submit-button" class="btn btn-success"><i class="fas fa-lock"></i> Donate</button>
+                    
+                    <p class="small text-danger my-3">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Your card will be charged £{{ donation_total }}
+                    </p>
+                </div>
             </div>
-        </div>
-    </div>
+        </form>
+
 </section>
 
 
@@ -108,7 +94,7 @@ var elements = stripe.elements();
 var style = {
     base: {
         color: '#000',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, inherit',
         fontSmoothing: 'antialiased',
         fontSize: '16px',
         '::placeholder': {
@@ -139,8 +125,9 @@ var form = document.getElementById('donations-form');
 form.addEventListener('submit', function(ev) {
     ev.preventDefault();
     card.update({ 'disabled': true});
-    $('#submit-button').attr('disabled', true);
-    $('#donations-form').fadeToggle(100);
+    $('#submit-button').attr('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+
+    // $('#donations-form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
 
     var saveInfo = Boolean($('#id-save-info').attr('checked'));
@@ -190,10 +177,10 @@ form.addEventListener('submit', function(ev) {
                     </span>
                     <span>${result.error.message}</span>`;
                 $(errorDiv).html(html);
-                $('#payment-form').fadeToggle(100);
+                // $('#donations-form').fadeToggle(100);
                 $('#loading-overlay').fadeToggle(100);
                 card.update({ 'disabled': false});
-                $('#submit-button').attr('disabled', false);
+                $('#submit-button').attr('disabled', false).html('<i class="fas fa-lock"></i> Donate');
             } else {
                 if (result.paymentIntent.status === 'succeeded') {
                     form.submit();

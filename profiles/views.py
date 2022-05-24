@@ -103,6 +103,7 @@ def comment_edit(request, comment_id):
 
     context = {
         'form': form,
+        'production': prod,
         'user_comment': user_comment,
     }
 

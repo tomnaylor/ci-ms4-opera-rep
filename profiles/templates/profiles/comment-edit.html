@@ -11,14 +11,15 @@
 
 
 <!-- COMMENTS -->
-<section class="page-section bg-light py-5" id="comments">
+<section class="page-section">
     <div class="container">
 
         <div class="row mt-5">
             <form class="" action="{% url 'comment_edit' user_comment.id %}" method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-primary">Save review</button>
+                <button type="submit" class="btn btn-primary">Save edit</button>
+                <a href="{%url 'production' production.url %}" class="btn btn-warning">Cancel</a>
             </form>
         </div>
     </div>

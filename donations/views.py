@@ -24,16 +24,19 @@ def cache_checkout_data(request):
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
+
         stripe.PaymentIntent.modify(pid, metadata={
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
+
         return HttpResponse(status=200)
-    except Exception as e:
+
+    except Exception as error:
         messages.error(request, ('Sorry, your payment cannot be '
                                  'processed right now. Please try '
                                  'again later.'))
-        return HttpResponse(content=e, status=400)
+        return HttpResponse(content=error, status=400)
 
 
 def donation(request):
@@ -42,6 +45,13 @@ def donation(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
+    if not stripe_public_key:
+        messages.warning(request, ('Stripe public key is missing. '
+                                   'Did you forget to set it in '
+                                   'your environment?'))
+
+    stripe.api_key = stripe_secret_key
+
     if request.method == 'POST':
 
         form_data = {
@@ -49,7 +59,6 @@ def donation(request):
             'email': request.POST['email'],
             'country': request.POST['country'],
             'city': request.POST['city'],
-            'donation_total': request.POST['donation_total'],
             'production': request.POST['production'],
         }
 
@@ -59,6 +68,9 @@ def donation(request):
             donation = donation_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
             donation.stripe_pid = pid
+
+            stripe_intent = stripe.PaymentIntent.retrieve(pid)
+            donation.donation_total = float(stripe_intent.amount)/100
 
             # Save the user to the form
             if request.user.is_authenticated:
@@ -73,53 +85,47 @@ def donation(request):
         else:
             messages.error(request, ('There was an error with your form. '
                                      'Please double check your information.'))
+
+    # Attempt to prefill the form with any info
+    # the user maintains in their profile
+
+    if 'donation_total' in request.GET:
+        donation_total = request.GET['donation_total']
     else:
+        donation_total = 10
 
-        # Attempt to prefill the form with any info
-        # the user maintains in their profile
+    if 'production' in request.GET:
+        production = get_object_or_404(Production, id=request.GET['production'])
+    else:
+        production = False
 
-        if 'donation_total' in request.GET:
-            donation_total = request.GET['donation_total']
-        else:
-            donation_total = 10
-
-        if 'production' in request.GET:
-            production = get_object_or_404(Production, id=request.GET['production'])
-        else:
-            production = False
-
-        if request.user.is_authenticated:
-            try:
-                profile = get_object_or_404(UserProfile, user=request.user)
-                donation_form = DonationForm(initial={
-                    'full_name': profile.user.get_full_name(),
-                    'email': profile.user.email,
-                    'country': profile.country,
-                    'city': profile.city,
-                    'donation_total': donation_total,
-                    'production': production,
-                })
-
-            except UserProfile.DoesNotExist:
-                donation_form = DonationForm(initial={
-                    'donation_total': donation_total,
-                    'production': production,
-                })
-        else:
+    if request.user.is_authenticated:
+        try:
+            profile = get_object_or_404(UserProfile, user=request.user)
             donation_form = DonationForm(initial={
+                'full_name': profile.user.get_full_name(),
+                'email': profile.user.email,
+                'country': profile.country,
+                'city': profile.city,
                 'donation_total': donation_total,
                 'production': production,
             })
 
-    if not stripe_public_key:
-        messages.warning(request, ('Stripe public key is missing. '
-                                   'Did you forget to set it in '
-                                   'your environment?'))
+        except UserProfile.DoesNotExist:
+            donation_form = DonationForm(initial={
+                'donation_total': donation_total,
+                'production': production,
+            })
+    else:
+        donation_form = DonationForm(initial={
+            'donation_total': donation_total,
+            'production': production,
+        })
 
-    stripe.api_key = stripe_secret_key
+
     try:
         intent = stripe.PaymentIntent.create(
-            amount=30,
+            amount=int(float(donation_total)*100),
             currency=settings.STRIPE_CURRENCY,
         )
     except Exception as e:
@@ -134,6 +140,7 @@ def donation(request):
     context = {
         'production': production,
         'donation_form': donation_form,
+        'donation_total': donation_total,
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,
     }

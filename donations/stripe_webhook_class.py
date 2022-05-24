@@ -26,12 +26,13 @@ class StripeHandler:
             'donations/emails/success-body.txt',
             {'donation': donation, 'contact_email': settings.DEFAULT_FROM_EMAIL})
 
-        send_mail(
+        email_status = send_mail(
             subject,
             body,
             settings.DEFAULT_FROM_EMAIL,
             [cust_email]
         )
+
 
     def handle_event(self, event):
         """
@@ -45,6 +46,7 @@ class StripeHandler:
         """
         Handle the payment_intent.succeeded webhook from Stripe
         """
+        
         intent = event.data.object
         pid = intent.id
         save_info = intent.metadata.save_info
@@ -93,6 +95,7 @@ class StripeHandler:
                          'Verified donation already in database'),
                 status=200)
         else:
+            
             donation = None
             try:
                 donation = Donation.objects.create(
@@ -110,6 +113,8 @@ class StripeHandler:
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {error}',
                     status=500)
+
+
         self._send_confirmation_email(donation)
         return HttpResponse(
             content=(f'Webhook received: {event["type"]} | SUCCESS: '

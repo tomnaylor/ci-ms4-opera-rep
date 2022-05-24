@@ -10,7 +10,7 @@ class Donation(models.Model):
 
     donation_number = models.UUIDField(default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    production = models.ForeignKey(Production, null=True, on_delete=models.CASCADE)
+    production = models.ForeignKey(Production, null=True, blank=True, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     # phone_number = models.CharField(max_length=20, null=False, blank=False)

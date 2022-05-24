@@ -125,14 +125,6 @@ def search(request):
     direction = None
 
     if request.GET:
-    #    if 'sort' in request.GET:
-    #        productions = productions.annotate(lower_name=Lower('name'))
-    #        products = products.annotate(lower_name=Lower('name'))
-    #    if 'direction' in request.GET:
-    #        direction = request.GET['direction']
-    #        if direction == 'desc':
-    #            sortkey = f'-{sortkey}'
-    #        products = products.order_by('name')
 
         if 'query' in request.GET:
             query = request.GET['query']
@@ -144,7 +136,7 @@ def search(request):
             queries = Q(tagline__icontains=query) | Q(synopsis__icontains=query) | Q(year__icontains=query) | Q(work__name__icontains=query)
             productions = productions.filter(queries)
 
-            queries = Q(name__icontains=query) | Q(synopsis__icontains=query) | Q(tagline__icontains=query)
+            queries = Q(name__icontains=query) | Q(synopsis__icontains=query)
             people = people.filter(queries)
 
 

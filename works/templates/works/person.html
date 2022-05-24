@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block hero_image %}{% if person.hero_image_url is not None %}{{ person.hero_image_url }}{% else %}https://i.pinimg.com/originals/76/c3/d7/76c3d716e44b7a23714a166a0a0f8a61.jpg{% endif %}{% endblock %}
+{% block hero_image %}{% if person.thumb_image_url is not None %}{{ person.thumb_image_url }}{% else %}https://i.pinimg.com/originals/76/c3/d7/76c3d716e44b7a23714a166a0a0f8a61.jpg{% endif %}{% endblock %}
 
 
 
@@ -19,27 +19,41 @@
 
 {% block content %}
 
-        <h2 class="display-6 text-center my-5">{{ person.tagline }}</h2>
-
-
-
-<section class="page-section bg-light pt-5">
+<section class="page-section pt-5">
     <div class="container">
 
-        <div class="row row-cols-2">
+        <h4>About me</h4>
+
+        <div class="mb-5">
+            {% if person.synopsis|length > 300 %}
+                {{ person.synopsis|slice:":300" }}
+                <span class="collapse" id="collapseSynopsis">
+                    {{ person.synopsis|slice:"300:" }}
+                </span>
+                <a class="link-primary text-decoration-none" data-bs-toggle="collapse" href="#collapseSynopsis" role="button" aria-expanded="false" aria-controls="collapseSynopsis">...more</a>
+            {% else %}
+                {{ person.synopsis }}
+            {% endif %}
+        </div>
+
+
+        <h4>Productions I've been part of</h4>
+
+        <div class="mt-2 row row-cols-2">
+            
             {% for production in productions %}
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-                    <div class="border border-dark">
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
 
-                        <a href="{% url 'production' production.url %}">
-                            <div class="img-cover img-thumb" style="background-image: url('{{ production.work.image_url }}');"></div>
-                        </a>
+                    <div class="img-cover img-thumb rounded" style="background-image: url('{{ production.thumb_image_url }}');">
+                        {% if production.dead %}
+                            <div class="p-1 rounded text-center text-uppercase text-light bg-danger bg-opacity-75">This production has been archived</div>
+                        {% endif %}
+                    </div>
 
-                        <div class="px-2 pt-2">
-                            <h6>{{ production.year }} {{ production.work.name }}</h6>
+                    <div class="px-2 pt-2">
+                        <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
 
-                            <p class="fw-lighter lh-1">{{ production.tagline }}</p>
-                        </div>
+                        <p class="fw-lighter lh-1">{{ production.tagline|truncatechars:60 }}</p>
                     </div>
                 </div>
             {% endfor %}

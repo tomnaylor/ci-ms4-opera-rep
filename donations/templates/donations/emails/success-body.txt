@@ -2,6 +2,6 @@ Hello {{ donation.full_name }}!
 
 Thank you for your donation!
 
-Your donation (#{{ order.order_number }}) was processed on {{ donation.date }} for {{ donation.order_total }}
+Your donation (#{{ donation.donation_number }}) was processed on {{ donation.record_added }} for total of £{{ donation.donation_total }}
 
-Thank you again for your donation.
+We hope to see you soon.
