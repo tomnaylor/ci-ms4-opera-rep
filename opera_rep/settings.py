@@ -126,16 +126,15 @@ if 'DATABASE_URL' in os.environ:
     print('DATABASE_URL FOUND - USING EXTERNAL DB')
     print('' + os.environ['DATABASE_URL'][0:10] + '...###')
     DATABASES = {
-        'default': dj_database_url.parse('postgres://ambqkznukjigvn:4fc1d9fb43c57b497ca9fdc89ed077fde9d1edc2b8a554b4a75697e6e8336f02@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d4jaljvdg7be3a')
-        #'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
 else:
     print()
     print('----------------------------------')
     print('DATABASE_URL NOT FOUND - KILLING APP')
-    import sys
-    sys.exit(0)
+    #import sys
+    #sys.exit(0)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
