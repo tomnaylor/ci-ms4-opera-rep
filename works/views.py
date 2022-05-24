@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.db.models import Sum
 from .models import Work, Production, ProductionVideo, Role, People, ProductionPhoto
 from profiles.models import UserLike, UserComment
+from donations.models import Donation
 from django.db.models import Q
 from django.contrib import messages
 from profiles.forms import ProductionCommentForm
@@ -39,6 +41,10 @@ def production(request, slug):
     user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first() if request.user.is_authenticated else False
 
     user_comments = UserComment.objects.filter(production=prod.id)
+
+    donations = Donation.objects.filter(production=prod.id).order_by('-donation_total')[:10]
+    donation_total = Donation.objects.filter(production=prod.id).aggregate(Sum('donation_total'))
+
     prod_videos = ProductionVideo.objects.filter(production=prod.id)
     prod_photos = ProductionPhoto.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
@@ -80,6 +86,8 @@ def production(request, slug):
         'production': prod,
         'user_like': user_like,
         'comments': user_comments,
+        'donations': donations,
+        'donation_total': donation_total,
         'videos': prod_videos,
         'photos': prod_photos,
         'other_productions': other_productions,
