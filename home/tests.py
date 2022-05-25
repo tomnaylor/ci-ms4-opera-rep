@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 
 
 class HomeTestCase(TestCase):
+    """ Tests for the home page """
     def setUp(self):
         self.client = Client()
         self.url = reverse("home")
