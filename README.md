@@ -43,19 +43,20 @@ Welcome to the online production catalogue for the WNO. The web application aims
 * easily register ***so that I can*** have a personal account and save details
 * easily recover my password ***so that I can*** recover access to my account
 * donate to the company ***so that I can*** show my support to the WNO or one of it's productions
-* stream videos of previous productions ***so that I can*** enjoy new shows or relive previous memories **TO DO**
-* watch interviews with cast, creatives, crew etc. ***so that I can*** find out more from people that are involved with the production **TO DO**
-* watch time-lapse builds of a production ***so that I can*** see what goes into constructing the sets **TO DO**
 * browse photos from the live performance and backstage ***so that I can*** see the production from a new angle
-* read playtexts, show books, rehersal scrips and stage management bibles ***so that I can*** get an insite into the production process and how a show to rehersed **TO DO**
-* look thru old posters, tickets, programmes and brouchures related to the production ***so that I can*** get a broad idea what the theatre world was like at the time **TO DO**
 * Lego / ikea like list of tools and parts and assembly instructions ***so that I can*** see what work goes into building the sets
 * leave a review about a production ***so that I can*** interact with the community and express my views of the material
-
 
 #### As a returning visitor, I want to:
 * see the new items quickly on the home page ***so that I can*** get upto date quickly
 * see updates from productions I've liked ***so that I can*** get relavant updates
+
+#### As a future site user, I want to:
+* read playtexts, show books, rehersal scrips and stage management bibles ***so that I can*** get an insite into the production process and how a show to rehersed **~TO DO**
+* look thru old posters, tickets, programmes and brouchures related to the production ***so that I can*** get a broad idea what the theatre world was like at the time **~TO DO**
+* stream videos of previous productions ***so that I can*** enjoy new shows or relive previous memories **~TO DO**
+* watch interviews with cast, creatives, crew etc. ***so that I can*** find out more from people that are involved with the production **~TO DO**
+* watch time-lapse builds of a production ***so that I can*** see what goes into constructing the sets **~TO DO**
 
 
 ### Site Owners Goals
@@ -74,7 +75,7 @@ Welcome to the online production catalogue for the WNO. The web application aims
 #### Wireframes
 I used a drawing tool to create a wireframe for the two responsive sizes (desktop and mobile).
 
-![wireframe](readme/concept.jpg)
+![wireframe](readme/wireframe.jpg)
 
 
 #### Codebase
