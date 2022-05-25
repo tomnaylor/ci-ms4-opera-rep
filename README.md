@@ -1,7 +1,7 @@
 # Online production catalogue
 ## By Tom Naylor
 
-![Capture](readme/tsm-screenshot.jpg)
+![Capture](readme/responsive-design.JPG)
 
 **View live site:** https://tn83-wno-test-bed.herokuapp.com/
 
