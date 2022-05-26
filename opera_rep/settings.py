@@ -112,6 +112,7 @@ ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 WSGI_APPLICATION = 'opera_rep.wsgi.application'
@@ -190,7 +191,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STRIPE_CURRENCY = 'GBP'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
-STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')    # CANT FIND THIS IN ENV???
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 print()
 print('----------------------------------')
 print('STRIPE:')
