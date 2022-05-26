@@ -231,21 +231,17 @@ I used lighthouse on both the desktop and mobile versions of the site. The deskt
     * Every logged in user can post one review toward a production. From the production page, they can also delete their own review and click edit to be taken to another page to edit it directly.
 
 
-#### As a future site user, I want to:
-* read playtexts, show books, rehersal scrips and stage management bibles ***so that I can*** get an insite into the production process and how a show to rehersed **~TO DO**
-* look thru old posters, tickets, programmes and brouchures related to the production ***so that I can*** get a broad idea what the theatre world was like at the time **~TO DO**
-* stream videos of previous productions ***so that I can*** enjoy new shows or relive previous memories **~TO DO**
-* watch interviews with cast, creatives, crew etc. ***so that I can*** find out more from people that are involved with the production **~TO DO**
-* watch time-lapse builds of a production ***so that I can*** see what goes into constructing the sets **~TO DO**
-* Lego / ikea like list of tools and parts and assembly instructions ***so that I can*** see what work goes into building the sets **~TO DO**
-
 ### Site Owners Goals
 #### As the site owner, I want to:
 * build an online audience for my productions
+    * comments and likes mean the user may choose to create an account. This will then give accurate email addresses for marketing. Not putting good content behind a uwer account / payment will help build an audience that may at the start be just casual.
+
 * receive secure donations using STRIPE
+    * Stripe payments have been added throughout the app, the payment page is quick and simple to drive more donations
+
 * make the app easy to navigate and mobile friendly
+    * The app was made in a "mobile first" way. That means it's well suited for the vast population that will visit the site.
 * create a single app for alll the production news and media
-* review reviews before they go live **~TO DO**
 
 
 
