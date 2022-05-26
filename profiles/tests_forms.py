@@ -2,13 +2,14 @@
 
 from django.urls import reverse
 from django.test import TestCase, Client
-from django.conf import settings
 from django.contrib.auth.models import User
 from .forms import UserProfileForm, ProductionCommentForm
 
 
 class ProductionCommentFormTest(TestCase):
     """ Test production comment """
+
+    fixtures = ["testdbdata.json"]
 
     def test_profile_comment_fields_are_required(self):
         """ Test country is required user, production, comment"""
@@ -24,17 +25,11 @@ class ProductionCommentFormTest(TestCase):
 class ProfileFormTest(TestCase):
     """ Test Profile """
 
+    fixtures = ["testdbdata.json"]
+    
     def setUp(self):
-        settings.ACCOUNT_EMAIL_VERIFICATION = 'none'
-        self.username = "user"
-        self.password = "valid_password1"
-        self.email = "email@test.com"
         self.client = Client()
-        self.new_user = User.objects.create_user(
-                                username=self.username,
-                                email=self.email,
-                                is_active=True,
-                                password=self.password)
+
 
     def test_profile_sends_user_to_login(self):
         """ Test profile link takes non-users to the signuppage """
@@ -48,18 +43,12 @@ class ProfileFormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Sign in")
 
-    def test_user_has_been_saved(self):
-        """ Test if user is saved correctly """
-        self.assertEqual(self.new_user.username, self.username)
-        self.assertEqual(self.new_user.email, self.email)
-        self.assertIs(self.new_user.is_active, True)
-
     def test_user_login_success(self):
         """ Test if the user login is correct """
         response = self.client.post('/accounts/login/',
                                     {
-                                     'login': self.username,
-                                     'password': self.password})
+                                     'login': 'tom',
+                                     'password': 'valid_password1'})
         self.assertRedirects(
                              response,
                              '/',
@@ -67,10 +56,7 @@ class ProfileFormTest(TestCase):
 
     def test_logged_in_user_can_access_profile(self):
         """ Test that a signed in user can access the profile """
-        response = self.client.post('/accounts/login/',
-                                    {
-                                     'login': self.username,
-                                     'password': self.password})
+        logged_user = self.client.login(username='tom', password='valid_password1')
         response = self.client.get('/profile/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Profile")
