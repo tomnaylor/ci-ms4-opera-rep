@@ -122,11 +122,6 @@ Viewing the content does not need to login, but other sections of the app need a
 
 ### Features left to implement
 
-#### Adding photos for scene changes
-Uploading documents and photos to aid in the running of the show. This could be diagrams of truck movements, photos of props etc.
-
-#### Assigning user admin rights
-Currently, admin rights is added as a string to the mongoDB collection "users". In the future, this could be given to a user by another admin via the user profile.
 
 
 
@@ -150,52 +145,29 @@ Currently, admin rights is added as a string to the mongoDB collection "users". 
 
 ### Dependants / Libraries
 
-* asgiref==3.5    
-    ASGI is a standard for Python asynchronous web apps and servers to communicate with each other, and positioned as an asynchronous successor to WSGI.
-* boto3==1.12.42 and botocore==1.15.42
-    You use the AWS SDK for Python (Boto3) to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
-* chardet==3.0.4    
-    The Universal Character Encoding Detector
-* dj-database-url==0.5.0
-    This simple Django utility allows you to utilize the 12factor inspired DATABASE_URL environment variable to configure your Django application.
-* django-allauth==0.41.0
-    Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication
-* django-countries==7.3.2
-    List of countries for Django models
-* django-crispy-forms==1.14.0
-    Styling for Django forms
-* docutils==0.15.2
-    Docutils is an open-source text processing system for processing plaintext documentation into useful formats, such as HTML
-* gunicorn==20.0.4
-    Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX
-* idna==2.8
-    Support for the Internationalised Domain Names in Applications (IDNA) protocol as specified in RFC 5891.
-* oauthlib==3.1.0
-    OAuthLib is a framework which implements the logic of OAuth1 or OAuth2 without assuming a specific HTTP request object or web framework
-* Pillow==7.0.0
-    Pillow is the friendly PIL fork. PIL is the Python Imaging Library.
-* psycopg2-binary==2.8.5
-    Psycopg is the most popular PostgreSQL database adapter for the Python programming language
-* python3-openid==3.1.0
-    This is a set of Python packages to support use of the OpenID decentralized identity system
-* pytz==2019.3
-    pytz brings the Olson tz database into Python. This library allows accurate and cross platform timezone calculations using Python 2.4 or higher
-* requests==2.22.0
-    REST framework's Request objects provide flexible request parsing that allows you to treat requests with JSON data or other media types in the same way that you would normally deal with form data.
-* requests-oauthlib==1.3.0
-    This project provides first-class OAuth library support for Requests. The OAuth 1 workflow. OAuth 1 can seem overly complicated and it sure has its quirks
-* s3transfer==0.3.3
-    S3transfer is a Python library for managing Amazon S3 transfers. This project is maintained and published by Amazon Web Services.
-* sqlparse==0.3.0
-    sqlparse is a non-validating SQL parser for Python. It provides support for parsing, splitting and formatting SQL statements.
-* stripe==2.42.0
-    Stripe credit card handling for donations
-* urllib3==1.25.7
-    urllib3 is a powerful, user-friendly HTTP client for Python
-* crispy-bootstrap5==0.6
-    Styling for Django forms to copy those of bootstrap 5
-* django-storages==1.12.3
-    django-storages is a collection of custom storage backends for Django. Used to communicate with the Amazon S3 bucket
+* **asgiref==3.5** ASGI is a standard for Python asynchronous web apps and servers to communicate with each other, and positioned as an asynchronous successor to WSGI.
+* **boto3==1.12.42 and botocore==1.15.42** You use the AWS SDK for Python (Boto3) to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
+* **chardet==3.0.4** The Universal Character Encoding Detector
+* **dj-database-url==0.5.0** This simple Django utility allows you to utilize the 12factor inspired DATABASE_URL environment variable to configure your Django application.
+* **django-allauth==0.41.0** Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication
+* **django-countries==7.3.2** List of countries for Django models
+* **django-crispy-forms==1.14.0** Styling for Django forms
+* **docutils==0.15.2** Docutils is an open-source text processing system for processing plaintext documentation into useful formats, such as HTML
+* **gunicorn==20.0.4** Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX
+* **idna==2.8** Support for the Internationalised Domain Names in Applications (IDNA) protocol as specified in RFC 5891.
+* **oauthlib==3.1.0** OAuthLib is a framework which implements the logic of OAuth1 or OAuth2 without assuming a specific HTTP request object or web framework
+* **Pillow==7.0.0** Pillow is the friendly PIL fork. PIL is the Python Imaging Library.
+* **psycopg2-binary==2.8.5** Psycopg is the most popular PostgreSQL database adapter for the Python programming language
+* **python3-openid==3.1.0** This is a set of Python packages to support use of the OpenID decentralized identity system
+* **pytz==2019.3** pytz brings the Olson tz database into Python. This library allows accurate and cross platform timezone calculations using Python 2.4 or higher
+* **requests==2.22.0** REST framework's Request objects provide flexible request parsing that allows you to treat requests with JSON data or other media types in the same way that you would normally deal with form data.
+* **requests-oauthlib==1.3.0** This project provides first-class OAuth library support for Requests. The OAuth 1 workflow. OAuth 1 can seem overly complicated and it sure has its quirks
+* **s3transfer==0.3.3** S3transfer is a Python library for managing Amazon S3 transfers. This project is maintained and published by Amazon Web Services.
+* **sqlparse==0.3.0** sqlparse is a non-validating SQL parser for Python. It provides support for parsing, splitting and formatting SQL statements.
+* **stripe==2.42.0** Stripe credit card handling for donations
+* **urllib3==1.25.7** urllib3 is a powerful, user-friendly HTTP client for Python
+* **crispy-bootstrap5==0.6** Styling for Django forms to copy those of bootstrap 5
+* **django-storages==1.12.3** django-storages is a collection of custom storage backends for Django. Used to communicate with the Amazon S3 bucket
 
 
 ### Tools
@@ -230,29 +202,18 @@ I used lighthouse on both the desktop and mobile versions of the site. The deskt
 ### Testing against the user Stories
 #### First time visitor
 As a first time user:
-* I want to see the productions cue stack easily and without being logged in
-    * The home page shows the cue stack minus any actions reserved for logged in users. This allows for a very fast introduction to important data
-* I want to have a sign up page to quickly add a user
-    * There is a link in the top right to create a user. Details are limited to email, name and password to make signup as easy as possible. Currently the only way to add admin rights is via MongoDB, but that could be added at a later date
+* xxxx
+    * xxxxx
 
-#### Returning visitor
-As a returning visitor:
-* I want to see the cue stack as quickly as possile
-    * Once you submit the login form, upon successful login, you're taken direct to the cue stack.
-* I want to be able to add or edit cues
-    * once logged in, adding a new cue is a simple process. Departments and scenes are drop down lists making it easy to filter the data later.
-* I want to print out a list for my department
-    * department collection makes it easy to print either the entire cue stack or just the cues for a particular department
+
+#### Future visitor
+As a future visitor:
+* xxxx
+    * xxxx
 
 ### Site Owners Goals
-* Provide a useful way to manage cues in a theatre production
-    * Multiple users and an easy interface makes it easy to add and edit cues. The cue stack doesn't need a login so it's quick and easy to view and print to many of the company members.
-* I want to make the app secure
-    * Adding, edditing and deleting are all behind a user wall which needs an email and secure password to join.
-* I want to make the app easy to navigate
-    * Three menu options are given to the user. A top nav bar for desktop with simple text links, a mobile navigation menu which includes a swipe action to open, and a footer menu with the same links. Button colours are consistant to aid in adding, editing and deleting data.
-* I want to create a single source for all stage management cues
-    An easy to use system with a dedicated purpose, avaliable to anyone online and only neccessory items behind a user login should make this a usuable option.
+* xxxx
+    * xxxx
 
 
 
@@ -287,7 +248,6 @@ I have preformed manual tests on a number of browsers and devices to cover most 
     * https://hevodata.com/learn/sqlite-to-postgresql/
     * had to create new user, then make into super user thru CLI, then make profile for user "tom"
 * making user comment unique to production and user. See comment model and here: https://stackoverflow.com/questions/2201598/how-to-define-two-fields-unique-as-couple
-
 * **xxxx** xxxxxx
 
 
@@ -320,6 +280,9 @@ I used the following steps to deploy to Heroku.
     * Turn on "static website hosting" in the properties tab and fill in the details
     * On the permissions tab paste the CORS configuration found [here](readme/aws-cors-config.txt)
     * In Permissions, select "bucket policy". Type is s3 bucket policy, allow all principal and actions will be "GetObject". ARN is in the bucket policy tab. An example can be [found here](readme/aws-bucket-policy.txt)
+* Setup Sendgrid
+    * 
+    *
 * Env config vars in Heroku
     * In Heroku, click on "settings" and then "reveal config vars". You will need to add the following variables:
     * **AWS_ACCESS_KEY_ID** Public access key for Amazon AWS bucket (leave empty to use local storage)
