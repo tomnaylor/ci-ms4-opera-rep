@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from .forms import UserProfileForm, ProductionCommentForm
 
 
-class ProductionCommentFormTestCase(TestCase):
+class ProductionCommentFormTest(TestCase):
     """ Test production comment """
 
     def test_profile_comment_fields_are_required(self):
@@ -21,7 +21,7 @@ class ProductionCommentFormTestCase(TestCase):
         self.assertEqual(form.Meta.fields, ['comment'])
 
 
-class ProfileFormTestCase(TestCase):
+class ProfileFormTest(TestCase):
     """ Test Profile """
 
     def setUp(self):
@@ -31,10 +31,10 @@ class ProfileFormTestCase(TestCase):
         self.email = "email@test.com"
         self.client = Client()
         self.new_user = User.objects.create_user(
-                                 username=self.username,
-                                 email=self.email,
-                                 is_active=True,
-                                 password=self.password)
+                                username=self.username,
+                                email=self.email,
+                                is_active=True,
+                                password=self.password)
 
     def test_profile_sends_user_to_login(self):
         """ Test profile link takes non-users to the signuppage """
