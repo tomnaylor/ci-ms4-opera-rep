@@ -43,8 +43,11 @@ Welcome to the online production catalogue for the WNO. The web application aims
 * easily register ***so that I can*** have a personal account and save details
 * easily recover my password ***so that I can*** recover access to my account
 * donate to the company ***so that I can*** show my support to the WNO or one of it's productions
+* see this years productions ***so that I can*** find out whats coming up in the near future
+* see who is in the cast or creatives for a production ***so that I can*** follow my favourite performers or artists
+* watch videos of the production or backstage ***so that I can*** watch related material and keep the production current
+* like the productions I want to keep track of ***so that I can*** see updates to my favourite productions quickly
 * browse photos from the live performance and backstage ***so that I can*** see the production from a new angle
-* Lego / ikea like list of tools and parts and assembly instructions ***so that I can*** see what work goes into building the sets
 * leave a review about a production ***so that I can*** interact with the community and express my views of the material
 
 #### As a returning visitor, I want to:
@@ -57,7 +60,7 @@ Welcome to the online production catalogue for the WNO. The web application aims
 * stream videos of previous productions ***so that I can*** enjoy new shows or relive previous memories **~TO DO**
 * watch interviews with cast, creatives, crew etc. ***so that I can*** find out more from people that are involved with the production **~TO DO**
 * watch time-lapse builds of a production ***so that I can*** see what goes into constructing the sets **~TO DO**
-
+* Lego / ikea like list of tools and parts and assembly instructions ***so that I can*** see what work goes into building the sets **~TO DO**
 
 ### Site Owners Goals
 #### As the site owner, I want to:
@@ -65,6 +68,7 @@ Welcome to the online production catalogue for the WNO. The web application aims
 * receive secure donations using STRIPE
 * make the app easy to navigate and mobile friendly
 * create a single app for alll the production news and media
+* review reviews before they go live **~TO DO**
 
 
 ### Development Methods
@@ -200,20 +204,48 @@ I used lighthouse on both the desktop and mobile versions of the site. The deskt
 
 
 ### Testing against the user Stories
-#### First time visitor
-As a first time user:
-* xxxx
-    * xxxxx
+#### As a first time user:
+
+* easily register and recover my password
+    * Django has an allauth intergration that makes user accounts easy and secure to manage. The site takes advantage of the 2-step verification process to make sure that the email address is valid. Logging in, out and changing passwords is easily done via the top menu and all sensitive data is help in the secure postgres DB
+
+* donate to the company
+    * I have used Stripe to bring card payments directly into the app. Every production and on various pages on the app has links to donate. Productions have three options, £5, £10 and £20. Once clicked, the user only needs to fill in a simple form (which is auto filled for logged in users), enter the car details and click "donate". If they are a logged in user, their donation will be linked to their account so they can keep track of donations. The donations will also feature on the production (if one has been selected) to show recent donations and a sum total. The Stripe intergration will also email the donator once the funds have been cleared.
+
+* see this years productions
+    * Productions on the home page and productions page are ordered by date. They will also show the current productions and mark any dead shows with a clear message. 
+
+* see who is in the cast or creatives for a production
+    * Every production has a number of fields to link to personal profiles. These are cast, creative, staff and composer. Each one will have their photos in the section and a link to their profile on the app. Inside their profile, you can also view all productions they have been part of, so you can track thru their history.
+
+* watch videos of the production or backstage
+    * Videos are currently taken from youTube and shown direct on the production page. In the future I hope to host the videos to put some behind a possible paywall.
+
+* like the productions I want to keep track of
+    * Every production can be liked by a logged in user. There is a box on the top of the production that turns this on and off. Also, on the profile page, there is a list of productions so you can quickly see which ones you've chosen.
+
+* browse photos from the live performance and backstage
+    * photos form a carasel on the productions page. This is responsive and shows more detail and the screen gets bigger.
+
+* leave a review about a production
+    * Every logged in user can post one review toward a production. From the production page, they can also delete their own review and click edit to be taken to another page to edit it directly.
 
 
-#### Future visitor
-As a future visitor:
-* xxxx
-    * xxxx
+#### As a future site user, I want to:
+* read playtexts, show books, rehersal scrips and stage management bibles ***so that I can*** get an insite into the production process and how a show to rehersed **~TO DO**
+* look thru old posters, tickets, programmes and brouchures related to the production ***so that I can*** get a broad idea what the theatre world was like at the time **~TO DO**
+* stream videos of previous productions ***so that I can*** enjoy new shows or relive previous memories **~TO DO**
+* watch interviews with cast, creatives, crew etc. ***so that I can*** find out more from people that are involved with the production **~TO DO**
+* watch time-lapse builds of a production ***so that I can*** see what goes into constructing the sets **~TO DO**
+* Lego / ikea like list of tools and parts and assembly instructions ***so that I can*** see what work goes into building the sets **~TO DO**
 
 ### Site Owners Goals
-* xxxx
-    * xxxx
+#### As the site owner, I want to:
+* build an online audience for my productions
+* receive secure donations using STRIPE
+* make the app easy to navigate and mobile friendly
+* create a single app for alll the production news and media
+* review reviews before they go live **~TO DO**
 
 
 
