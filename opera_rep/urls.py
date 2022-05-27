@@ -26,3 +26,6 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('donations/', include('donations.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'opera_rep.views.handler404'
+handler500 = 'opera_rep.views.handler500'

@@ -28,6 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', 'tn83-wno-test-bed.herokuapp.com']
 
@@ -124,7 +125,6 @@ WSGI_APPLICATION = 'opera_rep.wsgi.application'
 
 if 'DATABASE_URL' in os.environ:
     print('> USING EXTERNAL DB FROM URL')
-    print('' + os.environ['DATABASE_URL'][0:10] + '...###')
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
