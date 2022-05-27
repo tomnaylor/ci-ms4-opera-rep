@@ -90,7 +90,6 @@ class ProductionViewTest(TestCase):
         """ Test profile comment del another users comment fails """
         logged_user = self.client.login(username='notadmin', password='valid_password1')
         response = self.client.get('/profile/comment-delete/1/')
-        print(response)
         self.assertRedirects(
                              response,
                              '/works/productions/migrations-2022',

@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.test import TestCase, Client
 
 
-class HomeTestCase(TestCase):
+class HomeViewTest(TestCase):
     """ Tests for the home page """
     def setUp(self):
         self.client = Client()

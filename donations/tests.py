@@ -7,7 +7,7 @@ from .models import Donation
 from .forms import DonationForm
 
 
-class DonationViewTest(TestCase):
+class DonationTest(TestCase):
     """ Donations views """
 
     fixtures = ["testdbdata.json"]
