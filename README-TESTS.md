@@ -15,6 +15,7 @@ Welcome to the testing readme for the online production catalogue
   * [Automatic testers / validators](#automatic-testers-and-validators)
   * [Testing against the user Stories](#testing-against-the-user-stories)
   * [Manual Testing](#manual-testing)
+  * [Responsive design testing](#responsive-design-testing)
   * [Known Bugs](#known-bugs)
 
 
@@ -26,21 +27,25 @@ As well as the manual testing below I have also used the Chrome Dev Tools and PE
 
 [TestCase](https://docs.djangoproject.com/en/4.0/topics/testing/overview/) is an automated testing class that I've used to program tests against the models, forms and views of the app. You can run tests on a forked version using "python3 manage.py test" in the bash shell. All tests are listed below along with a description of what they test against.
 
-#### Profiles
+#### Profiles (/profiles)
 
 Tests for profiles span three files: **test_forms.py**, **test_models.py** and **test_views.py** as there are a number of tests for this app.
 
-##### test_forms
+##### test_forms.py
 
-* **ProductionCommentFormTest**
+* ProductionCommentFormTest
     * **test_profile_comment_fields_are_required** tests that without a comment the form will be invalid
     * **test_profile_comment_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
-* **ProfileFormTest**
+
+* ProfileFormTest
     * **test_user_login_success** tests is a valid user can log-in and get re-directed correctly
     * **test_profile_city_is_not_required** tests that the city field isn't required
     * **test_profile_country_is_required** tests that the country field is required
-    * **test_profile_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
-* **ProductionViewTest**
+    * **test_profile_fields_are_inc_in_form_metaclass** tests that wanted fields are the only form element in meta fields
+
+##### test_views.py
+
+* ProductionViewTest
     * **test_profile_view** tests a logged-in user can view their profile page
     * **test_profile_view_no_user_view** tests that a logged-out user can't access the profile page and gets redirected
     * **test_profile_comment_edit_no_user_view** tests that a logged-out user can't edit a comment
@@ -51,8 +56,46 @@ Tests for profiles span three files: **test_forms.py**, **test_models.py** and *
     * **test_profile_comment_del_other_user_fail_view** tests that a logged-in user can not delete the comment of another user
     * **test_profile_comment_add_no_user_view** tests that a logged-out user can not add a comment
     * **test_profile_comment_add_view** tests that a user can post a comment to a unique production
-    * **xx** xxx
 
+##### test_models.py
+
+* ProductionCommentModelTest
+    * **test_production_comment_model** tests the comment model
+    * **test_production_likes_model** tests the likes model
+
+
+#### Main app (/opera_rep)
+
+Tests for the main app are all contained in the tests.py file and all test the settings
+
+* SettingsTestCase
+    * **test_login_url** tests that the login URL is set and correct
+    * **test_redirect_url** tests that the login redirect URL is set and correct
+    * **test_logout_redirect_url** tests that the logout redirect URL is set and correct
+
+
+#### Home page (/home)
+
+Tests for the home app are all contained in the tests.py file
+
+* HomeViewTest
+    * **test_home_response_success** tests that the home page is loading correctly
+
+
+#### Donations (/donations)
+
+Tests for the donations app are all contained in the tests.py file
+
+* DonationTest
+    * **test_new_donation_view** tests all users can view the new donation form
+    * **test_empty_donation_model** tests creating a new empty donation model
+    * **test_donation_model** tests creating a populated donation model
+    * **test_donation_form_email_fail** tests that an invalid email address fails
+    * **test_donation_form_name_fail** tests that an invalid name fails
+    * **test_donation_form_country_fail** tests that an invalid country selection fails
+    * **test_donation_form_city_fail** tests that an invalid city fails
+    * **test_donation_form_is_valid** tests that a valid donation form saves
+    * **test_profile_fields_are_inc_in_form_metaclass** tests that wanted fields are the only form element in meta fields
 
 
 
@@ -114,6 +157,12 @@ I have preformed manual tests on a number of browsers and devices to cover most 
 * The app was tested using Chrome, Edge and Safari browsers.
 * The app was tested on a number of devices such as Desktop, Laptop, iPhone and android.
 * The app was tested extensively to ensure all links, styles and events worked as expected
+
+
+### Responsive design testing
+
+
+
 
 
 ### Known Bugs
