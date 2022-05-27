@@ -36,8 +36,21 @@ Tests for profiles span three files: **test_forms.py**, **test_models.py** and *
     * **test_profile_comment_fields_are_required** tests that without a comment the form will be invalid
     * **test_profile_comment_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
 * **ProfileFormTest**
-    * **test_profile_sends_user_to_login** tests that an anonymous gets redirected to the log-in page if they try and visit the profile page
-    * **xx** xxx
+    * **test_user_login_success** tests is a valid user can log-in and get re-directed correctly
+    * **test_profile_city_is_not_required** tests that the city field isn't required
+    * **test_profile_country_is_required** tests that the country field is required
+    * **test_profile_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
+* **ProductionViewTest**
+    * **test_profile_view** tests a logged-in user can view their profile page
+    * **test_profile_view_no_user_view** tests that a logged-out user can't access the profile page and gets redirected
+    * **test_profile_comment_edit_no_user_view** tests that a logged-out user can't edit a comment
+    * **test_profile_comment_edit_view** tests that the logged-in author can view the edit page
+    * **test_profile_comment_edit_other_user_fail_view** tests that a logged-in user can not edit the comment of another user
+    * **test_profile_comment_del_no_user_view** tests that a logged-out user can not delete a comment
+    * **test_profile_comment_del_view** test that the logged-in author can delete a comment
+    * **test_profile_comment_del_other_user_fail_view** tests that a logged-in user can not delete the comment of another user
+    * **test_profile_comment_add_no_user_view** tests that a logged-out user can not add a comment
+    * **test_profile_comment_add_view** tests that a user can post a comment to a unique production
     * **xx** xxx
 
 
