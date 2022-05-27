@@ -24,7 +24,22 @@ As well as the manual testing below I have also used the Chrome Dev Tools and PE
 
 ### Unit tests in Django
 
-xxxxxx
+[TestCase](https://docs.djangoproject.com/en/4.0/topics/testing/overview/) is an automated testing class that I've used to program tests against the models, forms and views of the app. You can run tests on a forked version using "python3 manage.py test" in the bash shell. All tests are listed below along with a description of what they test against.
+
+#### Profiles
+
+Tests for profiles span three files: **test_forms.py**, **test_models.py** and **test_views.py** as there are a number of tests for this app.
+
+##### test_forms
+
+* **ProductionCommentFormTest**
+    * **test_profile_comment_fields_are_required** tests that without a comment the form will be invalid
+    * **test_profile_comment_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
+    * **xx** xxx
+    * **xx** xxx
+    * **xx** xxx
+
+
 
 
 
