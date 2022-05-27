@@ -35,7 +35,8 @@ Tests for profiles span three files: **test_forms.py**, **test_models.py** and *
 * **ProductionCommentFormTest**
     * **test_profile_comment_fields_are_required** tests that without a comment the form will be invalid
     * **test_profile_comment_fields_are_inc_in_form_metaclass** tests that comment is the only form element in meta fields
-    * **xx** xxx
+* **ProfileFormTest**
+    * **test_profile_sends_user_to_login** tests that an anonymous gets redirected to the log-in page if they try and visit the profile page
     * **xx** xxx
     * **xx** xxx
 
