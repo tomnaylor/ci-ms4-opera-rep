@@ -11,7 +11,7 @@ class ProductionCommentModelTest(TestCase):
     def test_production_comment_model(self):
         """ Test production comment pass """
         comment = UserComment.objects.create(
-                                            production_id=1,
+                                            production_id=2,
                                             user_id=1,
                                             comment='Comment')
         self.assertTrue(isinstance(comment, UserComment))

@@ -30,19 +30,6 @@ class ProfileFormTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-
-    def test_profile_sends_user_to_login(self):
-        """ Test profile link takes non-users to the signuppage """
-        response = self.client.get(reverse("profile"), follow=True)
-        self.assertRedirects(
-                             response,
-                             '/accounts/login/?next=/profile/',
-                             status_code=302,
-                             target_status_code=200,
-                             fetch_redirect_response=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Sign in")
-
     def test_user_login_success(self):
         """ Test if the user login is correct """
         response = self.client.post('/accounts/login/',
@@ -53,13 +40,6 @@ class ProfileFormTest(TestCase):
                              response,
                              '/',
                              status_code=302)
-
-    def test_logged_in_user_can_access_profile(self):
-        """ Test that a signed in user can access the profile """
-        logged_user = self.client.login(username='tom', password='valid_password1')
-        response = self.client.get('/profile/')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Profile")
 
     def test_profile_city_is_not_required(self):
         """ Test city is not required """
