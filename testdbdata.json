@@ -1700,18 +1700,18 @@
     },
     {
        "model":"profiles.usercomment",
-       "pk":7,
+       "pk":1,
        "fields":{
           "user":3,
           "production":1,
-          "comment":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          "comment":"Test comment one text",
           "record_added":"2022-05-24T14:01:41.980Z",
           "record_edited":"2022-05-24T22:10:56.037Z"
        }
     },
     {
        "model":"profiles.usercomment",
-       "pk":8,
+       "pk":2,
        "fields":{
           "user":3,
           "production":2,
@@ -1722,7 +1722,7 @@
     },
     {
        "model":"profiles.usercomment",
-       "pk":18,
+       "pk":3,
        "fields":{
           "user":2,
           "production":2,
@@ -1733,7 +1733,7 @@
     },
     {
        "model":"profiles.usercomment",
-       "pk":19,
+       "pk":4,
        "fields":{
           "user":13,
           "production":2,
@@ -1744,24 +1744,13 @@
     },
     {
        "model":"profiles.usercomment",
-       "pk":20,
+       "pk":5,
        "fields":{
           "user":1,
           "production":2,
           "comment":"Hehevr d f f f fhdhdhd fndhdyd fhdydudhd dhdhdud",
           "record_added":"2022-05-24T15:49:34.252Z",
           "record_edited":"2022-05-24T15:49:34.252Z"
-       }
-    },
-    {
-       "model":"profiles.usercomment",
-       "pk":21,
-       "fields":{
-          "user":1,
-          "production":3,
-          "comment":"This is my review of the older butterfly",
-          "record_added":"2022-05-24T21:49:12.261Z",
-          "record_edited":"2022-05-24T21:49:24.764Z"
        }
     },
     {
