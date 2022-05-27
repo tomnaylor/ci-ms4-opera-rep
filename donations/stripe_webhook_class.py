@@ -1,13 +1,11 @@
+import time
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from .models import Donation
 from profiles.models import UserProfile
-
-import json
-import time
+from .models import Donation
 
 
 class StripeHandler:
@@ -24,15 +22,16 @@ class StripeHandler:
             {'donation': donation})
         body = render_to_string(
             'donations/emails/success-body.txt',
-            {'donation': donation, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+            {
+             'donation': donation,
+             'contact_email': settings.DEFAULT_FROM_EMAIL})
 
-        email_status = send_mail(
+        send_mail(
             subject,
             body,
             settings.DEFAULT_FROM_EMAIL,
             [cust_email]
         )
-
 
     def handle_event(self, event):
         """
@@ -46,7 +45,7 @@ class StripeHandler:
         """
         Handle the payment_intent.succeeded webhook from Stripe
         """
-        
+
         intent = event.data.object
         pid = intent.id
         save_info = intent.metadata.save_info
@@ -87,7 +86,7 @@ class StripeHandler:
             except Donation.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
-        
+
         if donation_exists:
             self._send_confirmation_email(donation)
             return HttpResponse(
@@ -95,7 +94,7 @@ class StripeHandler:
                          'Verified donation already in database'),
                 status=200)
         else:
-            
+
             donation = None
             try:
                 donation = Donation.objects.create(
@@ -111,9 +110,8 @@ class StripeHandler:
                 if donation:
                     donation.delete()
                 return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | ERROR: {error}',
+                    content=f'Webhook received: {event["type"]} | e: {error}',
                     status=500)
-
 
         self._send_confirmation_email(donation)
         return HttpResponse(

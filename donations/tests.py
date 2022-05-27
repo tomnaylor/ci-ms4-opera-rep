@@ -1,8 +1,6 @@
 """ TESTS FOR PROFILES VIEWS """
 
 from django.test import TestCase, Client
-from django.conf import settings
-from django.contrib.auth.models import User
 from .models import Donation
 from .forms import DonationForm
 

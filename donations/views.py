@@ -1,10 +1,13 @@
 """ Views for all donations """
 
-import json
 import stripe
-from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
+from django.shortcuts import (
+                              render,
+                              get_object_or_404,
+                              redirect,
+                              reverse,
+                              HttpResponse)
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 
 from profiles.models import UserProfile
@@ -14,8 +17,6 @@ from django.conf import settings
 
 from .models import Donation
 from .forms import DonationForm
-
-
 
 
 @require_POST
@@ -95,7 +96,8 @@ def donation(request):
         donation_total = 10
 
     if 'production' in request.GET:
-        production = get_object_or_404(Production, id=request.GET['production'])
+        production = get_object_or_404(
+            Production, id=request.GET['production'])
     else:
         production = False
 
@@ -122,7 +124,6 @@ def donation(request):
             'production': production,
         })
 
-
     try:
         intent = stripe.PaymentIntent.create(
             amount=int(float(donation_total)*100),
@@ -133,9 +134,6 @@ def donation(request):
                                  'processed right now. Please try '
                                  'again later.'))
         return HttpResponse(content=e, status=500)
-        #return HttpResponse(content=e, status=500)
-
-
 
     context = {
         'production': production,
@@ -158,7 +156,7 @@ def donation_success(request, donation_number):
     if request.user.is_authenticated:
 
         profile = UserProfile.objects.get(user=request.user)
-        
+
         # Save the user's info
         if save_info:
             profile_data = {

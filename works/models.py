@@ -10,13 +10,29 @@ def people_thumb_image_path(instance, filename):
 
 
 class People(models.Model):
-    """ Model for all people in productions - ie. Directors, cast, creatives etc.. """
+    """
+    Model for all people in productions
+    ie. Directors, cast, creatives etc..
+    """
     name = models.CharField(max_length=254, blank=False)
     url = models.SlugField(max_length=254, blank=False, unique=True)
-    thumb_image = models.ImageField(null=True, blank=True, upload_to=people_thumb_image_path)
+    thumb_image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=people_thumb_image_path)
     synopsis = models.TextField(null=True, blank=True)
-    facebook = models.SlugField(max_length=254, null=True, blank=True, help_text="Only the username portion of the URL", verbose_name="Facebook username")
-    twitter = models.SlugField(max_length=254, null=True, blank=True, help_text="Only the username portion of the URL (no @ or #)", verbose_name="Twitter username")
+    facebook = models.SlugField(
+        max_length=254,
+        null=True,
+        blank=True,
+        help_text="Only the username portion of the URL",
+        verbose_name="Facebook username")
+    twitter = models.SlugField(
+        max_length=254,
+        null=True,
+        blank=True,
+        help_text="Only the username portion of the URL (no @ or #)",
+        verbose_name="Twitter username")
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
 
@@ -75,19 +91,23 @@ def production_thumb_image_path(instance, filename):
 class Production(models.Model):
     """ Model for a production """
     url = models.SlugField(max_length=254, blank=False, unique=True)
-    work = models.ForeignKey('Work', null=True, blank=True, on_delete=models.SET_NULL)
+    work = models.ForeignKey(
+        'Work', null=True, blank=True, on_delete=models.SET_NULL)
     year = models.PositiveSmallIntegerField()
     synopsis = models.TextField()
     tagline = models.CharField(max_length=254, blank=False)
     hash_tag = models.CharField(max_length=30, blank=False)
     language = models.CharField(max_length=100, blank=False)
     production_premiere = models.DateField(auto_now=False, auto_now_add=False)
-    creatives = models.ManyToManyField(Role, related_name='creatives', blank=True)
+    creatives = models.ManyToManyField(
+        Role, related_name='creatives', blank=True)
     cast = models.ManyToManyField(Role, related_name='cast', blank=True)
     staff = models.ManyToManyField(Role, related_name='staff', blank=True)
     dead = models.BooleanField(default=False, null=True, blank=True)
-    hero_image = models.ImageField(null=True, blank=True, upload_to=production_hero_image_path)
-    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_thumb_image_path)
+    hero_image = models.ImageField(
+        null=True, blank=True, upload_to=production_hero_image_path)
+    thumb_image = models.ImageField(
+        null=True, blank=True, upload_to=production_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)
@@ -120,10 +140,13 @@ def production_photo_thumb_image_path(instance, filename):
 class ProductionPhoto(models.Model):
     """ Model for a media entry for a production """
 
-    production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
+    production = models.ForeignKey(
+        'Production', null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=254, blank=False)
-    full_image = models.ImageField(null=True, blank=True, upload_to=production_photo_full_image_path)
-    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_photo_thumb_image_path)
+    full_image = models.ImageField(
+        null=True, blank=True, upload_to=production_photo_full_image_path)
+    thumb_image = models.ImageField(
+        null=True, blank=True, upload_to=production_photo_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)
@@ -152,11 +175,20 @@ def production_video_thumb_image_path(instance, filename):
 class ProductionVideo(models.Model):
     """ Model for a video entry for a production """
 
-    production = models.ForeignKey('Production', null=True, blank=True, on_delete=models.SET_NULL)
+    production = models.ForeignKey(
+                                   'Production',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
     name = models.CharField(max_length=254, blank=False)
     source = models.TextField(max_length=2000, blank=True, null=True)
-    youtube_source = models.CharField(max_length=100, blank=True, null=True, help_text="https://www.youtube.com/embed/")
-    thumb_image = models.ImageField(null=True, blank=True, upload_to=production_video_thumb_image_path)
+    youtube_source = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="https://www.youtube.com/embed/")
+    thumb_image = models.ImageField(
+        null=True, blank=True, upload_to=production_video_thumb_image_path)
     record_added = models.DateTimeField(auto_now_add=True)
     record_edited = models.DateTimeField(auto_now=True)
     rating_total = models.PositiveIntegerField(null=True, blank=True)

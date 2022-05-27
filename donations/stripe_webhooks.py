@@ -35,12 +35,10 @@ def webhook(request):
     # Handle the event
     handler = StripeHandler(request)
 
-
-
     if event['type'] == 'payment_intent.payment_failed':
-        response = handler.handle_payment_intent_payment_failed(event)
+        handler.handle_payment_intent_payment_failed(event)
     elif event['type'] == 'payment_intent.succeeded':
-        response = handler.handle_payment_intent_succeeded(event)
+        handler.handle_payment_intent_succeeded(event)
     else:
         print(f'Unhandled event type { format(event.type) }')
 

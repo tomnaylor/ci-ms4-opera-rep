@@ -1,8 +1,6 @@
 """ TESTS FOR PROFILES """
 
-from django.urls import reverse
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
 from .forms import UserProfileForm, ProductionCommentForm
 
 
@@ -26,7 +24,7 @@ class ProfileFormTest(TestCase):
     """ Test Profile """
 
     fixtures = ["testdbdata.json"]
-    
+
     def setUp(self):
         self.client = Client()
 

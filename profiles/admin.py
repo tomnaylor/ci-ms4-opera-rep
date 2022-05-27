@@ -31,5 +31,5 @@ class UserLikeAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(UserProfile)
-admin.site.register(UserLike,UserLikeAdmin)
-admin.site.register(UserComment,UserCommentAdmin)
+admin.site.register(UserLike, UserLikeAdmin)
+admin.site.register(UserComment, UserCommentAdmin)

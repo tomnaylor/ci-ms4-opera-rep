@@ -1,6 +1,12 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Work, Production, ProductionVideo, ProductionPhoto, People, Role
+from .models import (
+                     Work,
+                     Production,
+                     ProductionVideo,
+                     ProductionPhoto,
+                     People,
+                     Role)
 
 
 class ProductionPhotoAdmin(admin.ModelAdmin):
@@ -19,7 +25,8 @@ class ProductionPhotoAdmin(admin.ModelAdmin):
 
     def photo(self, obj):
         """ Show image in list """
-        return format_html('<img src="%s" title="%s" style="height:80px" />' % (obj.thumb_image.url, obj.name))
+        return format_html('<img src="%s" title="%s" style="height:80px" />' %
+                           (obj.thumb_image.url, obj.name))
 
     photo.allow_tags = True
     ordering = ('record_added',)
@@ -40,7 +47,9 @@ class PeopleAdmin(admin.ModelAdmin):
 
     def photo(self, obj):
         """ Show image in list """
-        return format_html('<img src="%s" title="%s" style="height:50px" />' % (obj.thumb_image_url, obj.name))
+        return format_html(
+                           '<img src="%s" title="%s" style="height:50px" />' %
+                           (obj.thumb_image_url, obj.name))
 
     photo.allow_tags = True
     ordering = ('name',)
@@ -51,6 +60,6 @@ class PeopleAdmin(admin.ModelAdmin):
 admin.site.register(Work)
 admin.site.register(Production)
 admin.site.register(ProductionVideo)
-admin.site.register(ProductionPhoto,ProductionPhotoAdmin)
-admin.site.register(People,PeopleAdmin)
+admin.site.register(ProductionPhoto, ProductionPhotoAdmin)
+admin.site.register(People, PeopleAdmin)
 admin.site.register(Role)

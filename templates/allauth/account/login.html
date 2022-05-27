@@ -3,36 +3,32 @@
 {% load i18n %}
 
 {% block h1 %}
-Sign in
+    Sign in
 {% endblock %}
 
-
 {% block content %}
+
 <section class="page-section">
-  <div class="container">
+    <div class="container">
+        <div class="my-4 p-2 rounded text-center bg-light">
+            If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.
+        </div>
+    
+        <div class="row">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
 
-    <h2  class="display-6 text-center">{{ production.tagline }}</h2>
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+                    <button class="btn btn-lg btn-primary me-5" type="submit">Sign In</button>
+                    <a class="link-secondary text-decoration-none" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
 
-
-    <div class="row">
-      <div class="col-6">
-
-        <p>{% blocktrans %}If you have not created an account yet, then please
-        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-
-        <form class="login" method="POST" action="{% url 'account_login' %}">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
-          <button class="btn btn-lg btn-primary me-5" type="submit">Sign In</button>
-          <a class="link-secondary text-decoration-none" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-
-        </form>
-
-      </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 {% endblock %}

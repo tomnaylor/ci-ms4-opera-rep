@@ -1,12 +1,19 @@
+""" Views for works """
+
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.db.models import Sum
-from .models import Work, Production, ProductionVideo, Role, People, ProductionPhoto
-from profiles.models import UserLike, UserComment
-from donations.models import Donation
 from django.db.models import Q
 from django.contrib import messages
+from profiles.models import UserLike, UserComment
 from profiles.forms import ProductionCommentForm
-
+from donations.models import Donation
+from .models import (
+                     Work,
+                     Production,
+                     ProductionVideo,
+                     Role,
+                     People,
+                     ProductionPhoto)
 
 
 def all_works(request):
@@ -38,12 +45,16 @@ def production(request, slug):
 
     prod = get_object_or_404(Production, url=slug)
 
-    user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first() if request.user.is_authenticated else False
+    user_like = UserLike.objects.filter(Q(user=request.user) & Q(
+        production=prod)).first() if request.user.is_authenticated else False
 
     user_comments = UserComment.objects.filter(production=prod.id)
 
-    donations = Donation.objects.filter(production=prod.id).order_by('-donation_total')[:10]
-    donation_total = Donation.objects.filter(production=prod.id).aggregate(Sum('donation_total'))
+    donations = Donation.objects.filter(
+        production=prod.id).order_by('-record_added')[:10]
+
+    donation_total = Donation.objects.filter(
+        production=prod.id).aggregate(Sum('donation_total'))
 
     prod_videos = ProductionVideo.objects.filter(production=prod.id)
     prod_photos = ProductionPhoto.objects.filter(production=prod.id)
@@ -51,9 +62,11 @@ def production(request, slug):
 
     if request.user.is_authenticated:
 
-        user_like = UserLike.objects.filter(Q(user=request.user) & Q(production=prod)).first()
+        user_like = UserLike.objects.filter(
+            Q(user=request.user) & Q(production=prod)).first()
 
-        previous_comment = UserComment.objects.filter(production=prod.id,user=request.user)
+        previous_comment = UserComment.objects.filter(
+            production=prod.id, user=request.user)
 
         comment_form = ProductionCommentForm(instance=request.user)
 
@@ -68,20 +81,17 @@ def production(request, slug):
                 new_like.save()
                 messages.success(request, 'Production liked')
 
-            return redirect(reverse('production', kwargs={ 'slug':prod.url }))
+            return redirect(reverse('production', kwargs={'slug': prod.url}))
 
     else:
         user_like = False
         comment_form = False
         previous_comment = False
 
-
     creatives = prod.creatives.all()
     cast = prod.cast.all()
     staff = prod.staff.all()
 
-
-        
     context = {
         'production': prod,
         'user_like': user_like,
@@ -96,7 +106,7 @@ def production(request, slug):
         'staff': staff,
         'comment_form': comment_form,
         'previous_comment': previous_comment,
-        
+
     }
 
     return render(request, 'works/production.html', context)
@@ -126,9 +136,8 @@ def search(request):
 
     productions = Production.objects.all()
     people = People.objects.all()
-    
+
     query = None
-    categories = None
     sort = None
     direction = None
 
@@ -141,13 +150,16 @@ def search(request):
                                ("You didn't enter any search criteria!"))
                 return redirect(reverse('home'))
 
-            queries = Q(tagline__icontains=query) | Q(synopsis__icontains=query) | Q(year__icontains=query) | Q(work__name__icontains=query)
+            queries = (
+                       Q(tagline__icontains=query) |
+                       Q(synopsis__icontains=query) |
+                       Q(year__icontains=query) |
+                       Q(work__name__icontains=query))
+
             productions = productions.filter(queries)
 
             queries = Q(name__icontains=query) | Q(synopsis__icontains=query)
             people = people.filter(queries)
-
-
 
     current_sorting = f'{sort}_{direction}'
 
@@ -157,5 +169,5 @@ def search(request):
         'query': query,
         'sort': current_sorting,
     }
-    
+
     return render(request, 'works/search.html', context)

@@ -1,8 +1,6 @@
 """ TESTS FOR PROFILES VIEWS """
 
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
-from .models import UserComment
 
 
 class ProductionViewTest(TestCase):
@@ -17,7 +15,9 @@ class ProductionViewTest(TestCase):
 
     def test_profile_view(self):
         """ Test profile view works """
-        logged_user = self.client.login(username='tom', password='valid_password1')
+        self.client.login(
+                          username='tom',
+                          password='valid_password1')
         response = self.client.get('/profile/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profiles/profile.html')
@@ -46,7 +46,9 @@ class ProductionViewTest(TestCase):
 
     def test_profile_comment_edit_view(self):
         """ Test profile comment edit view no user fails """
-        logged_user = self.client.login(username='tom', password='valid_password1')
+        self.client.login(
+                          username='tom',
+                          password='valid_password1')
         response = self.client.get('/profile/comment-edit/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profiles/comment-edit.html')
@@ -54,7 +56,9 @@ class ProductionViewTest(TestCase):
 
     def test_profile_comment_edit_other_user_fail_view(self):
         """ Test profile comment edit another users comment fails """
-        logged_user = self.client.login(username='notadmin', password='valid_password1')
+        self.client.login(
+                          username='notadmin',
+                          password='valid_password1')
         response = self.client.get('/profile/comment-edit/1/')
         self.assertRedirects(
                              response,
@@ -69,15 +73,17 @@ class ProductionViewTest(TestCase):
         """ Test profile comment del view no user fails """
         response = self.client.get('/profile/comment-delete/1/')
         self.assertRedirects(
-                             response,
-                             '/accounts/login/?next=/profile/comment-delete/1/',
-                             status_code=302,
-                             target_status_code=200,
-                             fetch_redirect_response=True)
+            response,
+            '/accounts/login/?next=/profile/comment-delete/1/',
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True)
 
     def test_profile_comment_del_view(self):
         """ Test profile comment del view no user fails """
-        logged_user = self.client.login(username='tom', password='valid_password1')
+        self.client.login(
+                          username='tom',
+                          password='valid_password1')
         response = self.client.get('/profile/comment-delete/1/')
         self.assertRedirects(
                              response,
@@ -88,7 +94,9 @@ class ProductionViewTest(TestCase):
 
     def test_profile_comment_del_other_user_fail_view(self):
         """ Test profile comment del another users comment fails """
-        logged_user = self.client.login(username='notadmin', password='valid_password1')
+        self.client.login(
+                          username='notadmin',
+                          password='valid_password1')
         response = self.client.get('/profile/comment-delete/1/')
         self.assertRedirects(
                              response,
@@ -114,8 +122,10 @@ class ProductionViewTest(TestCase):
 
     def test_profile_comment_add_view(self):
         """ Test profile comment add view """
-        logged_user = self.client.login(username='tom', password='valid_password1')
-        response = self.client.post('/profile/comment-add/2/', 
+        self.client.login(
+                          username='tom',
+                          password='valid_password1')
+        response = self.client.post('/profile/comment-add/2/',
                                     {
                                      'comment': 'Test comment one'})
         self.assertRedirects(

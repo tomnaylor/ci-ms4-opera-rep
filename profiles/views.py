@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from works.models import Production
 from .models import UserProfile, UserLike, UserComment
+from donations.models import Donation
 from .forms import UserProfileForm, ProductionCommentForm
 
 
@@ -11,6 +13,11 @@ def profile(request):
     """ Display the user's profile. """
     user_profile = get_object_or_404(UserProfile, user=request.user)
     user_likes = UserLike.objects.filter(user=request.user)
+
+    donations = Donation.objects.filter(
+        user=request.user).order_by('-record_added')
+    donation_total = Donation.objects.filter(
+        user=request.user).aggregate(Sum('donation_total'))
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=user_profile)
@@ -24,8 +31,9 @@ def profile(request):
     else:
         form = UserProfileForm(instance=user_profile)
 
-
     context = {
+        'donations': donations,
+        'donation_total': donation_total,
         'profile': user_profile,
         'likes': user_likes,
         'form': form,
@@ -99,14 +107,13 @@ def comment_edit(request, comment_id):
                 form.save()
                 messages.success(request, 'comment eddited successfully')
             else:
-                messages.error(request,
-                            ('Update failed. Please ensure '
-                                'the form is valid.'))
+                messages.error(
+                    request, ('Update failed. Form is valid.'))
         except Exception as e:
             messages.error(request, f'Error edditing comment: {e}')
 
         return redirect(reverse('production', kwargs={'slug': prod.url}))
-    
+
     form = ProductionCommentForm(instance=user_comment)
 
     context = {

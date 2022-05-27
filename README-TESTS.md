@@ -112,41 +112,75 @@ I used lighthouse on both the desktop and mobile versions of the site. The deskt
 ### Testing against the user Stories
 #### As a first time user:
 
-* easily register and recover my password
-    * Django has an allauth intergration that makes user accounts easy and secure to manage. The site takes advantage of the 2-step verification process to make sure that the email address is valid. Logging in, out and changing passwords is easily done via the top menu and all sensitive data is help in the secure postgres DB
 
-* donate to the company
-    * I have used Stripe to bring card payments directly into the app. Every production and on various pages on the app has links to donate. Productions have three options, £5, £10 and £20. Once clicked, the user only needs to fill in a simple form (which is auto filled for logged in users), enter the car details and click "donate". If they are a logged in user, their donation will be linked to their account so they can keep track of donations. The donations will also feature on the production (if one has been selected) to show recent donations and a sum total. The Stripe intergration will also email the donator once the funds have been cleared.
+**Easily register and recover my password**
 
-* see this years productions
-    * Productions on the home page and productions page are ordered by date. They will also show the current productions and mark any dead shows with a clear message. 
+Django has an allauth intergration that makes user accounts easy and secure to manage. The site takes advantage of the 2-step verification process to make sure that the email address is valid. Logging in, out and changing passwords is easily done via the top menu and all sensitive data is help in the secure postgres DB
 
-* see who is in the cast or creatives for a production
-    * Every production has a number of fields to link to personal profiles. These are cast, creative, staff and composer. Each one will have their photos in the section and a link to their profile on the app. Inside their profile, you can also view all productions they have been part of, so you can track thru their history.
+<img src="readme/sign-in-form.png" alt="drawing" width="200">
 
-* watch videos of the production or backstage
-    * Videos are currently taken from youTube and shown direct on the production page. In the future I hope to host the videos to put some behind a possible paywall.
 
-* like the productions I want to keep track of
-    * Every production can be liked by a logged in user. There is a box on the top of the production that turns this on and off. Also, on the profile page, there is a list of productions so you can quickly see which ones you've chosen.
+**Donate to the company**
 
-* browse photos from the live performance and backstage
-    * photos form a carasel on the productions page. This is responsive and shows more detail and the screen gets bigger.
+I have used Stripe to bring card payments directly into the app. Every production and on various pages on the app has links to donate. Productions have three options, £5, £10 and £20. Once clicked, the user only needs to fill in a simple form (which is auto filled for logged in users), enter the car details and click "donate". If they are a logged in user, their donation will be linked to their account so they can keep track of donations. The donations will also feature on the production (if one has been selected) to show recent donations and a sum total. The Stripe intergration will also email the donator once the funds have been cleared.
 
-* leave a review about a production
-    * Every logged in user can post one review toward a production. From the production page, they can also delete their own review and click edit to be taken to another page to edit it directly.
+<img src="readme/donation-form.png" alt="drawing" width="200">
+
+
+**See this years productions**
+
+Productions on the home page and productions page are ordered by date. They will also show the current productions and mark any dead shows with a clear message. 
+
+<img src="readme/productions-in-date-order.png" alt="drawing" width="200">
+
+
+**See who is in the cast or creatives for a production**
+
+Every production has a number of fields to link to personal profiles. These are cast, creative, staff and composer. Each one will have their photos in the section and a link to their profile on the app. Inside their profile, you can also view all productions they have been part of, so you can track thru their history.
+
+<img src="readme/production-cast.png" alt="drawing" width="200">
+
+**Watch videos of the production or backstage**
+
+Videos are currently taken from youTube and shown direct on the production page. In the future I hope to host the videos to put some behind a possible paywall.
+
+<img src="readme/production-videos.png" alt="drawing" width="200">
+
+
+**Like the productions I want to keep track of**
+Every production can be liked by a logged in user. There is a box on the top of the production that turns this on and off. Also, on the profile page, there is a list of productions so you can quickly see which ones you've chosen.
+
+<img src="readme/production-butterfly.png" alt="drawing" width="200">
+
+
+**Browse photos from the live performance and backstage**
+
+photos form a carasel on the productions page. This is responsive and shows more detail and the screen gets bigger.
+
+<img src="readme/production-photos.png" alt="drawing" width="200">
+
+
+**Leave a review about a production**
+
+Every logged in user can post one review toward a production. From the production page, they can also delete their own review and click edit to be taken to another page to edit it directly.
+
+<img src="readme/write-review.png" alt="drawing" width="200">
 
 
 #### As the site owner, I want to:
-* build an online audience for my productions
-    * comments and likes mean the user may choose to create an account. This will then give accurate email addresses for marketing. Not putting good content behind a uwer account / payment will help build an audience that may at the start be just casual.
+**build an online audience for my productions**
 
-* receive secure donations using STRIPE
-    * Stripe payments have been added throughout the app, the payment page is quick and simple to drive more donations
+comments and likes mean the user may choose to create an account. This will then give accurate email addresses for marketing. Not putting good content behind a uwer account / payment will help build an audience that may at the start be just casual.
 
-* make the app easy to navigate and mobile friendly
-    * The app was made in a "mobile first" way. That means it's well suited for the vast population that will visit the site.
-* create a single app for alll the production news and media
+**receive secure donations using STRIPE**
+
+Stripe payments have been added throughout the app, the payment page is quick and simple to drive more donations
+
+<img src="readme/donation-form.png" alt="drawing" width="200">
+
+**Make the app easy to navigate and mobile friendly**
+
+The app was made in a "mobile first" way. That means it's well suited for the vast population that will visit the site.
 
 
 
@@ -155,42 +189,27 @@ I used lighthouse on both the desktop and mobile versions of the site. The deskt
 I have preformed manual tests on a number of browsers and devices to cover most scenarios and feel assured the website works as intended for all visitors. This included using google dev tools to simulate different screen sizes and using a real android and apple phone and family to act as first time visitors. In total:
 
 * The app was tested using Chrome, Edge and Safari browsers.
+* In chrome dev tools, I made dimensions for all bootstrap breakpoints and tested each update on all 5
 * The app was tested on a number of devices such as Desktop, Laptop, iPhone and android.
 * The app was tested extensively to ensure all links, styles and events worked as expected
-
-
-### Responsive design testing
-
-
 
 
 
 ### Known Bugs
 
 #### Resolved
-* getting __str__ to also return related field text (and str() on date) #title = Work.objects.get(id=self.work)
-* getting static files to work
-* saving images from admin (adding a record) into media folder
-* https://stackoverflow.com/questions/35288793/django-media-url-tag #9 - post to add default image if no image uploaded for production
-* https://docs.djangoproject.com/en/4.0/ref/templates/builtins/#date date formats for template
-* https://stackoverflow.com/questions/2218327/django-manytomany-filter - filter many to many : productions = Production.objects.filter(creatives__id=person.id)
-    * https://docs.djangoproject.com/en/4.0/topics/db/queries/#complex-lookups-with-q-objects Q to add an "or" to filter
-    * https://fedingo.com/django-get-unique-values-from-queryset/ to get distinct() returns
-* https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties Search using foreign key property
-* https://able.bio/rhett/how-to-set-and-get-environment-variables-in-python--274rgt5 - env vars help
-    * https://www.gitpod.io/docs/environment-variables
-    * https://blog.doppler.com/environment-variables-in-python
-* migration to postgres problems:
-    * https://stackoverflow.com/questions/11337420/can-i-use-an-existing-user-as-django-admin-when-enabling-admin-for-the-first-tim
-    * https://www.dev2qa.com/how-to-force-reset-django-models-migrations/
-    * https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
-    * https://hevodata.com/learn/sqlite-to-postgresql/
-    * had to create new user, then make into super user thru CLI, then make profile for user "tom"
-* making user comment unique to production and user. See comment model and here: https://stackoverflow.com/questions/2201598/how-to-define-two-fields-unique-as-couple
-* **xxxx** xxxxxx
+* Edditing the __str__ return for objects failed when trying to concat strings. Non-string objects needed to be wrapped in str()
+
+* Env variables would persist or not be avaliable even after "gp evn -e". Doing so also currupted ones that did work and while still reachable, would not work. I changed the scope in Gitpod to me more specific (user/project) rather than (user/*). I would also need to shut down the session and re-start Gitpod. Help from [here](https://able.bio/rhett/how-to-set-and-get-environment-variables-in-python--274rgt5), [here](https://www.gitpod.io/docs/environment-variables) and [here](https://blog.doppler.com/environment-variables-in-python)
+
+* Users could add more that one review to each production. Even with making UI restrictions, the unit test would be able to save multiple reviews. A [stackoverflow](https://stackoverflow.com/questions/2201598/how-to-define-two-fields-unique-as-couple) article helped explain making two fields unique as one.
+
+* Migrations from the test server (using sqllite) and the produciton Heroku server (using postgres) oftern failed. I starting using the production DB even for the dev server on Gitpod. Help from [here](https://hevodata.com/learn/sqlite-to-postgresql/), [here](https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html), [here](https://www.dev2qa.com/how-to-force-reset-django-models-migrations/) and [here](https://stackoverflow.com/questions/11337420/can-i-use-an-existing-user-as-django-admin-when-enabling-admin-for-the-first-tim) helped resolve the problem and articles [here](https://stackoverflow.com/questions/6148421/how-to-convert-a-postgres-database-to-sqlite), [here](https://devcenter.heroku.com/articles/heroku-postgres-import-export) and [here](https://stackoverflow.com/questions/17022571/how-can-i-download-db-from-heroku) showed me how to download the postgres DB to use as fixtures for the sqllite Gitpod DB.
+
+* I couldn't get the search to work using a foreign key property. [This stackoverflow](https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties) article explained how to use __ in the filter to represent the child object.
 
 
 
 #### Un-Resolved
 
-* **xxxxx** xxxxx
+* **** xxxxx
