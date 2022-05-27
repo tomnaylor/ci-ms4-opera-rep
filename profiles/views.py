@@ -86,16 +86,24 @@ def comment_edit(request, comment_id):
     user_comment = get_object_or_404(UserComment, pk=comment_id)
     prod = get_object_or_404(Production, pk=user_comment.production.id)
 
-    if request.method == 'POST':
-        form = ProductionCommentForm(request.POST, instance=user_comment)
+    if user_comment.user != request.user:
+        messages.error(request, 'Not correct user')
+        return redirect(reverse('production', kwargs={'slug': prod.url}))
 
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'comment eddited successfully')
-        else:
-            messages.error(request,
-                           ('Update failed. Please ensure '
-                            'the form is valid.'))
+    if request.method == 'POST':
+
+        try:
+            form = ProductionCommentForm(request.POST, instance=user_comment)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'comment eddited successfully')
+            else:
+                messages.error(request,
+                            ('Update failed. Please ensure '
+                                'the form is valid.'))
+        except Exception as e:
+            messages.error(request, f'Error edditing comment: {e}')
 
         return redirect(reverse('production', kwargs={'slug': prod.url}))
     
