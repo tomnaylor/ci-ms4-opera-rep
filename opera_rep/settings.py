@@ -104,6 +104,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
+# ALLAUTH SETTINGS
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -118,22 +119,18 @@ LOGOUT_REDIRECT_URL = '/'
 WSGI_APPLICATION = 'opera_rep.wsgi.application'
 
 
-# Database
+# DATABASE
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 if 'DATABASE_URL' in os.environ:
-    print()
-    print('----------------------------------')
-    print('DATABASE_URL FOUND - USING EXTERNAL DB')
+    print('> USING EXTERNAL DB FROM URL')
     print('' + os.environ['DATABASE_URL'][0:10] + '...###')
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
 else:
-    print()
-    print('----------------------------------')
-    print('NO DATABASE_URL FOUND - USING SQLITE DB')
+    print('> USING LOCAL SQLITE DB')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -142,7 +139,7 @@ else:
     }
 
 
-# Password validation
+# PASSWORD VALIDATION
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -165,8 +162,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+# INTERNATIONALIZATION
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -174,33 +170,29 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-# Media files
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
 # STRIPE
+
 STRIPE_CURRENCY = 'GBP'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
-print()
-print('----------------------------------')
-print('STRIPE:')
-print('STRIPE_PUBLIC_KEY: ' + STRIPE_PUBLIC_KEY[0:5] + '########')
-print('STRIPE_SECRET_KEY: ' + STRIPE_SECRET_KEY[0:5] + '########')
-print('STRIPE_WH_SECRET: ' + STRIPE_WH_SECRET[0:5] + '########')
 
+if (
+    ('STRIPE_PUBLIC_KEY' in os.environ) and
+    ('STRIPE_SECRET_KEY' in os.environ) and
+    ('STRIPE_WH_SECRET' in os.environ)
+   ):
+    print('> STRIPE OK')
 
-# AWS
+# STATIC AND MEDIA FILE SETTINGS
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# AWS S3 BUCKET STORAGE
+
 if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
 
     AWS_S3_OBJECT_PARAMETERS = {
@@ -224,17 +216,8 @@ if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
-    print()
-    print('----------------------------------')
-    print('USING AWS STORAGE:')
-    print('KEY: ' + AWS_ACCESS_KEY_ID[0:5] + '########')
-    print('SECRET: ' + AWS_SECRET_ACCESS_KEY[0:5] + '########')
-    print('STATIC URL: ' + STATIC_URL)
-    print('MEDIA URL: ' + MEDIA_URL)
+    print('> USING AWS STORAGE')
 
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -242,9 +225,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
-    print()
-    print('----------------------------------')
-    print("DEVELOPMENT MODE")
+    print("> DEVELOPMENT MODE")
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_TIMEOUT = 4
@@ -255,11 +236,4 @@ else:
     SERVER_EMAIL = 'tomnaylor@gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-    print()
-    print('----------------------------------')
-    print("PROUCTION MODE")
-
-
-print()
-print()
+    print("> PROUCTION MODE")
