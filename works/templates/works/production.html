@@ -157,7 +157,7 @@
                 <i class="fas fa-quote-left"></i> {{ comment.comment }}
                 <p>
                     Written by {{ comment.user.username }}
-                    {% if comment.user == request.user or request.user.is_superuser %}
+                    {% if comment.user == request.user %}
                     | <a href="{% url 'comment_remove' comment.id %}" class="link-danger text-decoration-none" onClick="return confirm('Are you sure?');">delete</a>
                     | <a href="{% url 'comment_edit' comment.id %}" class="link-primary text-decoration-none">edit</a>
                     {% endif %}
