@@ -221,12 +221,7 @@ if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-if 'DEVELOPMENT' in os.environ:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
-    print("> DEVELOPMENT MODE")
-else:
+if 'EMAIL_HOST_USER' in os.environ and 'EMAIL_HOST_PASSWORD' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_TIMEOUT = 4
     EMAIL_USE_TLS = True
@@ -236,4 +231,14 @@ else:
     SERVER_EMAIL = 'tomnaylor@gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    print("> SENDGRID EMAIL OK")
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
+    print("> NO EMAIL - USING CONSOLE LOG")
+
+
+if 'DEVELOPMENT' in os.environ:
+    print("> DEVELOPMENT MODE")
+else:
     print("> PROUCTION MODE")
