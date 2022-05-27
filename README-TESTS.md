@@ -208,6 +208,7 @@ I have preformed manual tests on a number of browsers and devices to cover most 
 
 * I couldn't get the search to work using a foreign key property. [This stackoverflow](https://stackoverflow.com/questions/1981524/django-filtering-on-foreign-key-properties) article explained how to use __ in the filter to represent the child object.
 
+* Custom 404 and 500 pages would not work. Django has updated this method a few times and [this article](https://pytutorial.com/django-create-custom-404-page) helped with the v3 changes.
 
 
 #### Un-Resolved
