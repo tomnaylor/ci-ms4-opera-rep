@@ -25,10 +25,10 @@
        "model":"auth.user",
        "pk":2,
        "fields":{
-          "password":"pbkdf2_sha256$260000$U0U9nNgzGhesQgturNM18s$Xrz7FHR220vAovO1iO/lg+2EYC4GYjxqQRYC83SqTRc=",
+          "password":"pbkdf2_sha256$260000$2P0b0AFfSXLWQQA2166Q84$XzaPTVUalUjI01h12fUiP4wtVgC22H9UOLwVRQRzoyo=",
           "last_login":null,
           "is_superuser":false,
-          "username":"tomtom",
+          "username":"notadmin",
           "first_name":"",
           "last_name":"",
           "email":"tom.naylor@wmc.org.uk",
@@ -1702,7 +1702,7 @@
        "model":"profiles.usercomment",
        "pk":1,
        "fields":{
-          "user":3,
+          "user":1,
           "production":1,
           "comment":"Test comment one text",
           "record_added":"2022-05-24T14:01:41.980Z",
@@ -1740,17 +1740,6 @@
           "comment":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           "record_added":"2022-05-24T15:35:57.600Z",
           "record_edited":"2022-05-24T15:35:57.600Z"
-       }
-    },
-    {
-       "model":"profiles.usercomment",
-       "pk":5,
-       "fields":{
-          "user":1,
-          "production":2,
-          "comment":"Hehevr d f f f fhdhdhd fndhdyd fhdydudhd dhdhdud",
-          "record_added":"2022-05-24T15:49:34.252Z",
-          "record_edited":"2022-05-24T15:49:34.252Z"
        }
     },
     {
