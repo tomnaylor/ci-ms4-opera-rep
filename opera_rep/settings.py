@@ -236,10 +236,14 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     SERVER_EMAIL = 'tomnaylor@gmail.com'
     DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
-    print("> NO EMAIL - USING CONSOLE LOG")
+    print("> EMAIL - USING CONSOLE LOG")
 
 
 if 'DEVELOPMENT' in os.environ:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    SERVER_EMAIL = 'tomnaylor@gmail.com'
+    DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
+    print("> EMAIL - USING CONSOLE LOG")
     print("> DEVELOPMENT MODE")
 else:
     print("> PROUCTION MODE")
