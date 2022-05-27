@@ -234,6 +234,7 @@ if 'EMAIL_HOST_USER' in os.environ and 'EMAIL_HOST_PASSWORD' in os.environ:
     print("> SENDGRID EMAIL OK")
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    SERVER_EMAIL = 'tomnaylor@gmail.com'
     DEFAULT_FROM_EMAIL = 'tomnaylor@gmail.com'
     print("> NO EMAIL - USING CONSOLE LOG")
 
