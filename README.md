@@ -114,14 +114,10 @@ I have tried to make a intuitive, accessible and reactive navigation bar that st
 This is handeled by the Django admin pages. Django was designed for exactly this kind of use. The admin pages make quick work of setting up a new project and letting you quickly develop the application, using as little custom code to add behind-the-scenes content.
 
 #### Add, Edit and deleting reviews
-
+This is written with custom forms and views to creat the CRUD functunality. Reviews can be added by any user, but only once per production. They can be added, deleted and eddited from the production page.
 
 #### sign up, login and logout
 Viewing the content does not need to login, but other sections of the app need a user access / admin rights. Adding, editing and deleting a review and liking a production all need user access. All Django admin pages also need a superuser to access.
-
-
-### Features left to implement
-
 
 
 

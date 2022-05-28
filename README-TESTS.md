@@ -105,7 +105,7 @@ Tests for the donations app are all contained in the tests.py file
 All py files were checked on the PEP8 validator passed without error. The flake8 linter was also used in Gitpod.
 
 #### Lighthouse
-I used lighthouse on both the desktop and mobile versions of the site. The desktop performance score was 100% (94% for mobile).
+I used lighthouse on both the desktop and mobile versions of the site.
 
 
 ### Testing against the user Stories
