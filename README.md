@@ -126,7 +126,7 @@ All icons used are from the [fontawesome v5.15.4](https://fontawesome.com/v5/sea
 <img src="readme/donation-form.png" alt="drawing" width="200" align="left">
 <img src="readme/write-review.png" alt="drawing" width="200" align="left">
 <img src="readme/production-photos.png" alt="drawing" width="200" align="left">
-<img src="readme/production-videos.png" alt="drawing" width="200" align="left">
+<img src="readme/production-videos.png" alt="drawing" width="200">
 
 
 #### Navigation
