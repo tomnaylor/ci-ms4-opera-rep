@@ -15,6 +15,7 @@ Welcome to the testing readme for the online production catalogue
   * [Automatic testers / validators](#automatic-testers-and-validators)
   * [Testing against the user Stories](#testing-against-the-user-stories)
   * [Manual Testing](#manual-testing)
+  * [Stripe payments](#stripe-payments)
   * [Known Bugs](#known-bugs)
 
 
@@ -193,7 +194,24 @@ I have preformed manual tests on a number of browsers and devices to cover most 
 * The app was tested on a number of devices such as Desktop, Laptop, iPhone and android.
 * The app was tested extensively to ensure all links, styles and events worked as expected
 
+### Stripe payments
 
+To test the donations page, I have done extensive manual testing on the Stripe intergrations. The following card numbers can be used, use any 3 digit code and a valid postcode
+
+* **successful payments**
+* 4000008260000000 (Visa)
+* 4000058260000005 (Visa debit)
+* 5555558265554449 (Mastercard)
+
+* **failed payments**
+* 4000000000000002 (card declined - generic decline)
+* 4000000000009995 (card declined - insufficient funds)
+* 4000000000009987 (card declined - lost card)
+* 4000000000009979 (card declined - stolen card)
+* 4000000000000069 (expired card)
+* 4000000000000127 (incorrect cvc)
+* 4000000000000119 (processing error)
+* 4242424242424241 (incorrect number)
 
 ### Known Bugs
 
