@@ -195,8 +195,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
 
     AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-        'CacheControl': 'max-age=94608000',
+        'CacheControl': 'max-age=86400',
     }
 
     AWS_STORAGE_BUCKET_NAME = 'wno-test-bed'

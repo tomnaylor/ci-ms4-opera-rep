@@ -103,31 +103,6 @@ Welcome to the WNO
 </section>
 
 
-<section class="page-section py-5 bg-light">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-heading text-uppercase">Latest Videos</h2>
-        </div>
-        <div class="row mt-5">
-            {% for video in prod_videos %}
-                {% if video.youtube_source %}
-                <iframe 
-                    class="col-12 col-md-6 mb-4"
-                    width="100%" 
-                    height="300px" 
-                    src="{{ video.youtube_source }}" 
-                    title="{{ video.name }}" 
-                    frameborder="0" 
-                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                {% else %}
-                <div class="col-6">
-                    {{ video.source|safe }}
-                </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
 
 
 <section class="page-section py-5">
