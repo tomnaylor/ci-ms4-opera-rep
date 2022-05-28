@@ -15,7 +15,6 @@ Welcome to the testing readme for the online production catalogue
   * [Automatic testers / validators](#automatic-testers-and-validators)
   * [Testing against the user Stories](#testing-against-the-user-stories)
   * [Manual Testing](#manual-testing)
-  * [Responsive design testing](#responsive-design-testing)
   * [Known Bugs](#known-bugs)
 
 

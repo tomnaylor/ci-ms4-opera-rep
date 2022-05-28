@@ -2,12 +2,18 @@
 {% load static %}
 
 
+{% block h1 %}
+Welcome to the WNO
+{% endblock %}
+
 {% block content %}
 
 <section class="page-section bg-light pt-5">
     <div class="container">
-        <h2>Welcome to the WNO</h2>
-        <div class="row row-cols-2">
+        <div class="text-center">
+            <h2 class="text-uppercase">Our newest productions</h2>
+        </div>
+        <div class="row row-cols-2 mt-5">
             {% for production in productions %}
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4 position-relative">
 
@@ -25,8 +31,143 @@
                 </div>
             {% endfor %}
         </div>
-
     </div>
 </section>
 
+
+<section class="page-section pt-5 mb-5">
+    <div class="container">
+            <div class="text-center bg-danger p-5 text-white rounded">
+                After one of the most challenging periods in our 75 year history, we are relying more than ever on the generosity of our audiences to support our work on stage, in schools and in our communities
+                <div class="my-4">
+                    <a href="{% url 'donation' %}?donation_total=5.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> Donate £5</a>
+                    <a href="{% url 'donation' %}?donation_total=10.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £10</a>
+                    <a href="{% url 'donation' %}?donation_total=20.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £20</a>
+                </div>
+                You've helped us raise over £{{ donation_total.donation_total__sum|floatformat:0 }}
+            </div>
+    </div>
+</section>
+
+
+<section class="page-section bg-light pt-5">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="text-uppercase">The top most-liked productions</h2>
+        </div>
+        <div class="row row-cols-2 mt-5">
+            {% for production in four_most_liked %}
+                <div class="col-6 col-md-6 col-lg-3 mb-4 position-relative">
+
+                    <div class="img-cover img-thumb rounded" style="background-image: url('{{ production.thumb_image_url }}');">
+                        {% if production.dead %}
+                            <div class="p-1 rounded text-center text-uppercase text-light bg-danger bg-opacity-75">This production has been archived</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="px-2 pt-2">
+                        <h6><a href="{% url 'production' production.url %}" class="stretched-link text-decoration-none link-dark">{{ production.year }} {{ production.work.name }}</a></h6>
+
+                        <p class="fw-lighter lh-1">{{ production.tagline|truncatechars:60 }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- COMMENTS -->
+<section class="page-section pt-5 pb-5" id="comments">
+    <div class="container position-relative">
+
+        <div class="text-center">
+            <h2 class="text-uppercase">Latest Reviews</h2>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+  
+        <div class="row mt-5" data-masonry='{"percentPosition": true }'>
+            {% for comment in user_comments %}
+            <div class="col-sm-12 col-md-6 col-lg-6 p-3">
+                <i class="fas fa-quote-left"></i> {{ comment.comment }}
+                <p class="fw-light fst-italic">
+                    By {{ comment.user.username }} for {{ comment.production }}
+                </p>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<section class="page-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Latest Videos</h2>
+        </div>
+        <div class="row mt-5">
+            {% for video in prod_videos %}
+                {% if video.youtube_source %}
+                <iframe 
+                    class="col-12 col-md-6 mb-4"
+                    width="100%" 
+                    height="300px" 
+                    src="{{ video.youtube_source }}" 
+                    title="{{ video.name }}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% else %}
+                <div class="col-6">
+                    {{ video.source|safe }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<section class="page-section py-5">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Latest Photos</h2>
+        </div>
+        <div id="carouselMediaPhoto" class="carousel slide mt-5" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                {% for photo in prod_photos %}
+                    <button 
+                    type="button" 
+                    data-bs-target="#carouselMediaPhoto" 
+                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                    {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} 
+                    aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-inner">
+                {% for photo in prod_photos %}
+                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                        <img src="{{ photo.full_image.url }}" class="d-block w-100" alt="{{ photo.name }}">
+                        <div class="carousel-caption d-none d-md-block">
+                        <span class="h3 py-1 px-3 fw-bold text-white bg-opacity-50 bg-dark text-uppercase ">{{ photo.name }} - {{ photo.production }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselMediaPhoto" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
 {% endblock %}
