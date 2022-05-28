@@ -8,8 +8,11 @@ from works.models import Production
 
 
 class Donation(models.Model):
-    """ Donation model """
+    """
+    Donation model
+    """
 
+    # Give donation number a unique hash
     donation_number = models.UUIDField(default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     production = models.ForeignKey(

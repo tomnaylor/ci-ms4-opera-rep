@@ -3,7 +3,9 @@ from .models import Donation
 
 
 class DonationForm(forms.ModelForm):
-    """ Donation form """
+    """
+    Donation form
+    """
     class Meta:
         model = Donation
         fields = ('full_name', 'email', 'city', 'country', 'production')

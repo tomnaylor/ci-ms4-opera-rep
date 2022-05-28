@@ -15,7 +15,10 @@ import stripe
 @require_POST
 @csrf_exempt
 def webhook(request):
-    """ Webhook for Stripe confirmations """
+    """
+    Webhook for Stripe confirmations
+    Modified version from stripe dev docs
+    """
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None

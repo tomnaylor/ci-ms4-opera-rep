@@ -3,7 +3,9 @@ from .models import Donation
 
 
 class DonationAdmin(admin.ModelAdmin):
-    """ donation table order """
+    """
+    donation table order
+    """
 
     readonly_fields = ('donation_number', 'record_added',
                        'donation_total',
