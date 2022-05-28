@@ -56,6 +56,7 @@ class PeopleAdmin(admin.ModelAdmin):
     photo.allow_tags = True
     ordering = ('name',)
 
+
 admin.site.register(Work)
 admin.site.register(Production)
 admin.site.register(ProductionVideo)

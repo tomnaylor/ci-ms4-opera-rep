@@ -5,7 +5,9 @@ from .models import UserProfile, UserComment
 
 
 class UserProfileForm(forms.ModelForm):
-    """ User profile update info """
+    """
+    User profile update info
+    """
 
     class Meta:
         """ setup form fields for profile """
@@ -14,7 +16,9 @@ class UserProfileForm(forms.ModelForm):
 
 
 class ProductionCommentForm(forms.ModelForm):
-    """ User comment on production """
+    """
+    User comment on production
+    """
 
     class Meta:
         """ setup form fields for comments """

@@ -10,15 +10,20 @@ from .forms import UserProfileForm, ProductionCommentForm
 
 @login_required
 def profile(request):
-    """ Display the user's profile. """
+    """
+    Display the user's profile.
+    """
+
     user_profile = get_object_or_404(UserProfile, user=request.user)
     user_likes = UserLike.objects.filter(user=request.user)
 
+    # Get donation list and sum total by this user
     donations = Donation.objects.filter(
         user=request.user).order_by('-record_added')
     donation_total = Donation.objects.filter(
         user=request.user).aggregate(Sum('donation_total'))
 
+    # If post form to save
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
@@ -44,10 +49,13 @@ def profile(request):
 
 @login_required
 def comment_remove(request, comment_id):
-    """ Remove comment """
+    """
+    Remove comment
+    """
 
     user_comment = get_object_or_404(UserComment, pk=comment_id)
 
+    # check if this user was the author
     if user_comment.user == request.user:
         try:
             user_comment.delete()
@@ -65,7 +73,9 @@ def comment_remove(request, comment_id):
 
 @login_required
 def comment_add(request, prod_id):
-    """ Add new comment """
+    """
+    Add new comment
+    """
 
     prod = get_object_or_404(Production, pk=prod_id)
 
@@ -89,11 +99,14 @@ def comment_add(request, prod_id):
 
 @login_required
 def comment_edit(request, comment_id):
-    """ Add new comment """
+    """
+    edit a comment
+    """
 
     user_comment = get_object_or_404(UserComment, pk=comment_id)
     prod = get_object_or_404(Production, pk=user_comment.production.id)
 
+    # check if this user was the author
     if user_comment.user != request.user:
         messages.error(request, 'Not correct user')
         return redirect(reverse('production', kwargs={'slug': prod.url}))
