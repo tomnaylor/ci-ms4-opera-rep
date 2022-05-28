@@ -118,9 +118,9 @@ All icons used are from the [fontawesome v5.15.4](https://fontawesome.com/v5/sea
 
 ### Existing Features
 
-<img src="readme/home-page.png" alt="drawing" width="200">
-<img src="readme/production-butterfly.png" alt="drawing" width="200">
-<img src="readme/person.png" alt="drawing" width="200">
+<img src="readme/home-page.png" alt="drawing" width="200" align="left">
+<img src="readme/production-butterfly.png" alt="drawing" width="200" align="left">
+<img src="readme/person.png" alt="drawing" width="200" align="left">
 <img src="readme/sign-in-form.png" alt="drawing" width="200">
 <img src="readme/forgot-password.png" alt="drawing" width="200">
 <img src="readme/donation-form.png" alt="drawing" width="200">
