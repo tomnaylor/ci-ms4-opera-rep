@@ -121,12 +121,13 @@ All icons used are from the [fontawesome v5.15.4](https://fontawesome.com/v5/sea
 <img src="readme/home-page.png" alt="drawing" width="200" align="left">
 <img src="readme/production-butterfly.png" alt="drawing" width="200" align="left">
 <img src="readme/person.png" alt="drawing" width="200" align="left">
-<img src="readme/sign-in-form.png" alt="drawing" width="200">
-<img src="readme/forgot-password.png" alt="drawing" width="200">
-<img src="readme/donation-form.png" alt="drawing" width="200">
-<img src="readme/write-review.png" alt="drawing" width="200">
-<img src="readme/production-photos.png" alt="drawing" width="200">
-<img src="readme/production-videos.png" alt="drawing" width="200">
+<img src="readme/sign-in-form.png" alt="drawing" width="200" align="left">
+<img src="readme/forgot-password.png" alt="drawing" width="200" align="left">
+<img src="readme/donation-form.png" alt="drawing" width="200" align="left">
+<img src="readme/write-review.png" alt="drawing" width="200" align="left">
+<img src="readme/production-photos.png" alt="drawing" width="200" align="left">
+<img src="readme/production-videos.png" alt="drawing" width="200" align="left">
+
 
 #### Navigation
 I have tried to make a intuitive, accessible and reactive navigation bar that stays useful across different screen sizes and devices. For desktop, the menu sticks to the top of every page with identical layouts. The menu items change depending on if the user is logged in, not logged in or an admin. On mobile the manu is replaced with a hamburger icon and pressing that slides the menu in from the right.
