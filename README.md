@@ -216,8 +216,8 @@ I used the following steps to deploy to Heroku.
     * On the permissions tab paste the CORS configuration found [here](readme/aws-cors-config.txt)
     * In Permissions, select "bucket policy". Type is s3 bucket policy, allow all principal and actions will be "GetObject". ARN is in the bucket policy tab. An example can be [found here](readme/aws-bucket-policy.txt)
 * Setup Sendgrid
-    * 
-    *
+    * setup an account 
+    * retrieve smtp details for later
 * Env config vars in Heroku
     * In Heroku, click on "settings" and then "reveal config vars". You will need to add the following variables:
     * **AWS_ACCESS_KEY_ID** Public access key for Amazon AWS bucket (leave empty to use local storage)
