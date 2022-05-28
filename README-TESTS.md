@@ -119,6 +119,7 @@ Django has an allauth intergration that makes user accounts easy and secure to m
 <img src="readme/sign-in-form.png" alt="drawing" width="200">
 
 
+
 **Donate to the company**
 
 I have used Stripe to bring card payments directly into the app. Every production and on various pages on the app has links to donate. Productions have three options, £5, £10 and £20. Once clicked, the user only needs to fill in a simple form (which is auto filled for logged in users), enter the car details and click "donate". If they are a logged in user, their donation will be linked to their account so they can keep track of donations. The donations will also feature on the production (if one has been selected) to show recent donations and a sum total. The Stripe intergration will also email the donator once the funds have been cleared.

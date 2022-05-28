@@ -67,7 +67,7 @@ Welcome to the online production catalogue for the WNO. The web application aims
 * review reviews before they go live **~TO DO**
 
 
-### Development Methods
+### Development
  As the sole developer of the online production catalogue, I have taken an agile approach to the development of the app. I build an early release and then completed user stories as smaller incremental improvements. This method alows me to write the expectations of the sites users, order them, and tackle one at a time. This helps make sure the basic function of the app is running to ship to market as soon as possible.
 
 ### Design
@@ -93,6 +93,17 @@ I used a postgres DB hosted by Heroku (on AWS) for the production database. I al
 
 The database has tables across 4 apps: works, profiles, user and donations.
 
+##### works
+This app has 6 models, they all stem from the **works.Work** which is a table of operatic works ie. Madame Butterfly. It contains the name of the work, a url slug, composer and the world premier. The next table, **works.Production** is a list of productions of the same work, ie. the 2022 production of Butterfly and the older 2006 version. Each production contains all the cast, crew and creatives as well as the unique url slug, a hero image, thumbnail image and more. The **works.Role** links to the cast, creatives and staff to give a person a role on the production. The people can be used in many productions and their roles will often change (stage name or lighting director etc.).**works.ProductionPhoto** and **works.ProductionVideo** both link to the production ID and can add as many photos and videos to a production as needed.
+
+##### profiles
+This app extends the user.User allauth made table. The **profiles.UserProfile** adds some extra details to the user account such as city and country used in donations. **profiles.UserComment** holds the reviews for the productions, **profiles.UserLike** keeps which user likes what production.
+
+##### donations
+The **donations.Donation** table keeps a record of all donations made via Stripe. Its updated when the payment is success (either via the user session or the webhook).
+
+
+
 #### Font family
 To provide a readable, reliable and fast font library, I have used the "Segoe UI" font that bootstrap comes build with.
 
@@ -106,6 +117,16 @@ All icons used are from the [fontawesome v5.15.4](https://fontawesome.com/v5/sea
 ## Features
 
 ### Existing Features
+
+<img src="readme/home-page.png" alt="drawing" width="200">
+<img src="readme/production-butterfly.png" alt="drawing" width="200">
+<img src="readme/person.png" alt="drawing" width="200">
+<img src="readme/sign-in-form.png" alt="drawing" width="200">
+<img src="readme/forgot-password.png" alt="drawing" width="200">
+<img src="readme/donation-form.png" alt="drawing" width="200">
+<img src="readme/write-review.png" alt="drawing" width="200">
+<img src="readme/production-photos.png" alt="drawing" width="200">
+<img src="readme/production-videos.png" alt="drawing" width="200">
 
 #### Navigation
 I have tried to make a intuitive, accessible and reactive navigation bar that stays useful across different screen sizes and devices. For desktop, the menu sticks to the top of every page with identical layouts. The menu items change depending on if the user is logged in, not logged in or an admin. On mobile the manu is replaced with a hamburger icon and pressing that slides the menu in from the right.
