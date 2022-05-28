@@ -39,10 +39,10 @@ Welcome to the WNO
     <div class="container">
             <div class="text-center bg-danger p-5 text-white rounded">
                 After one of the most challenging periods in our 75 year history, we are relying more than ever on the generosity of our audiences to support our work on stage, in schools and in our communities
-                <div class="my-4">
-                    <a href="{% url 'donation' %}?donation_total=5.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> Donate £5</a>
-                    <a href="{% url 'donation' %}?donation_total=10.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £10</a>
-                    <a href="{% url 'donation' %}?donation_total=20.00" class="mx-1 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £20</a>
+                <div class="my-2">
+                    <a href="{% url 'donation' %}?donation_total=5.00" class="mx-1 my-2 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> Donate £5</a>
+                    <a href="{% url 'donation' %}?donation_total=10.00" class="mx-1 my-2 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £10</a>
+                    <a href="{% url 'donation' %}?donation_total=20.00" class="mx-1 my-2 btn btn-danger btn-outline-light"><i class="fas fa-credit-card"></i> £20</a>
                 </div>
                 You've helped us raise over £{{ donation_total.donation_total__sum|floatformat:0 }}
             </div>

@@ -92,16 +92,10 @@
             </div>
         </nav>
 
-
-        <div class="px-4 py-5 text-center hero-container" style="background-image: url('{% block hero_image %}{% static 'template/default-bg-wno.jpg' %}{% endblock %}');">
-            <h1 class="display-4 fw-bold text-uppercase">{% block h1 %}{% endblock %}</h1>
+        <div class="hero-container" style="background-image: url('{% block hero_image %}{% static 'template/default-bg-wno.jpg' %}{% endblock %}');">
+            <h1 class="display-4 fw-bold text-uppercase text-white">{% block h1 %}{% endblock %}</h1>
             <div class="hero-container-bottom">{% block hero_cta %}{% endblock %}</div>
         </div>
-
-
-
-
-
         
         {% block content %}
         {% endblock %}
