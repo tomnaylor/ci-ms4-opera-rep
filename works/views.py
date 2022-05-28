@@ -17,7 +17,9 @@ from .models import (
 
 
 def all_works(request):
-    """ View to display all opera works """
+    """
+    View to display all opera works
+    """
 
     works = Work.objects.all()
 
@@ -29,7 +31,9 @@ def all_works(request):
 
 
 def all_productions(request):
-    """ View to display all opera productions (tied to a work) """
+    """
+    View to display all opera productions (tied to a work)
+    """
 
     productions = Production.objects.all()
 
@@ -41,35 +45,40 @@ def all_productions(request):
 
 
 def production(request, slug):
-    """ View to show a single production detail """
+    """
+    View to show a production in detail
+    """
 
+    # Get this production
     prod = get_object_or_404(Production, url=slug)
 
-    user_like = UserLike.objects.filter(Q(user=request.user) & Q(
-        production=prod)).first() if request.user.is_authenticated else False
-
-    user_comments = UserComment.objects.filter(production=prod.id)
-
+    # Search for donations for this production by date and limited to 10
     donations = Donation.objects.filter(
         production=prod.id).order_by('-record_added')[:10]
 
+    # Get sum total of donations towards this production
     donation_total = Donation.objects.filter(
         production=prod.id).aggregate(Sum('donation_total'))
 
+    user_comments = UserComment.objects.filter(production=prod.id)
     prod_videos = ProductionVideo.objects.filter(production=prod.id)
     prod_photos = ProductionPhoto.objects.filter(production=prod.id)
     other_productions = Production.objects.filter(work=prod.work)
 
+    # If the user is logged in
     if request.user.is_authenticated:
 
+        # Search if this request user has liked this production else False
         user_like = UserLike.objects.filter(
             Q(user=request.user) & Q(production=prod)).first()
 
+        # Check if the user has made a comment review before
         previous_comment = UserComment.objects.filter(
             production=prod.id, user=request.user)
 
         comment_form = ProductionCommentForm(instance=request.user)
 
+        # check if the user has clicked on "like"
         if 'like' in request.GET:
             if user_like:
                 # DELETE LIKE
@@ -113,10 +122,15 @@ def production(request, slug):
 
 
 def person(request, slug):
-    """ View to show a single persons detail """
+    """
+    View to show a single persons detail
+    """
 
     person = get_object_or_404(People, url=slug)
     roles = Role.objects.filter(person=person.id)
+
+    # get a list of all productions that the person
+    # is either in the creative, cast or staff m2m
     productions = Production.objects.filter(
                   Q(creatives__in=roles) |
                   Q(cast__in=roles) |
@@ -132,7 +146,9 @@ def person(request, slug):
 
 
 def search(request):
-    """ Search all works, productions, people and media """
+    """
+    Search all works, productions, people and media
+    """
 
     productions = Production.objects.all()
     people = People.objects.all()
@@ -145,11 +161,14 @@ def search(request):
 
         if 'query' in request.GET:
             query = request.GET['query']
+
+            # if no search term used, redirect
             if not query:
                 messages.error(request,
                                ("You didn't enter any search criteria!"))
                 return redirect(reverse('home'))
 
+            # search thru the production table
             queries = (
                        Q(tagline__icontains=query) |
                        Q(synopsis__icontains=query) |
@@ -158,6 +177,7 @@ def search(request):
 
             productions = productions.filter(queries)
 
+            # search thru the people table
             queries = Q(name__icontains=query) | Q(synopsis__icontains=query)
             people = people.filter(queries)
 

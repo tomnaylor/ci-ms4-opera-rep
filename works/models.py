@@ -5,7 +5,9 @@ from django.conf import settings
 # ------------------------------ PEOPLE
 
 def people_thumb_image_path(instance, filename):
-    """ Return path for people hero images to be saved """
+    """
+    Return path for people hero images to be saved
+    """
     return f'people/{instance.url}/thumbs/{filename}'
 
 
@@ -51,7 +53,9 @@ class People(models.Model):
 # ------------------------------ ROLES -> PEOPLE
 
 class Role(models.Model):
-    """ Model for all roles in a productions """
+    """
+    Model for all roles in a productions
+    """
     name = models.CharField(max_length=254, blank=False)
     person = models.ForeignKey('People', on_delete=models.RESTRICT)
     record_added = models.DateTimeField(auto_now_add=True)
@@ -64,7 +68,9 @@ class Role(models.Model):
 # ------------------------------ WORKS
 
 class Work(models.Model):
-    """ Model for the work """
+    """
+    Model for the work
+    """
     url = models.SlugField(max_length=254, blank=False, unique=True)
     name = models.CharField(max_length=254, blank=False)
     composer = models.ForeignKey('People', on_delete=models.RESTRICT)
@@ -79,17 +85,23 @@ class Work(models.Model):
 # ------------------------------ PRODUCTION
 
 def production_hero_image_path(instance, filename):
-    """ Return path for production hero images to be saved """
+    """
+    Return path for production hero images to be saved
+    """
     return f'production/{instance.url}/heros/{filename}'
 
 
 def production_thumb_image_path(instance, filename):
-    """ Return path for production hero images to be saved """
+    """
+    Return path for production hero images to be saved
+    """
     return f'production/{instance.url}/thumbs/{filename}'
 
 
 class Production(models.Model):
-    """ Model for a production """
+    """
+    Model for a production
+    """
     url = models.SlugField(max_length=254, blank=False, unique=True)
     work = models.ForeignKey(
         'Work', null=True, blank=True, on_delete=models.SET_NULL)
@@ -128,17 +140,23 @@ class Production(models.Model):
 # ------------------------------ PRODUCTION PHOTOS
 
 def production_photo_full_image_path(instance, filename):
-    """ Return path for production full photo images to be saved """
+    """
+    Return path for production full photo images to be saved
+    """
     return f'production/{instance.production.url}/photos/full/{filename}'
 
 
 def production_photo_thumb_image_path(instance, filename):
-    """ Return path for production thumb photo images to be saved """
+    """
+    Return path for production thumb photo images to be saved
+    """
     return f'production/{instance.production.url}/photos/thumbs/{filename}'
 
 
 class ProductionPhoto(models.Model):
-    """ Model for a media entry for a production """
+    """
+    Model for a media entry for a production
+    """
 
     production = models.ForeignKey(
         'Production', null=True, blank=True, on_delete=models.SET_NULL)
@@ -168,12 +186,16 @@ class ProductionPhoto(models.Model):
 # ------------------------------ PRODUCTION VIDEOS
 
 def production_video_thumb_image_path(instance, filename):
-    """ Return path for production thumb video images to be saved """
+    """
+    Return path for production thumb video images to be saved
+    """
     return f'production/{instance.production.url}/videos/thumbs/{filename}'
 
 
 class ProductionVideo(models.Model):
-    """ Model for a video entry for a production """
+    """
+    Model for a video entry for a production
+    """
 
     production = models.ForeignKey(
                                    'Production',

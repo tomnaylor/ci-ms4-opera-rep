@@ -23,6 +23,7 @@ class ProductionPhotoAdmin(admin.ModelAdmin):
         'record_edited',
     )
 
+    # show photo in the admin table
     def photo(self, obj):
         """ Show image in list """
         return format_html('<img src="%s" title="%s" style="height:80px" />' %
@@ -45,6 +46,7 @@ class PeopleAdmin(admin.ModelAdmin):
         'record_edited',
     )
 
+    # show photo in the admin table
     def photo(self, obj):
         """ Show image in list """
         return format_html(
@@ -53,9 +55,6 @@ class PeopleAdmin(admin.ModelAdmin):
 
     photo.allow_tags = True
     ordering = ('name',)
-
-
-# Register your models here.
 
 admin.site.register(Work)
 admin.site.register(Production)
