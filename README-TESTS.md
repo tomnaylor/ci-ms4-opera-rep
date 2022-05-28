@@ -211,3 +211,7 @@ I have preformed manual tests on a number of browsers and devices to cover most 
 * Custom 404 and 500 pages would not work. Django has updated this method a few times and [this article](https://pytutorial.com/django-create-custom-404-page) helped with the v3 changes.
 
 * getting a list of the most liked productions. I needed to count the total likes grouped by production and then get the objects that match the ids of the top 4. [this site](https://realpython.com/python-enumerate/), [this site](https://stackoverflow.com/questions/1185545/python-loop-counter-in-a-for-loop) and [this site](https://books.agiliq.com/projects/django-orm-cookbook/en/latest/duplicate.html) had a lot of useful information
+
+#### Persistant
+
+* Adding a review longer than the 600 char limit throws a 500 page and not a graceful error, or even an automatic crop of the text
